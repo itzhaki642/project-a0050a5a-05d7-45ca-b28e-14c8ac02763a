@@ -52,6 +52,11 @@ const Footer = () => {
                   תקנון
                 </Link>
               </li>
+              <li>
+                <Link to="/accessibility" className="text-muted-foreground hover:text-foreground transition-colors">
+                  הצהרת נגישות
+                </Link>
+              </li>
             </ul>
           </div>
 
