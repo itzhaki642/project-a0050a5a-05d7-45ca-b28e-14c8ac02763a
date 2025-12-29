@@ -15,7 +15,7 @@ import { ChevronLeft, Plus, Minus, Trash2, ShoppingBag, Send, CalendarIcon } fro
 import { z } from "zod";
 import { cn } from "@/lib/utils";
 
-const checkoutSchema = z.object({
+const baseCheckoutSchema = z.object({
   name: z.string().trim().min(2, "שם חייב להכיל לפחות 2 תווים").max(100, "שם ארוך מדי"),
   phone: z
     .string()
@@ -35,10 +35,40 @@ const checkoutSchema = z.object({
   notes: z.string().trim().max(500, "הערות ארוכות מדי").optional(),
   eventDate: z.date().optional(),
   celebrantName: z.string().trim().max(100, "שם ארוך מדי").optional().or(z.literal("")),
+  celebrantAge: z.string().trim().max(10, "גיל לא תקין").optional().or(z.literal("")),
   dedication: z.string().trim().max(500, "הקדשה ארוכה מדי").optional().or(z.literal("")),
 });
 
-type CheckoutForm = z.infer<typeof checkoutSchema>;
+type CheckoutForm = z.infer<typeof baseCheckoutSchema>;
+
+type CartType = "birthday" | "souvenirs" | "mixed";
+
+const getCartType = (items: { conceptId?: string }[]): CartType => {
+  const hasBirthday = items.some((item) => item.conceptId && item.conceptId !== "souvenirs");
+  const hasSouvenirs = items.some((item) => item.conceptId === "souvenirs");
+  
+  if (hasBirthday && hasSouvenirs) return "mixed";
+  if (hasSouvenirs) return "souvenirs";
+  return "birthday";
+};
+
+const getCheckoutSchema = (cartType: CartType) => {
+  if (cartType === "birthday") {
+    return baseCheckoutSchema.extend({
+      eventDate: z.date({ required_error: "יש לבחור תאריך אירוע" }),
+      celebrantName: z.string().trim().min(1, "יש להזין שם החוגג/ת").max(100, "שם ארוך מדי"),
+      celebrantAge: z.string().trim().min(1, "יש להזין גיל").max(10, "גיל לא תקין"),
+    });
+  }
+  if (cartType === "souvenirs") {
+    return baseCheckoutSchema.extend({
+      eventDate: z.date({ required_error: "יש לבחור תאריך אירוע" }),
+      dedication: z.string().trim().min(1, "יש להזין הקדשה").max(500, "הקדשה ארוכה מדי"),
+    });
+  }
+  // mixed - all optional
+  return baseCheckoutSchema;
+};
 
 const Checkout = () => {
   const { items, updateQuantity, removeItem, totalPrice, clearCart } = useCart();
@@ -54,8 +84,11 @@ const Checkout = () => {
     notes: "",
     eventDate: undefined,
     celebrantName: "",
+    celebrantAge: "",
     dedication: "",
   });
+
+  const cartType = getCartType(items);
 
   const [errors, setErrors] = useState<Partial<Record<keyof CheckoutForm, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -68,6 +101,7 @@ const Checkout = () => {
   };
 
   const validateForm = (): boolean => {
+    const checkoutSchema = getCheckoutSchema(cartType);
     const result = checkoutSchema.safeParse(form);
     if (!result.success) {
       const newErrors: Partial<Record<keyof CheckoutForm, string>> = {};
@@ -87,11 +121,12 @@ const Checkout = () => {
       .map((item) => `• ${item.name} x${item.quantity} - ₪${item.price * item.quantity}`)
       .join("\n");
 
-    const hasEventDetails = form.eventDate || form.celebrantName || form.dedication;
+    const hasEventDetails = form.eventDate || form.celebrantName || form.celebrantAge || form.dedication;
     const eventDetailsSection = hasEventDetails
       ? `\n🎈 *פרטי האירוע:*
 ${form.eventDate ? `תאריך: ${format(form.eventDate, "dd/MM/yyyy")}` : ""}
 ${form.celebrantName ? `שם החוגג/ת: ${form.celebrantName}` : ""}
+${form.celebrantAge ? `גיל: ${form.celebrantAge}` : ""}
 ${form.dedication ? `הקדשה: ${form.dedication}` : ""}`
       : "";
 
@@ -322,18 +357,24 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
                 {/* Event Details Section */}
                 <div className="border-t border-border pt-6 mt-6">
                   <h3 className="text-lg font-semibold text-foreground mb-2">פרטי האירוע</h3>
-                  <p className="text-sm text-muted-foreground mb-4">שדות אלו אינם חובה</p>
+                  {cartType === "mixed" && (
+                    <p className="text-sm text-muted-foreground mb-4">שדות אלו אינם חובה</p>
+                  )}
                   
                   <div className="space-y-4">
+                    {/* Event Date - shown for all types */}
                     <div>
-                      <Label htmlFor="eventDate">תאריך האירוע</Label>
+                      <Label htmlFor="eventDate">
+                        תאריך האירוע {cartType !== "mixed" && "*"}
+                      </Label>
                       <Popover>
                         <PopoverTrigger asChild>
                           <Button
                             variant="outline"
                             className={cn(
                               "w-full justify-start text-right font-normal",
-                              !form.eventDate && "text-muted-foreground"
+                              !form.eventDate && "text-muted-foreground",
+                              errors.eventDate && "border-destructive"
                             )}
                           >
                             <CalendarIcon className="ml-2 h-4 w-4" />
@@ -350,32 +391,60 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
                           />
                         </PopoverContent>
                       </Popover>
+                      {errors.eventDate && <p className="text-destructive text-sm mt-1">{errors.eventDate}</p>}
                     </div>
 
-                    <div>
-                      <Label htmlFor="celebrantName">שם החוגג/ת</Label>
-                      <Input
-                        id="celebrantName"
-                        value={form.celebrantName}
-                        onChange={(e) => handleChange("celebrantName", e.target.value)}
-                        placeholder="לדוגמה: יוסי"
-                        className={errors.celebrantName ? "border-destructive" : ""}
-                      />
-                      {errors.celebrantName && <p className="text-destructive text-sm mt-1">{errors.celebrantName}</p>}
-                    </div>
+                    {/* Celebrant Name - shown for birthday and mixed */}
+                    {(cartType === "birthday" || cartType === "mixed") && (
+                      <div>
+                        <Label htmlFor="celebrantName">
+                          שם החוגג/ת {cartType === "birthday" && "*"}
+                        </Label>
+                        <Input
+                          id="celebrantName"
+                          value={form.celebrantName}
+                          onChange={(e) => handleChange("celebrantName", e.target.value)}
+                          placeholder="לדוגמה: יוסי"
+                          className={errors.celebrantName ? "border-destructive" : ""}
+                        />
+                        {errors.celebrantName && <p className="text-destructive text-sm mt-1">{errors.celebrantName}</p>}
+                      </div>
+                    )}
 
-                    <div>
-                      <Label htmlFor="dedication">הקדשה</Label>
-                      <Textarea
-                        id="dedication"
-                        value={form.dedication}
-                        onChange={(e) => handleChange("dedication", e.target.value)}
-                        placeholder="לדוגמה: מאחלים יום הולדת מושלם!"
-                        rows={2}
-                        className={errors.dedication ? "border-destructive" : ""}
-                      />
-                      {errors.dedication && <p className="text-destructive text-sm mt-1">{errors.dedication}</p>}
-                    </div>
+                    {/* Celebrant Age - shown only for birthday */}
+                    {(cartType === "birthday" || cartType === "mixed") && (
+                      <div>
+                        <Label htmlFor="celebrantAge">
+                          גיל {cartType === "birthday" && "*"}
+                        </Label>
+                        <Input
+                          id="celebrantAge"
+                          value={form.celebrantAge}
+                          onChange={(e) => handleChange("celebrantAge", e.target.value)}
+                          placeholder="לדוגמה: 5"
+                          className={errors.celebrantAge ? "border-destructive" : ""}
+                        />
+                        {errors.celebrantAge && <p className="text-destructive text-sm mt-1">{errors.celebrantAge}</p>}
+                      </div>
+                    )}
+
+                    {/* Dedication - shown for souvenirs and mixed */}
+                    {(cartType === "souvenirs" || cartType === "mixed") && (
+                      <div>
+                        <Label htmlFor="dedication">
+                          הקדשה {cartType === "souvenirs" && "*"}
+                        </Label>
+                        <Textarea
+                          id="dedication"
+                          value={form.dedication}
+                          onChange={(e) => handleChange("dedication", e.target.value)}
+                          placeholder="לדוגמה: מאחלים יום הולדת מושלם!"
+                          rows={2}
+                          className={errors.dedication ? "border-destructive" : ""}
+                        />
+                        {errors.dedication && <p className="text-destructive text-sm mt-1">{errors.dedication}</p>}
+                      </div>
+                    )}
                   </div>
                 </div>
 
