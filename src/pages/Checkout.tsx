@@ -37,6 +37,8 @@ const baseCheckoutSchema = z.object({
   celebrantName: z.string().trim().max(100, "שם ארוך מדי").optional().or(z.literal("")),
   celebrantAge: z.string().trim().max(10, "גיל לא תקין").optional().or(z.literal("")),
   dedication: z.string().trim().max(500, "הקדשה ארוכה מדי").optional().or(z.literal("")),
+  birthdayDetails: z.string().trim().max(500, "פרטים ארוכים מדי").optional().or(z.literal("")),
+  souvenirDetails: z.string().trim().max(500, "פרטים ארוכים מדי").optional().or(z.literal("")),
 });
 
 type CheckoutForm = z.infer<typeof baseCheckoutSchema>;
@@ -86,6 +88,8 @@ const Checkout = () => {
     celebrantName: "",
     celebrantAge: "",
     dedication: "",
+    birthdayDetails: "",
+    souvenirDetails: "",
   });
 
   const cartType = getCartType(items);
@@ -121,13 +125,15 @@ const Checkout = () => {
       .map((item) => `• ${item.name} x${item.quantity} - ₪${item.price * item.quantity}`)
       .join("\n");
 
-    const hasEventDetails = form.eventDate || form.celebrantName || form.celebrantAge || form.dedication;
+    const hasEventDetails = form.eventDate || form.celebrantName || form.celebrantAge || form.dedication || form.birthdayDetails || form.souvenirDetails;
     const eventDetailsSection = hasEventDetails
       ? `\n🎈 *פרטי האירוע:*
 ${form.eventDate ? `תאריך: ${format(form.eventDate, "dd/MM/yyyy")}` : ""}
 ${form.celebrantName ? `שם החוגג/ת: ${form.celebrantName}` : ""}
 ${form.celebrantAge ? `גיל: ${form.celebrantAge}` : ""}
-${form.dedication ? `הקדשה: ${form.dedication}` : ""}`
+${form.dedication ? `הקדשה: ${form.dedication}` : ""}
+${form.birthdayDetails ? `פרטי יום הולדת: ${form.birthdayDetails}` : ""}
+${form.souvenirDetails ? `הערות למזכרות: ${form.souvenirDetails}` : ""}`
       : "";
 
     const message = `🎉 *הזמנה חדשה - מיתוג אירועים*
@@ -356,94 +362,147 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
 
                 {/* Event Details Section */}
                 <div className="border-t border-border pt-6 mt-6">
-                  <h3 className="text-lg font-semibold text-foreground mb-2">פרטי האירוע</h3>
-                  {cartType === "mixed" && (
-                    <p className="text-sm text-muted-foreground mb-4">שדות אלו אינם חובה</p>
-                  )}
+                  <h3 className="text-lg font-semibold text-foreground mb-4">פרטי האירוע</h3>
                   
                   <div className="space-y-4">
-                    {/* Event Date - shown for all types */}
-                    <div>
-                      <Label htmlFor="eventDate">
-                        תאריך האירוע {cartType !== "mixed" && "*"}
-                      </Label>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Button
-                            variant="outline"
-                            className={cn(
-                              "w-full justify-start text-right font-normal",
-                              !form.eventDate && "text-muted-foreground",
-                              errors.eventDate && "border-destructive"
-                            )}
-                          >
-                            <CalendarIcon className="ml-2 h-4 w-4" />
-                            {form.eventDate ? format(form.eventDate, "PPP", { locale: he }) : "בחרו תאריך"}
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={form.eventDate}
-                            onSelect={(date) => handleChange("eventDate", date)}
-                            locale={he}
-                            className={cn("p-3 pointer-events-auto")}
+                    {/* Mixed cart - free text fields */}
+                    {cartType === "mixed" && (
+                      <>
+                        <div>
+                          <Label htmlFor="birthdayDetails">
+                            פרטי אירוע יום ההולדת (שם החוגג, גיל ותאריך)
+                          </Label>
+                          <Textarea
+                            id="birthdayDetails"
+                            value={form.birthdayDetails}
+                            onChange={(e) => handleChange("birthdayDetails", e.target.value)}
+                            placeholder="לדוגמה: יוסי, גיל 5, תאריך 15/01/2025"
+                            rows={2}
+                            className={errors.birthdayDetails ? "border-destructive" : ""}
                           />
-                        </PopoverContent>
-                      </Popover>
-                      {errors.eventDate && <p className="text-destructive text-sm mt-1">{errors.eventDate}</p>}
-                    </div>
+                          {errors.birthdayDetails && <p className="text-destructive text-sm mt-1">{errors.birthdayDetails}</p>}
+                        </div>
 
-                    {/* Celebrant Name - shown for birthday and mixed */}
-                    {(cartType === "birthday" || cartType === "mixed") && (
-                      <div>
-                        <Label htmlFor="celebrantName">
-                          שם החוגג/ת {cartType === "birthday" && "*"}
-                        </Label>
-                        <Input
-                          id="celebrantName"
-                          value={form.celebrantName}
-                          onChange={(e) => handleChange("celebrantName", e.target.value)}
-                          placeholder="לדוגמה: יוסי"
-                          className={errors.celebrantName ? "border-destructive" : ""}
-                        />
-                        {errors.celebrantName && <p className="text-destructive text-sm mt-1">{errors.celebrantName}</p>}
-                      </div>
+                        <div>
+                          <Label htmlFor="souvenirDetails">
+                            הערות למזכרות (תאריך האירוע, סוג האירוע והקדשה)
+                          </Label>
+                          <Textarea
+                            id="souvenirDetails"
+                            value={form.souvenirDetails}
+                            onChange={(e) => handleChange("souvenirDetails", e.target.value)}
+                            placeholder="לדוגמה: בר מצווה, 20/02/2025, מזל טוב לבן!"
+                            rows={2}
+                            className={errors.souvenirDetails ? "border-destructive" : ""}
+                          />
+                          {errors.souvenirDetails && <p className="text-destructive text-sm mt-1">{errors.souvenirDetails}</p>}
+                        </div>
+                      </>
                     )}
 
-                    {/* Celebrant Age - shown only for birthday */}
-                    {(cartType === "birthday" || cartType === "mixed") && (
-                      <div>
-                        <Label htmlFor="celebrantAge">
-                          גיל {cartType === "birthday" && "*"}
-                        </Label>
-                        <Input
-                          id="celebrantAge"
-                          value={form.celebrantAge}
-                          onChange={(e) => handleChange("celebrantAge", e.target.value)}
-                          placeholder="לדוגמה: 5"
-                          className={errors.celebrantAge ? "border-destructive" : ""}
-                        />
-                        {errors.celebrantAge && <p className="text-destructive text-sm mt-1">{errors.celebrantAge}</p>}
-                      </div>
+                    {/* Birthday only - structured fields */}
+                    {cartType === "birthday" && (
+                      <>
+                        <div>
+                          <Label htmlFor="eventDate">תאריך האירוע *</Label>
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <Button
+                                variant="outline"
+                                className={cn(
+                                  "w-full justify-start text-right font-normal",
+                                  !form.eventDate && "text-muted-foreground",
+                                  errors.eventDate && "border-destructive"
+                                )}
+                              >
+                                <CalendarIcon className="ml-2 h-4 w-4" />
+                                {form.eventDate ? format(form.eventDate, "PPP", { locale: he }) : "בחרו תאריך"}
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0" align="start">
+                              <Calendar
+                                mode="single"
+                                selected={form.eventDate}
+                                onSelect={(date) => handleChange("eventDate", date)}
+                                locale={he}
+                                className={cn("p-3 pointer-events-auto")}
+                              />
+                            </PopoverContent>
+                          </Popover>
+                          {errors.eventDate && <p className="text-destructive text-sm mt-1">{errors.eventDate}</p>}
+                        </div>
+
+                        <div>
+                          <Label htmlFor="celebrantName">שם החוגג/ת *</Label>
+                          <Input
+                            id="celebrantName"
+                            value={form.celebrantName}
+                            onChange={(e) => handleChange("celebrantName", e.target.value)}
+                            placeholder="לדוגמה: יוסי"
+                            className={errors.celebrantName ? "border-destructive" : ""}
+                          />
+                          {errors.celebrantName && <p className="text-destructive text-sm mt-1">{errors.celebrantName}</p>}
+                        </div>
+
+                        <div>
+                          <Label htmlFor="celebrantAge">גיל *</Label>
+                          <Input
+                            id="celebrantAge"
+                            value={form.celebrantAge}
+                            onChange={(e) => handleChange("celebrantAge", e.target.value)}
+                            placeholder="לדוגמה: 5"
+                            className={errors.celebrantAge ? "border-destructive" : ""}
+                          />
+                          {errors.celebrantAge && <p className="text-destructive text-sm mt-1">{errors.celebrantAge}</p>}
+                        </div>
+                      </>
                     )}
 
-                    {/* Dedication - shown for souvenirs and mixed */}
-                    {(cartType === "souvenirs" || cartType === "mixed") && (
-                      <div>
-                        <Label htmlFor="dedication">
-                          הקדשה {cartType === "souvenirs" && "*"}
-                        </Label>
-                        <Textarea
-                          id="dedication"
-                          value={form.dedication}
-                          onChange={(e) => handleChange("dedication", e.target.value)}
-                          placeholder="לדוגמה: מאחלים יום הולדת מושלם!"
-                          rows={2}
-                          className={errors.dedication ? "border-destructive" : ""}
-                        />
-                        {errors.dedication && <p className="text-destructive text-sm mt-1">{errors.dedication}</p>}
-                      </div>
+                    {/* Souvenirs only - structured fields */}
+                    {cartType === "souvenirs" && (
+                      <>
+                        <div>
+                          <Label htmlFor="eventDate">תאריך האירוע *</Label>
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <Button
+                                variant="outline"
+                                className={cn(
+                                  "w-full justify-start text-right font-normal",
+                                  !form.eventDate && "text-muted-foreground",
+                                  errors.eventDate && "border-destructive"
+                                )}
+                              >
+                                <CalendarIcon className="ml-2 h-4 w-4" />
+                                {form.eventDate ? format(form.eventDate, "PPP", { locale: he }) : "בחרו תאריך"}
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0" align="start">
+                              <Calendar
+                                mode="single"
+                                selected={form.eventDate}
+                                onSelect={(date) => handleChange("eventDate", date)}
+                                locale={he}
+                                className={cn("p-3 pointer-events-auto")}
+                              />
+                            </PopoverContent>
+                          </Popover>
+                          {errors.eventDate && <p className="text-destructive text-sm mt-1">{errors.eventDate}</p>}
+                        </div>
+
+                        <div>
+                          <Label htmlFor="dedication">הקדשה *</Label>
+                          <Textarea
+                            id="dedication"
+                            value={form.dedication}
+                            onChange={(e) => handleChange("dedication", e.target.value)}
+                            placeholder="לדוגמה: מאחלים יום הולדת מושלם!"
+                            rows={2}
+                            className={errors.dedication ? "border-destructive" : ""}
+                          />
+                          {errors.dedication && <p className="text-destructive text-sm mt-1">{errors.dedication}</p>}
+                        </div>
+                      </>
                     )}
                   </div>
                 </div>
