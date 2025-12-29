@@ -1,8 +1,33 @@
+import { useEffect, useRef, useState } from "react";
 import Layout from "@/components/Layout";
 import HeroSection from "@/components/HeroSection";
 import CategoryCard from "@/components/CategoryCard";
 import categoryBirthday from "@/assets/category-birthday.jpg";
 import categorySouvenirs from "@/assets/category-souvenirs.jpg";
+
+const useInView = (threshold = 0.1) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+        }
+      },
+      { threshold }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, [threshold]);
+
+  return { ref, isInView };
+};
 
 const categories = [
   {
@@ -18,6 +43,24 @@ const categories = [
     href: "/souvenirs",
   },
 ];
+
+const TestimonialCard = ({ children, delay }: { children: React.ReactNode; delay: number }) => {
+  const { ref, isInView } = useInView(0.2);
+  
+  return (
+    <div
+      ref={ref}
+      className={`bg-card border border-border rounded-2xl p-6 shadow-sm transition-all duration-700 ${
+        isInView 
+          ? "opacity-100 translate-y-0" 
+          : "opacity-0 translate-y-8"
+      }`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
+    </div>
+  );
+};
 
 const Index = () => {
   return (
@@ -92,7 +135,7 @@ const Index = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            <div className="bg-card border border-border rounded-2xl p-6 shadow-sm">
+            <TestimonialCard delay={0}>
               <div className="flex items-center gap-1 mb-4">
                 {[...Array(5)].map((_, i) => (
                   <span key={i} className="text-yellow-500">★</span>
@@ -102,9 +145,9 @@ const Index = () => {
                 "הזמנתי חבילת יום הולדת לבת שלי והתוצאה הייתה מדהימה! כל הפריטים היו מעוצבים בצורה מושלמת והילדים התלהבו."
               </p>
               <p className="font-semibold text-foreground">מיכל כ.</p>
-            </div>
+            </TestimonialCard>
 
-            <div className="bg-card border border-border rounded-2xl p-6 shadow-sm">
+            <TestimonialCard delay={150}>
               <div className="flex items-center gap-1 mb-4">
                 {[...Array(5)].map((_, i) => (
                   <span key={i} className="text-yellow-500">★</span>
@@ -114,9 +157,9 @@ const Index = () => {
                 "שירות מקצועי ואדיב, המזכרות לבר המצווה היו יפהפיות. ממליצה בחום!"
               </p>
               <p className="font-semibold text-foreground">רונית ש.</p>
-            </div>
+            </TestimonialCard>
 
-            <div className="bg-card border border-border rounded-2xl p-6 shadow-sm">
+            <TestimonialCard delay={300}>
               <div className="flex items-center gap-1 mb-4">
                 {[...Array(5)].map((_, i) => (
                   <span key={i} className="text-yellow-500">★</span>
@@ -126,7 +169,7 @@ const Index = () => {
                 "איכות מעולה ועיצוב מדויק לפי הבקשה שלנו. משלוח מהיר ושירות לקוחות מצוין."
               </p>
               <p className="font-semibold text-foreground">יעל מ.</p>
-            </div>
+            </TestimonialCard>
           </div>
         </div>
       </section>
