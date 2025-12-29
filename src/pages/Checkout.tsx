@@ -12,8 +12,19 @@ import { z } from "zod";
 
 const checkoutSchema = z.object({
   name: z.string().trim().min(2, "שם חייב להכיל לפחות 2 תווים").max(100, "שם ארוך מדי"),
-  phone: z.string().trim().min(9, "מספר טלפון לא תקין").max(15, "מספר טלפון לא תקין").regex(/^[0-9\-\+\s]+$/, "מספר טלפון לא תקין"),
-  email: z.string().trim().email("כתובת אימייל לא תקינה").max(255, "כתובת אימייל ארוכה מדי").optional().or(z.literal("")),
+  phone: z
+    .string()
+    .trim()
+    .min(9, "מספר טלפון לא תקין")
+    .max(15, "מספר טלפון לא תקין")
+    .regex(/^[0-9\-\+\s]+$/, "מספר טלפון לא תקין"),
+  email: z
+    .string()
+    .trim()
+    .email("כתובת אימייל לא תקינה")
+    .max(255, "כתובת אימייל ארוכה מדי")
+    .optional()
+    .or(z.literal("")),
   address: z.string().trim().min(5, "כתובת חייבת להכיל לפחות 5 תווים").max(200, "כתובת ארוכה מדי"),
   city: z.string().trim().min(2, "עיר חייבת להכיל לפחות 2 תווים").max(50, "שם עיר ארוך מדי"),
   notes: z.string().trim().max(500, "הערות ארוכות מדי").optional(),
@@ -25,7 +36,7 @@ const Checkout = () => {
   const { items, updateQuantity, removeItem, totalPrice, clearCart } = useCart();
   const { toast } = useToast();
   const navigate = useNavigate();
-  
+
   const [form, setForm] = useState<CheckoutForm>({
     name: "",
     phone: "",
@@ -34,7 +45,7 @@ const Checkout = () => {
     city: "",
     notes: "",
   });
-  
+
   const [errors, setErrors] = useState<Partial<Record<keyof CheckoutForm, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -103,19 +114,19 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
     }
 
     setIsSubmitting(true);
-    
+
     // Open WhatsApp with the order
-    const whatsappNumber = "972501234567"; // Replace with actual number
+    const whatsappNumber = "972528668869"; // Replace with actual number
     const message = generateWhatsAppMessage();
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
-    
+
     window.open(whatsappUrl, "_blank");
-    
+
     toast({
       title: "ההזמנה נשלחה!",
       description: "נפתח חלון WhatsApp לשליחת ההזמנה",
     });
-    
+
     clearCart();
     setIsSubmitting(false);
     navigate("/");
@@ -157,22 +168,14 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
           <div className="order-2 lg:order-1">
             <div className="bg-card border border-border rounded-lg p-6">
               <h2 className="text-xl font-semibold text-foreground mb-6">סיכום הזמנה</h2>
-              
+
               <div className="space-y-4 mb-6">
                 {items.map((item) => (
                   <div key={item.id} className="flex gap-4 p-3 bg-secondary/30 rounded-lg">
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="w-16 h-16 object-cover rounded-md"
-                    />
+                    <img src={item.image} alt={item.name} className="w-16 h-16 object-cover rounded-md" />
                     <div className="flex-1">
-                      <h4 className="font-medium text-foreground text-sm mb-1">
-                        {item.name}
-                      </h4>
-                      <p className="text-foreground font-semibold text-sm">
-                        ₪{item.price} ליחידה
-                      </p>
+                      <h4 className="font-medium text-foreground text-sm mb-1">{item.name}</h4>
+                      <p className="text-foreground font-semibold text-sm">₪{item.price} ליחידה</p>
                       <div className="flex items-center gap-2 mt-2">
                         <Button
                           size="icon"
@@ -182,9 +185,7 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
                         >
                           <Minus className="h-3 w-3" />
                         </Button>
-                        <span className="w-6 text-center text-sm font-medium">
-                          {item.quantity}
-                        </span>
+                        <span className="w-6 text-center text-sm font-medium">{item.quantity}</span>
                         <Button
                           size="icon"
                           variant="outline"
@@ -201,9 +202,7 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
-                        <span className="font-semibold text-foreground">
-                          ₪{item.price * item.quantity}
-                        </span>
+                        <span className="font-semibold text-foreground">₪{item.price * item.quantity}</span>
                       </div>
                     </div>
                   </div>
@@ -223,7 +222,7 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
           <div className="order-1 lg:order-2">
             <div className="bg-card border border-border rounded-lg p-6">
               <h2 className="text-xl font-semibold text-foreground mb-6">פרטי משלוח</h2>
-              
+
               <div className="space-y-4">
                 <div>
                   <Label htmlFor="name">שם מלא *</Label>
@@ -234,9 +233,7 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
                     placeholder="הכניסו את שמכם המלא"
                     className={errors.name ? "border-destructive" : ""}
                   />
-                  {errors.name && (
-                    <p className="text-destructive text-sm mt-1">{errors.name}</p>
-                  )}
+                  {errors.name && <p className="text-destructive text-sm mt-1">{errors.name}</p>}
                 </div>
 
                 <div>
@@ -249,9 +246,7 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
                     placeholder="050-1234567"
                     className={errors.phone ? "border-destructive" : ""}
                   />
-                  {errors.phone && (
-                    <p className="text-destructive text-sm mt-1">{errors.phone}</p>
-                  )}
+                  {errors.phone && <p className="text-destructive text-sm mt-1">{errors.phone}</p>}
                 </div>
 
                 <div>
@@ -264,9 +259,7 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
                     placeholder="your@email.com"
                     className={errors.email ? "border-destructive" : ""}
                   />
-                  {errors.email && (
-                    <p className="text-destructive text-sm mt-1">{errors.email}</p>
-                  )}
+                  {errors.email && <p className="text-destructive text-sm mt-1">{errors.email}</p>}
                 </div>
 
                 <div>
@@ -278,9 +271,7 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
                     placeholder="רחוב, מספר בית, דירה"
                     className={errors.address ? "border-destructive" : ""}
                   />
-                  {errors.address && (
-                    <p className="text-destructive text-sm mt-1">{errors.address}</p>
-                  )}
+                  {errors.address && <p className="text-destructive text-sm mt-1">{errors.address}</p>}
                 </div>
 
                 <div>
@@ -292,9 +283,7 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
                     placeholder="תל אביב"
                     className={errors.city ? "border-destructive" : ""}
                   />
-                  {errors.city && (
-                    <p className="text-destructive text-sm mt-1">{errors.city}</p>
-                  )}
+                  {errors.city && <p className="text-destructive text-sm mt-1">{errors.city}</p>}
                 </div>
 
                 <div>
@@ -307,17 +296,10 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
                     rows={3}
                     className={errors.notes ? "border-destructive" : ""}
                   />
-                  {errors.notes && (
-                    <p className="text-destructive text-sm mt-1">{errors.notes}</p>
-                  )}
+                  {errors.notes && <p className="text-destructive text-sm mt-1">{errors.notes}</p>}
                 </div>
 
-                <Button
-                  className="w-full mt-6 gap-2"
-                  size="lg"
-                  onClick={handleSubmit}
-                  disabled={isSubmitting}
-                >
+                <Button className="w-full mt-6 gap-2" size="lg" onClick={handleSubmit} disabled={isSubmitting}>
                   <Send className="h-5 w-5" />
                   שלח הזמנה בוואטסאפ
                 </Button>
