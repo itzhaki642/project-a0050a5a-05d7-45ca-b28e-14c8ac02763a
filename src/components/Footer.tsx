@@ -13,10 +13,16 @@ const Footer = () => {
               אנחנו מתמחים במיתוג אירועים מושלם - מימי הולדת לילדים ועד מזכרות יוקרתיות לכל סוג של אירוע.
             </p>
             <div className="flex gap-4">
-              <a href="#" className="p-2 rounded-full bg-background border border-border hover:bg-accent transition-colors">
+              <a
+                href="#"
+                className="p-2 rounded-full bg-background border border-border hover:bg-accent transition-colors"
+              >
                 <Instagram className="h-5 w-5" />
               </a>
-              <a href="#" className="p-2 rounded-full bg-background border border-border hover:bg-accent transition-colors">
+              <a
+                href="#"
+                className="p-2 rounded-full bg-background border border-border hover:bg-accent transition-colors"
+              >
                 <Facebook className="h-5 w-5" />
               </a>
             </div>
@@ -55,7 +61,7 @@ const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-center gap-2 text-muted-foreground">
                 <Phone className="h-4 w-4" />
-                <span>050-1234567</span>
+                <span>054-9255848</span>
               </li>
               <li className="flex items-center gap-2 text-muted-foreground">
                 <Mail className="h-4 w-4" />
