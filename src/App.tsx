@@ -9,6 +9,7 @@ import Checkout from "./pages/Checkout";
 import Birthday from "./pages/Birthday";
 import ConceptProducts from "./pages/ConceptProducts";
 import Souvenirs from "./pages/Souvenirs";
+import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/birthday" element={<Birthday />} />
           <Route path="/birthday/:conceptId" element={<ConceptProducts />} />
           <Route path="/souvenirs" element={<Souvenirs />} />
+          <Route path="/about" element={<About />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="*" element={<NotFound />} />
           </Routes>
