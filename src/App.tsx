@@ -13,6 +13,7 @@ import About from "./pages/About";
 import Terms from "./pages/Terms";
 import Accessibility from "./pages/Accessibility";
 import Contact from "./pages/Contact";
+import Sitemap from "./pages/Sitemap";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -33,6 +34,7 @@ const App = () => (
           <Route path="/terms" element={<Terms />} />
           <Route path="/accessibility" element={<Accessibility />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/sitemap" element={<Sitemap />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="*" element={<NotFound />} />
           </Routes>
