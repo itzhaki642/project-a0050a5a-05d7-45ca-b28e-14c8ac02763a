@@ -57,6 +57,11 @@ const Footer = () => {
                   הצהרת נגישות
                 </Link>
               </li>
+              <li>
+                <Link to="/sitemap" className="text-muted-foreground hover:text-foreground transition-colors">
+                  מפת האתר
+                </Link>
+              </li>
             </ul>
           </div>
 
