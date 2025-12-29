@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CartProvider } from "./contexts/CartContext";
 import Index from "./pages/Index";
+import Checkout from "./pages/Checkout";
 import Birthday from "./pages/Birthday";
 import ConceptProducts from "./pages/ConceptProducts";
 import Souvenirs from "./pages/Souvenirs";
@@ -20,11 +21,12 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/birthday" element={<Birthday />} />
-            <Route path="/birthday/:conceptId" element={<ConceptProducts />} />
-            <Route path="/souvenirs" element={<Souvenirs />} />
-            <Route path="*" element={<NotFound />} />
+          <Route path="/" element={<Index />} />
+          <Route path="/birthday" element={<Birthday />} />
+          <Route path="/birthday/:conceptId" element={<ConceptProducts />} />
+          <Route path="/souvenirs" element={<Souvenirs />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>

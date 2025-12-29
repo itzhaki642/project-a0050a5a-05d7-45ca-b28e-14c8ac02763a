@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 export interface CartItem {
   id: string;
@@ -19,10 +19,29 @@ interface CartContextType {
   totalPrice: number;
 }
 
+const CART_STORAGE_KEY = "mitug-events-cart";
+
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [items, setItems] = useState<CartItem[]>([]);
+  const [items, setItems] = useState<CartItem[]>(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem(CART_STORAGE_KEY);
+      if (saved) {
+        try {
+          return JSON.parse(saved);
+        } catch {
+          return [];
+        }
+      }
+    }
+    return [];
+  });
+
+  // Save to localStorage whenever items change
+  useEffect(() => {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
+  }, [items]);
 
   const addItem = (newItem: Omit<CartItem, "quantity">) => {
     setItems((prev) => {
