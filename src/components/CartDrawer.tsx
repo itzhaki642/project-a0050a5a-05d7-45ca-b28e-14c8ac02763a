@@ -1,9 +1,11 @@
+import { Link } from "react-router-dom";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
+  SheetClose,
 } from "@/components/ui/sheet";
 import { Button } from "./ui/button";
 import { ShoppingBag, Plus, Minus, Trash2 } from "lucide-react";
@@ -97,9 +99,11 @@ const CartDrawer = () => {
                   <span>סה״כ</span>
                   <span>₪{totalPrice}</span>
                 </div>
-                <Button className="w-full" size="lg">
-                  לתשלום
-                </Button>
+                <SheetClose asChild>
+                  <Button asChild className="w-full" size="lg">
+                    <Link to="/checkout">לקופה</Link>
+                  </Button>
+                </SheetClose>
                 <Button
                   variant="outline"
                   className="w-full"
