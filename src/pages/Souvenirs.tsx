@@ -33,7 +33,7 @@ const Souvenirs = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
             {products.map((product) => (
-              <ProductCard key={product.id} {...product} />
+              <ProductCard key={product.id} {...product} conceptId="souvenirs" />
             ))}
           </div>
         </div>
