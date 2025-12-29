@@ -41,6 +41,11 @@ const Footer = () => {
                   אודות
                 </Link>
               </li>
+              <li>
+                <Link to="/terms" className="text-muted-foreground hover:text-foreground transition-colors">
+                  תקנון
+                </Link>
+              </li>
             </ul>
           </div>
 

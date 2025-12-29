@@ -10,6 +10,7 @@ import Birthday from "./pages/Birthday";
 import ConceptProducts from "./pages/ConceptProducts";
 import Souvenirs from "./pages/Souvenirs";
 import About from "./pages/About";
+import Terms from "./pages/Terms";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/birthday/:conceptId" element={<ConceptProducts />} />
           <Route path="/souvenirs" element={<Souvenirs />} />
           <Route path="/about" element={<About />} />
+          <Route path="/terms" element={<Terms />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="*" element={<NotFound />} />
           </Routes>
