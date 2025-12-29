@@ -1,6 +1,6 @@
 import Layout from "@/components/Layout";
 import { Link } from "react-router-dom";
-import { Home, Gift, Heart, Sparkles, Info, Phone, FileText, Accessibility, Map } from "lucide-react";
+import { Home, Gift, Heart, Sparkles, Info, Phone, FileText, Accessibility, Map, HelpCircle } from "lucide-react";
 
 const Sitemap = () => {
   const pages = [
@@ -12,6 +12,7 @@ const Sitemap = () => {
     { name: "צור קשר", path: "/contact", icon: Phone, description: "פרטי התקשרות ושעות פעילות" },
     { name: "תקנון האתר", path: "/terms", icon: FileText, description: "תנאי השימוש באתר" },
     { name: "הצהרת נגישות", path: "/accessibility", icon: Accessibility, description: "מידע על נגישות האתר" },
+    { name: "שאלות נפוצות", path: "/faq", icon: HelpCircle, description: "תשובות לשאלות נפוצות" },
   ];
 
   const concepts = [
