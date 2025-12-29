@@ -3,6 +3,7 @@ import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "./ui/button";
 import CartDrawer from "./CartDrawer";
+import logo from "@/assets/238d4b34d7502085a8904925abd8113e_430x.jpg";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -25,7 +26,7 @@ const Header = () => {
           </Link> */}
 
           <Link to="/" className="flex items-center">
-            <img src="@/assets/238d4b34d7502085a8904925abd8113e_430x.jpg" alt="מיתוג אירועים" className="h-10 w-auto" />
+            <img src={logo} alt="מיתוג אירועים" className="h-10 w-auto" />
           </Link>
 
           {/* Desktop Navigation */}
