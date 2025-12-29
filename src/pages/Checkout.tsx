@@ -1,14 +1,19 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { format } from "date-fns";
+import { he } from "date-fns/locale";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useCart } from "@/contexts/CartContext";
 import { useToast } from "@/hooks/use-toast";
-import { ChevronLeft, Plus, Minus, Trash2, ShoppingBag, Send } from "lucide-react";
+import { ChevronLeft, Plus, Minus, Trash2, ShoppingBag, Send, CalendarIcon } from "lucide-react";
 import { z } from "zod";
+import { cn } from "@/lib/utils";
 
 const checkoutSchema = z.object({
   name: z.string().trim().min(2, "שם חייב להכיל לפחות 2 תווים").max(100, "שם ארוך מדי"),
@@ -28,6 +33,9 @@ const checkoutSchema = z.object({
   address: z.string().trim().min(5, "כתובת חייבת להכיל לפחות 5 תווים").max(200, "כתובת ארוכה מדי"),
   city: z.string().trim().min(2, "עיר חייבת להכיל לפחות 2 תווים").max(50, "שם עיר ארוך מדי"),
   notes: z.string().trim().max(500, "הערות ארוכות מדי").optional(),
+  eventDate: z.date().optional(),
+  celebrantName: z.string().trim().max(100, "שם ארוך מדי").optional().or(z.literal("")),
+  dedication: z.string().trim().max(500, "הקדשה ארוכה מדי").optional().or(z.literal("")),
 });
 
 type CheckoutForm = z.infer<typeof checkoutSchema>;
@@ -44,12 +52,15 @@ const Checkout = () => {
     address: "",
     city: "",
     notes: "",
+    eventDate: undefined,
+    celebrantName: "",
+    dedication: "",
   });
 
   const [errors, setErrors] = useState<Partial<Record<keyof CheckoutForm, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleChange = (field: keyof CheckoutForm, value: string) => {
+  const handleChange = (field: keyof CheckoutForm, value: string | Date | undefined) => {
     setForm((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: undefined }));
@@ -76,6 +87,14 @@ const Checkout = () => {
       .map((item) => `• ${item.name} x${item.quantity} - ₪${item.price * item.quantity}`)
       .join("\n");
 
+    const hasEventDetails = form.eventDate || form.celebrantName || form.dedication;
+    const eventDetailsSection = hasEventDetails
+      ? `\n🎈 *פרטי האירוע:*
+${form.eventDate ? `תאריך: ${format(form.eventDate, "dd/MM/yyyy")}` : ""}
+${form.celebrantName ? `שם החוגג/ת: ${form.celebrantName}` : ""}
+${form.dedication ? `הקדשה: ${form.dedication}` : ""}`
+      : "";
+
     const message = `🎉 *הזמנה חדשה - מיתוג אירועים*
 
 👤 *פרטי הלקוח:*
@@ -83,6 +102,7 @@ const Checkout = () => {
 טלפון: ${form.phone}
 ${form.email ? `אימייל: ${form.email}` : ""}
 כתובת: ${form.address}, ${form.city}
+${eventDetailsSection}
 
 🛒 *פרטי ההזמנה:*
 ${itemsList}
@@ -292,11 +312,71 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
                     id="notes"
                     value={form.notes}
                     onChange={(e) => handleChange("notes", e.target.value)}
-                    placeholder="הערות מיוחדות, תאריך אירוע, וכו׳"
+                    placeholder="הערות מיוחדות"
                     rows={3}
                     className={errors.notes ? "border-destructive" : ""}
                   />
                   {errors.notes && <p className="text-destructive text-sm mt-1">{errors.notes}</p>}
+                </div>
+
+                {/* Event Details Section */}
+                <div className="border-t border-border pt-6 mt-6">
+                  <h3 className="text-lg font-semibold text-foreground mb-2">פרטי האירוע</h3>
+                  <p className="text-sm text-muted-foreground mb-4">שדות אלו אינם חובה</p>
+                  
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="eventDate">תאריך האירוע</Label>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            className={cn(
+                              "w-full justify-start text-right font-normal",
+                              !form.eventDate && "text-muted-foreground"
+                            )}
+                          >
+                            <CalendarIcon className="ml-2 h-4 w-4" />
+                            {form.eventDate ? format(form.eventDate, "PPP", { locale: he }) : "בחרו תאריך"}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={form.eventDate}
+                            onSelect={(date) => handleChange("eventDate", date)}
+                            locale={he}
+                            className={cn("p-3 pointer-events-auto")}
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    </div>
+
+                    <div>
+                      <Label htmlFor="celebrantName">שם החוגג/ת</Label>
+                      <Input
+                        id="celebrantName"
+                        value={form.celebrantName}
+                        onChange={(e) => handleChange("celebrantName", e.target.value)}
+                        placeholder="לדוגמה: יוסי"
+                        className={errors.celebrantName ? "border-destructive" : ""}
+                      />
+                      {errors.celebrantName && <p className="text-destructive text-sm mt-1">{errors.celebrantName}</p>}
+                    </div>
+
+                    <div>
+                      <Label htmlFor="dedication">הקדשה</Label>
+                      <Textarea
+                        id="dedication"
+                        value={form.dedication}
+                        onChange={(e) => handleChange("dedication", e.target.value)}
+                        placeholder="לדוגמה: מאחלים יום הולדת מושלם!"
+                        rows={2}
+                        className={errors.dedication ? "border-destructive" : ""}
+                      />
+                      {errors.dedication && <p className="text-destructive text-sm mt-1">{errors.dedication}</p>}
+                    </div>
+                  </div>
                 </div>
 
                 <Button className="w-full mt-6 gap-2" size="lg" onClick={handleSubmit} disabled={isSubmitting}>
