@@ -20,18 +20,18 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/" className="text-2xl font-bold text-foreground tracking-tight">
+          {/* <Link to="/" className="text-2xl font-bold text-foreground tracking-tight">
             מיתוג אירועים
+          </Link> */}
+
+          <Link to="/" className="flex items-center">
+            <img src="@/assets/238d4b34d7502085a8904925abd8113e_430x.jpg" alt="מיתוג אירועים" className="h-10 w-auto" />
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-2">
             {navItems.map((item) => (
-              <Link
-                key={item.href}
-                to={item.href}
-                className="nav-pill"
-              >
+              <Link key={item.href} to={item.href} className="nav-pill">
                 {item.label}
               </Link>
             ))}
@@ -41,12 +41,7 @@ const Header = () => {
           <div className="flex items-center gap-4">
             <CartDrawer />
 
-            <Button
-              variant="ghost"
-              size="icon"
-              className="md:hidden"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
+            <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
               {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>
           </div>
