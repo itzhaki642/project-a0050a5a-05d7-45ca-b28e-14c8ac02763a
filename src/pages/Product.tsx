@@ -157,11 +157,17 @@ const Product = () => {
     }
 
     // Validate blessing selections for greeting cards
-    if (blessingCount > 0) {
-      if (!blessing1 || !blessing2 || (blessingCount === 3 && !blessing3)) {
-        toast.error("יש לבחור ברכה לכל עמוד");
-        return;
-      }
+    if (blessingCount >= 1 && !blessing1) {
+      toast.error("יש לבחור ברכה לכל עמוד");
+      return;
+    }
+    if (blessingCount >= 2 && !blessing2) {
+      toast.error("יש לבחור ברכה לכל עמוד");
+      return;
+    }
+    if (blessingCount >= 3 && !blessing3) {
+      toast.error("יש לבחור ברכה לכל עמוד");
+      return;
     }
 
     // Validate tag text if product has tag
@@ -172,16 +178,17 @@ const Product = () => {
 
     // Build custom attributes for blessings
     const customAttributes: Array<{ key: string; value: string }> = [];
-    if (blessingCount > 0) {
+    if (blessingCount >= 1) {
       const b1Value = blessing1 === "אחר" ? customBlessing1 : blessing1;
+      customAttributes.push({ key: "ברכה עמוד 1", value: b1Value });
+    }
+    if (blessingCount >= 2) {
       const b2Value = blessing2 === "אחר" ? customBlessing2 : blessing2;
-
-      customAttributes.push({ key: "ברכה עמוד 1", value: b1Value }, { key: "ברכה עמוד 2", value: b2Value });
-
-      if (blessingCount === 3) {
-        const b3Value = blessing3 === "אחר" ? customBlessing3 : blessing3;
-        customAttributes.push({ key: "ברכה עמוד 3", value: b3Value });
-      }
+      customAttributes.push({ key: "ברכה עמוד 2", value: b2Value });
+    }
+    if (blessingCount >= 3) {
+      const b3Value = blessing3 === "אחר" ? customBlessing3 : blessing3;
+      customAttributes.push({ key: "ברכה עמוד 3", value: b3Value });
     }
 
     // Add tag text if applicable
@@ -319,32 +326,34 @@ const Product = () => {
                   )}
                 </div>
 
-                {/* Page 2 */}
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-foreground">עמוד 2:</label>
-                  <Select value={blessing2} onValueChange={setBlessing2}>
-                    <SelectTrigger className="bg-background">
-                      <SelectValue placeholder="בחר ברכה לעמוד 2" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-background border border-border z-50">
-                      {BLESSING_OPTIONS.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  {blessing2 === "אחר" && (
-                    <Input
-                      value={customBlessing2}
-                      onChange={(e) => setCustomBlessing2(e.target.value)}
-                      placeholder="הקלידו את הברכה שלכם..."
-                      className="mt-2"
-                    />
-                  )}
-                </div>
+                {/* Page 2 - Only for 2+ pages */}
+                {blessingCount >= 2 && (
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-foreground">עמוד 2:</label>
+                    <Select value={blessing2} onValueChange={setBlessing2}>
+                      <SelectTrigger className="bg-background">
+                        <SelectValue placeholder="בחר ברכה לעמוד 2" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-background border border-border z-50">
+                        {BLESSING_OPTIONS.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {blessing2 === "אחר" && (
+                      <Input
+                        value={customBlessing2}
+                        onChange={(e) => setCustomBlessing2(e.target.value)}
+                        placeholder="הקלידו את הברכה שלכם..."
+                        className="mt-2"
+                      />
+                    )}
+                  </div>
+                )}
 
-                {/* Page 3 - Only for trio */}
+                {/* Page 3 - Only for 3 pages */}
                 {blessingCount === 3 && (
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-foreground">עמוד 3:</label>
