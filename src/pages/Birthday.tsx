@@ -36,18 +36,6 @@ const concepts = [
     productCount: 14,
     isShopify: true,
   },
-  {
-    id: "princess",
-    title: "יום הולדת נסיכות",
-    image: conceptPrincess,
-    productCount: 15,
-  },
-  {
-    id: "superhero",
-    title: "יום הולדת גיבורי על",
-    image: conceptSuperhero,
-    productCount: 10,
-  },
 ];
 
 const Birthday = () => {
