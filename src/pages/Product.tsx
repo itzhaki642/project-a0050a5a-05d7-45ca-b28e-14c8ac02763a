@@ -17,6 +17,7 @@ import { toast } from "sonner";
 
 // Blessing options for greeting cards
 const BLESSING_OPTIONS = [
+  { value: "הקדשה על כל העמוד", label: "הקדשה על כל העמוד (פרטי ההקדשה ימולאו בצ׳ק אאוט)" },
   { value: "מזמור לתודה", label: "מזמור לתודה" },
   { value: "סדר הדלקת נרות שבת", label: "סדר הדלקת נרות שבת" },
   { value: "סדר הבדלה", label: "סדר הבדלה" },
