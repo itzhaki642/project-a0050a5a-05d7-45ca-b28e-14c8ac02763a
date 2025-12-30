@@ -148,6 +148,60 @@ const STOREFRONT_PRODUCT_BY_HANDLE_QUERY = `
   }
 `;
 
+const STOREFRONT_COLLECTION_PRODUCTS_QUERY = `
+  query GetCollectionProducts($handle: String!, $first: Int!) {
+    collectionByHandle(handle: $handle) {
+      id
+      title
+      products(first: $first) {
+        edges {
+          node {
+            id
+            title
+            description
+            handle
+            priceRange {
+              minVariantPrice {
+                amount
+                currencyCode
+              }
+            }
+            images(first: 5) {
+              edges {
+                node {
+                  url
+                  altText
+                }
+              }
+            }
+            variants(first: 10) {
+              edges {
+                node {
+                  id
+                  title
+                  price {
+                    amount
+                    currencyCode
+                  }
+                  availableForSale
+                  selectedOptions {
+                    name
+                    value
+                  }
+                }
+              }
+            }
+            options {
+              name
+              values
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 const CART_CREATE_MUTATION = `
   mutation cartCreate($input: CartInput!) {
     cartCreate(input: $input) {
@@ -243,6 +297,18 @@ export async function fetchShopifyProducts(first: number = 50, query?: string, f
     return products;
   } catch (error) {
     console.error('Error fetching products:', error);
+    return [];
+  }
+}
+
+// Fetch Products by Collection Handle
+export async function fetchProductsByCollection(collectionHandle: string, first: number = 50): Promise<ShopifyProduct[]> {
+  try {
+    const data = await storefrontApiRequest(STOREFRONT_COLLECTION_PRODUCTS_QUERY, { handle: collectionHandle, first });
+    if (!data || !data.data.collectionByHandle) return [];
+    return data.data.collectionByHandle.products.edges.map((edge: { node: ShopifyProduct['node'] }) => ({ node: edge.node })) || [];
+  } catch (error) {
+    console.error('Error fetching collection products:', error);
     return [];
   }
 }
