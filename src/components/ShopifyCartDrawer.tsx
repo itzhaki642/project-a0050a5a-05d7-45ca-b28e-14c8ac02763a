@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -8,19 +9,19 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
+  SheetClose,
 } from "@/components/ui/sheet";
-import { ShoppingCart, Minus, Plus, Trash2, ExternalLink, Loader2 } from "lucide-react";
+import { ShoppingCart, Minus, Plus, Trash2 } from "lucide-react";
 import { useShopifyCartStore } from "@/stores/shopifyCartStore";
 import { formatPrice } from "@/lib/shopify";
 
 export const ShopifyCartDrawer = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
   const { 
     items, 
-    isLoading, 
     updateQuantity, 
     removeItem, 
-    createCheckout,
     getTotalItems,
     getTotalPrice
   } = useShopifyCartStore();
@@ -29,16 +30,9 @@ export const ShopifyCartDrawer = () => {
   const totalPrice = getTotalPrice();
   const currencyCode = items[0]?.price.currencyCode || 'ILS';
 
-  const handleCheckout = async () => {
-    try {
-      const checkoutUrl = await createCheckout();
-      if (checkoutUrl) {
-        window.open(checkoutUrl, '_blank');
-        setIsOpen(false);
-      }
-    } catch (error) {
-      console.error('Checkout failed:', error);
-    }
+  const handleCheckout = () => {
+    setIsOpen(false);
+    navigate('/shopify-checkout');
   };
 
   return (
@@ -157,19 +151,9 @@ export const ShopifyCartDrawer = () => {
                   onClick={handleCheckout}
                   className="w-full" 
                   size="lg"
-                  disabled={items.length === 0 || isLoading}
+                  disabled={items.length === 0}
                 >
-                  {isLoading ? (
-                    <>
-                      <Loader2 className="w-4 h-4 ml-2 animate-spin" />
-                      יוצר צ'קאאוט...
-                    </>
-                  ) : (
-                    <>
-                      <ExternalLink className="w-4 h-4 ml-2" />
-                      לתשלום
-                    </>
-                  )}
+                  לקופה
                 </Button>
               </div>
             </>
