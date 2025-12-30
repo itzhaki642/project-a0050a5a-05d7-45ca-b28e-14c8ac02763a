@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Layout from "@/components/Layout";
 import HeroSection from "@/components/HeroSection";
 import HowItWorks from "@/components/HowItWorks";
+import PortfolioGallery from "@/components/PortfolioGallery";
 import CategoryCard from "@/components/CategoryCard";
 import SEOStructuredData from "@/components/SEOStructuredData";
 import categoryBirthday from "@/assets/category-birthday.jpg";
@@ -130,6 +131,9 @@ const Index = () => {
 
       {/* How It Works Section */}
       <HowItWorks />
+
+      {/* Portfolio Gallery Section */}
+      <PortfolioGallery />
 
       {/* Categories Section */}
       <section className="py-16 md:py-24" aria-labelledby="categories-heading">
