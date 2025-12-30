@@ -62,10 +62,31 @@ const TestimonialCard = ({ children, delay }: { children: React.ReactNode; delay
   );
 };
 
+const stats = [
+  { number: "500+", label: "אירועים מרוצים" },
+  { number: "8", label: "שנות ניסיון" },
+  { number: "100%", label: "שביעות רצון" },
+  { number: "48", label: "שעות למשלוח" },
+];
+
 const Index = () => {
   return (
     <Layout>
       <HeroSection />
+
+      {/* Stats Section */}
+      <section className="py-12 bg-primary">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            {stats.map((stat, index) => (
+              <div key={index} className="text-primary-foreground">
+                <div className="text-3xl md:text-4xl font-bold mb-1">{stat.number}</div>
+                <div className="text-sm md:text-base opacity-90">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Categories Section */}
       <section className="py-16 md:py-24">
