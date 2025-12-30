@@ -16,7 +16,7 @@ const useInView = (threshold = 0.1) => {
           setIsInView(true);
         }
       },
-      { threshold }
+      { threshold },
     );
 
     if (ref.current) {
@@ -46,14 +46,12 @@ const categories = [
 
 const TestimonialCard = ({ children, delay }: { children: React.ReactNode; delay: number }) => {
   const { ref, isInView } = useInView(0.2);
-  
+
   return (
     <div
       ref={ref}
       className={`bg-card border border-border rounded-2xl p-6 shadow-sm transition-all duration-700 ${
-        isInView 
-          ? "opacity-100 translate-y-0" 
-          : "opacity-0 translate-y-8"
+        isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
       }`}
       style={{ transitionDelay: `${delay}ms` }}
     >
@@ -63,10 +61,10 @@ const TestimonialCard = ({ children, delay }: { children: React.ReactNode; delay
 };
 
 const stats = [
-  { number: "500+", label: "אירועים מרוצים" },
-  { number: "8", label: "שנות ניסיון" },
+  { number: "500+", label: "לקוחות מרוצים" },
+  { number: "4", label: "שנות ניסיון" },
   { number: "100%", label: "שביעות רצון" },
-  { number: "48", label: "שעות למשלוח" },
+  { number: "3-5", label: "ימי משלוח מרגע סיום ההכנה" },
 ];
 
 const Index = () => {
@@ -92,9 +90,7 @@ const Index = () => {
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              הקטגוריות שלנו
-            </h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">הקטגוריות שלנו</h2>
             <p className="text-muted-foreground max-w-xl mx-auto">
               בחרו מתוך מגוון קטגוריות ומצאו את המוצרים המושלמים לאירוע שלכם
             </p>
@@ -117,27 +113,21 @@ const Index = () => {
                 <span className="text-2xl">🎨</span>
               </div>
               <h3 className="text-lg font-semibold text-foreground mb-2">עיצוב אישי</h3>
-              <p className="text-muted-foreground text-sm">
-                כל מוצר מעוצב במיוחד עבורכם לפי הקונספט שבחרתם
-              </p>
+              <p className="text-muted-foreground text-sm">כל מוצר מעוצב במיוחד עבורכם לפי הקונספט שבחרתם</p>
             </div>
             <div className="p-6">
               <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-accent flex items-center justify-center">
                 <span className="text-2xl">✨</span>
               </div>
               <h3 className="text-lg font-semibold text-foreground mb-2">איכות מעולה</h3>
-              <p className="text-muted-foreground text-sm">
-                חומרים איכותיים והדפסה מקצועית לתוצאה מושלמת
-              </p>
+              <p className="text-muted-foreground text-sm">חומרים איכותיים והדפסה מקצועית לתוצאה מושלמת</p>
             </div>
             <div className="p-6">
               <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-accent flex items-center justify-center">
                 <span className="text-2xl">🚚</span>
               </div>
               <h3 className="text-lg font-semibold text-foreground mb-2">משלוח מהיר</h3>
-              <p className="text-muted-foreground text-sm">
-                משלוחים לכל הארץ תוך 3-5 ימי עסקים
-              </p>
+              <p className="text-muted-foreground text-sm">משלוחים לכל הארץ תוך 3-5 ימי עסקים</p>
             </div>
           </div>
         </div>
@@ -147,23 +137,22 @@ const Index = () => {
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              ממליצים עלינו
-            </h2>
-            <p className="text-muted-foreground max-w-xl mx-auto">
-              לקוחות מרוצים משתפים את החוויה שלהם
-            </p>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">ממליצים עלינו</h2>
+            <p className="text-muted-foreground max-w-xl mx-auto">לקוחות מרוצים משתפים את החוויה שלהם</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             <TestimonialCard delay={0}>
               <div className="flex items-center gap-1 mb-4">
                 {[...Array(5)].map((_, i) => (
-                  <span key={i} className="text-yellow-500">★</span>
+                  <span key={i} className="text-yellow-500">
+                    ★
+                  </span>
                 ))}
               </div>
               <p className="text-muted-foreground mb-4">
-                "הזמנתי חבילת יום הולדת לבת שלי והתוצאה הייתה מדהימה! כל הפריטים היו מעוצבים בצורה מושלמת והילדים התלהבו."
+                "הזמנתי חבילת יום הולדת לבת שלי והתוצאה הייתה מדהימה! כל הפריטים היו מעוצבים בצורה מושלמת והילדים
+                התלהבו."
               </p>
               <p className="font-semibold text-foreground">מיכל כ.</p>
             </TestimonialCard>
@@ -171,7 +160,9 @@ const Index = () => {
             <TestimonialCard delay={150}>
               <div className="flex items-center gap-1 mb-4">
                 {[...Array(5)].map((_, i) => (
-                  <span key={i} className="text-yellow-500">★</span>
+                  <span key={i} className="text-yellow-500">
+                    ★
+                  </span>
                 ))}
               </div>
               <p className="text-muted-foreground mb-4">
@@ -183,7 +174,9 @@ const Index = () => {
             <TestimonialCard delay={300}>
               <div className="flex items-center gap-1 mb-4">
                 {[...Array(5)].map((_, i) => (
-                  <span key={i} className="text-yellow-500">★</span>
+                  <span key={i} className="text-yellow-500">
+                    ★
+                  </span>
                 ))}
               </div>
               <p className="text-muted-foreground mb-4">
