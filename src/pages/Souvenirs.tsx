@@ -12,11 +12,8 @@ const Souvenirs = () => {
     const loadProducts = async () => {
       setIsLoading(true);
       try {
-        // Fetch products with "ברכונים" in the title
-        const allProducts = await fetchShopifyProducts(50);
-        const souvenirProducts = allProducts.filter(product => 
-          product.node.title.includes("ברכונים")
-        );
+        // Search specifically for ברכונים products using Shopify search
+        const souvenirProducts = await fetchShopifyProducts(50, "ברכונים");
         setProducts(souvenirProducts);
       } catch (error) {
         console.error("Error loading souvenirs:", error);
