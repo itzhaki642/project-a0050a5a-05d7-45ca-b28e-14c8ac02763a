@@ -227,11 +227,20 @@ export async function storefrontApiRequest(query: string, variables: Record<stri
 }
 
 // Fetch Products
-export async function fetchShopifyProducts(first: number = 50, query?: string): Promise<ShopifyProduct[]> {
+export async function fetchShopifyProducts(first: number = 50, query?: string, filterByTitle: boolean = false): Promise<ShopifyProduct[]> {
   try {
     const data = await storefrontApiRequest(STOREFRONT_PRODUCTS_QUERY, { first, query });
     if (!data) return [];
-    return data.data.products.edges || [];
+    let products: ShopifyProduct[] = data.data.products.edges || [];
+    
+    // If filterByTitle is true, filter products to only include those with the query term in the title
+    if (filterByTitle && query) {
+      products = products.filter(product => 
+        product.node.title.includes(query)
+      );
+    }
+    
+    return products;
   } catch (error) {
     console.error('Error fetching products:', error);
     return [];
