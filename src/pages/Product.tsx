@@ -26,11 +26,13 @@ const BLESSING_OPTIONS = [
   { value: "אחר", label: "אחר (טקסט חופשי)" },
 ];
 
-// Check if product is a greeting card and how many pages
-const getBlessingCardType = (title: string): "trio" | "pair" | null => {
-  if (title.includes("שלישיית ברכונים")) return "trio";
-  if (title.includes("ברכון זוגי")) return "pair";
-  return null;
+// Get blessing count from product type
+// Expected product types: "ברכון-3" for 3 pages, "ברכון-2" for 2 pages, "ברכון-1" for 1 page
+const getBlessingCount = (productType: string): number => {
+  if (productType === "ברכון-3") return 3;
+  if (productType === "ברכון-2") return 2;
+  if (productType === "ברכון-1") return 1;
+  return 0;
 };
 
 // Check if product has a tag (תג)
@@ -43,6 +45,7 @@ interface ProductNode {
   title: string;
   description: string;
   handle: string;
+  productType: string;
   priceRange: {
     minVariantPrice: {
       amount: string;
@@ -144,8 +147,7 @@ const Product = () => {
   const selectedVariant = product.variants.edges[selectedVariantIndex]?.node;
   const images = product.images.edges;
   const currentImage = images[selectedImage]?.node;
-  const blessingCardType = getBlessingCardType(product.title);
-  const blessingCount = blessingCardType === "trio" ? 3 : blessingCardType === "pair" ? 2 : 0;
+  const blessingCount = getBlessingCount(product.productType || "");
   const showTagInput = hasTagCustomization(product.title);
 
   const handleAddToCart = () => {
