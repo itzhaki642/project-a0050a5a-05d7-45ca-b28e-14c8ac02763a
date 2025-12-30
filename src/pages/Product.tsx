@@ -39,6 +39,11 @@ const getBlessingCardType = (title: string): 'trio' | 'pair' | null => {
   return null;
 };
 
+// Check if product has a tag (תג)
+const hasTagCustomization = (title: string): boolean => {
+  return title.includes("תג");
+};
+
 interface ProductNode {
   id: string;
   title: string;
@@ -97,6 +102,9 @@ const Product = () => {
   const [customBlessing2, setCustomBlessing2] = useState("");
   const [customBlessing3, setCustomBlessing3] = useState("");
   
+  // Tag text customization
+  const [tagText, setTagText] = useState("");
+  
   const addItem = useShopifyCartStore((state) => state.addItem);
 
   useEffect(() => {
@@ -144,6 +152,7 @@ const Product = () => {
   const currentImage = images[selectedImage]?.node;
   const blessingCardType = getBlessingCardType(product.title);
   const blessingCount = blessingCardType === 'trio' ? 3 : blessingCardType === 'pair' ? 2 : 0;
+  const showTagInput = hasTagCustomization(product.title);
 
   const handleAddToCart = () => {
     if (!selectedVariant) {
@@ -157,6 +166,12 @@ const Product = () => {
         toast.error("יש לבחור ברכה לכל עמוד");
         return;
       }
+    }
+
+    // Validate tag text if product has tag
+    if (showTagInput && !tagText.trim()) {
+      toast.error("יש למלא את הטקסט לתג");
+      return;
     }
 
     // Build custom attributes for blessings
@@ -174,6 +189,11 @@ const Product = () => {
         const b3Value = blessing3 === "אחר" ? customBlessing3 : blessing3;
         customAttributes.push({ key: "ברכה עמוד 3", value: b3Value });
       }
+    }
+
+    // Add tag text if applicable
+    if (showTagInput && tagText.trim()) {
+      customAttributes.push({ key: "טקסט לתג", value: tagText.trim() });
     }
 
     const cartItem: ShopifyCartItem = {
@@ -363,6 +383,21 @@ const Product = () => {
                     )}
                   </div>
                 )}
+              </div>
+            )}
+
+            {/* Tag Text Input */}
+            {showTagInput && (
+              <div className="space-y-3 p-4 bg-secondary/30 rounded-xl border border-border">
+                <label className="font-semibold text-foreground">מה לרשום על התג?</label>
+                <Input
+                  value={tagText}
+                  onChange={(e) => setTagText(e.target.value.slice(0, 70))}
+                  placeholder="הקלידו את הטקסט לתג..."
+                  maxLength={70}
+                  className="bg-background"
+                />
+                <p className="text-xs text-muted-foreground text-left">{tagText.length}/70 תווים</p>
               </div>
             )}
 
