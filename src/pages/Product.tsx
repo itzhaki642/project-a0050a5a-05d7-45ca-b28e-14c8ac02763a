@@ -29,9 +29,9 @@ const BLESSING_OPTIONS = [
 // Get blessing count from product type
 // Expected product types: "ברכון-3" for 3 pages, "ברכון-2" for 2 pages, "ברכון-1" for 1 page
 const getBlessingCount = (productType: string): number => {
-  if (productType === "ברכון-3") return 3;
-  if (productType === "ברכון-2") return 2;
-  if (productType === "ברכון-1") return 1;
+  if (productType === "3") return 3;
+  if (productType === "2") return 2;
+  if (productType === "1") return 1;
   return 0;
 };
 
