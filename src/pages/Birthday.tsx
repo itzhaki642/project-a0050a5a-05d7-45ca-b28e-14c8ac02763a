@@ -3,7 +3,7 @@ import ConceptCard from "@/components/ConceptCard";
 import conceptSafari from "@/assets/concept-safari.jpg";
 import conceptPrincess from "@/assets/concept-princess.jpg";
 import conceptSuperhero from "@/assets/concept-superhero.jpg";
-import conceptDucks from "@/assets/concept-ducks.jpg";
+import conceptDucks from "@/assets/duck_concept_collection.jpg";
 
 const concepts = [
   {
@@ -39,9 +39,7 @@ const Birthday = () => {
       {/* Page Header */}
       <section className="py-12 md:py-16 bg-secondary/30">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            ימי הולדת לילדים
-          </h1>
+          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">ימי הולדת לילדים</h1>
           <p className="text-muted-foreground max-w-xl mx-auto">
             בחרו קונספט לעיצוב וגלו את כל המוצרים הממותגים שלנו - מבועות סבון ועד חטיפים ממותגים
           </p>
