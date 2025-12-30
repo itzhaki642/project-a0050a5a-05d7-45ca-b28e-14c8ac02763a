@@ -4,6 +4,8 @@ import conceptSafari from "@/assets/concept-safari-new.jpg";
 import conceptPrincess from "@/assets/concept-princess.jpg";
 import conceptSuperhero from "@/assets/concept-superhero.jpg";
 import conceptDucks from "@/assets/duck_concept_collection.jpg";
+import conceptBears from "@/assets/concept-bears.jpg";
+import conceptStrawberries from "@/assets/concept-strawberries.jpg";
 
 const concepts = [
   {
@@ -17,6 +19,20 @@ const concepts = [
     id: "safari",
     title: "יום הולדת ספארי",
     image: conceptSafari,
+    productCount: 14,
+    isShopify: true,
+  },
+  {
+    id: "bears",
+    title: "יום הולדת דובי",
+    image: conceptBears,
+    productCount: 14,
+    isShopify: true,
+  },
+  {
+    id: "strawberries",
+    title: "יום הולדת תותים",
+    image: conceptStrawberries,
     productCount: 14,
     isShopify: true,
   },
