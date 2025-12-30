@@ -1,6 +1,6 @@
 import Layout from "@/components/Layout";
 import ConceptCard from "@/components/ConceptCard";
-import conceptSafari from "@/assets/concept-safari.jpg";
+import conceptSafari from "@/assets/concept-safari-new.jpg";
 import conceptPrincess from "@/assets/concept-princess.jpg";
 import conceptSuperhero from "@/assets/concept-superhero.jpg";
 import conceptDucks from "@/assets/duck_concept_collection.jpg";
@@ -17,7 +17,8 @@ const concepts = [
     id: "safari",
     title: "יום הולדת ספארי",
     image: conceptSafari,
-    productCount: 12,
+    productCount: 17,
+    isShopify: true,
   },
   {
     id: "princess",
