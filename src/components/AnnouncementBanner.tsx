@@ -5,8 +5,8 @@ const AnnouncementBanner = () => {
   const [isVisible, setIsVisible] = useState(true);
 
   // הודעה לעריכה - שנה את הטקסט כאן
-  const message = "🎉 משלוח חינם בהזמנה מעל 200 ₪! 🎉";
-  
+  const message = "🎉  הזמנה דיגיטלית מעוצבת חינם! בקניה מעל 150 ש״ח 🎉";
+
   // האם להציג את הבאנר - שנה ל-false כדי להסתיר
   const showBanner = true;
 
