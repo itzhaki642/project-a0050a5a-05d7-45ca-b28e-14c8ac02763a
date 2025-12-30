@@ -17,6 +17,14 @@ const conceptsData: Record<string, ConceptData> = {
     title: "יום הולדת ספארי",
     query: "ספארי",
   },
+  bears: {
+    title: "יום הולדת דובי",
+    query: "דובי",
+  },
+  strawberries: {
+    title: "יום הולדת תותים",
+    query: "תותים",
+  },
 };
 
 const ShopifyConceptProducts = () => {
