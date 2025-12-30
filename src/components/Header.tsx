@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "./ui/button";
-import CartDrawer from "./CartDrawer";
+import ShopifyCartDrawer from "./ShopifyCartDrawer";
 import logo from "@/assets/238d4b34d7502085a8904925abd8113e_430x.jpg";
 
 const Header = () => {
@@ -40,7 +40,7 @@ const Header = () => {
 
           {/* Cart & Mobile Menu */}
           <div className="flex items-center gap-4">
-            <CartDrawer />
+            <ShopifyCartDrawer />
 
             <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
               {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
