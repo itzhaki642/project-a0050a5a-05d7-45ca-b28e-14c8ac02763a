@@ -15,6 +15,10 @@ export interface ShopifyCartItem {
     name: string;
     value: string;
   }>;
+  customAttributes?: Array<{
+    key: string;
+    value: string;
+  }>;
 }
 
 interface ShopifyCartStore {
@@ -48,15 +52,28 @@ export const useShopifyCartStore = create<ShopifyCartStore>()(
 
       addItem: (item) => {
         const { items } = get();
-        const existingItem = items.find(i => i.variantId === item.variantId);
+        // For items with custom attributes, create a unique key
+        const itemKey = item.customAttributes?.length 
+          ? `${item.variantId}-${JSON.stringify(item.customAttributes)}`
+          : item.variantId;
+        
+        const existingItem = items.find(i => {
+          const existingKey = i.customAttributes?.length 
+            ? `${i.variantId}-${JSON.stringify(i.customAttributes)}`
+            : i.variantId;
+          return existingKey === itemKey;
+        });
         
         if (existingItem) {
           set({
-            items: items.map(i =>
-              i.variantId === item.variantId
+            items: items.map(i => {
+              const existingKey = i.customAttributes?.length 
+                ? `${i.variantId}-${JSON.stringify(i.customAttributes)}`
+                : i.variantId;
+              return existingKey === itemKey
                 ? { ...i, quantity: i.quantity + item.quantity }
-                : i
-            )
+                : i;
+            })
           });
         } else {
           set({ items: [...items, item] });
@@ -99,7 +116,8 @@ export const useShopifyCartStore = create<ShopifyCartStore>()(
           const checkoutUrl = await createStorefrontCheckout(
             items.map(item => ({
               variantId: item.variantId,
-              quantity: item.quantity
+              quantity: item.quantity,
+              customAttributes: item.customAttributes
             }))
           );
           setCheckoutUrl(checkoutUrl);
