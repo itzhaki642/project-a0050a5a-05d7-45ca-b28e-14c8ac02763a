@@ -4,13 +4,7 @@ import Layout from "@/components/Layout";
 import { fetchProductByHandle, formatPrice } from "@/lib/shopify";
 import { useShopifyCartStore, ShopifyCartItem } from "@/stores/shopifyCartStore";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { ShoppingCart, Loader2, ArrowRight, Minus, Plus } from "lucide-react";
 import { toast } from "sonner";
@@ -33,9 +27,9 @@ const BLESSING_OPTIONS = [
 ];
 
 // Check if product is a greeting card and how many pages
-const getBlessingCardType = (title: string): 'trio' | 'pair' | null => {
-  if (title.includes("שלישיית ברכונים")) return 'trio';
-  if (title.includes("זוג ברכונים")) return 'pair';
+const getBlessingCardType = (title: string): "trio" | "pair" | null => {
+  if (title.includes("שלישיית ברכונים")) return "trio";
+  if (title.includes("ברכון זוגי")) return "pair";
   return null;
 };
 
@@ -93,7 +87,7 @@ const Product = () => {
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
-  
+
   // Blessing selections for greeting cards
   const [blessing1, setBlessing1] = useState("");
   const [blessing2, setBlessing2] = useState("");
@@ -101,10 +95,10 @@ const Product = () => {
   const [customBlessing1, setCustomBlessing1] = useState("");
   const [customBlessing2, setCustomBlessing2] = useState("");
   const [customBlessing3, setCustomBlessing3] = useState("");
-  
+
   // Tag text customization
   const [tagText, setTagText] = useState("");
-  
+
   const addItem = useShopifyCartStore((state) => state.addItem);
 
   useEffect(() => {
@@ -115,7 +109,7 @@ const Product = () => {
         const fetchedProduct = await fetchProductByHandle(handle);
         setProduct(fetchedProduct);
       } catch (error) {
-        console.error('Error loading product:', error);
+        console.error("Error loading product:", error);
       } finally {
         setIsLoading(false);
       }
@@ -151,7 +145,7 @@ const Product = () => {
   const images = product.images.edges;
   const currentImage = images[selectedImage]?.node;
   const blessingCardType = getBlessingCardType(product.title);
-  const blessingCount = blessingCardType === 'trio' ? 3 : blessingCardType === 'pair' ? 2 : 0;
+  const blessingCount = blessingCardType === "trio" ? 3 : blessingCardType === "pair" ? 2 : 0;
   const showTagInput = hasTagCustomization(product.title);
 
   const handleAddToCart = () => {
@@ -179,12 +173,9 @@ const Product = () => {
     if (blessingCount > 0) {
       const b1Value = blessing1 === "אחר" ? customBlessing1 : blessing1;
       const b2Value = blessing2 === "אחר" ? customBlessing2 : blessing2;
-      
-      customAttributes.push(
-        { key: "ברכה עמוד 1", value: b1Value },
-        { key: "ברכה עמוד 2", value: b2Value }
-      );
-      
+
+      customAttributes.push({ key: "ברכה עמוד 1", value: b1Value }, { key: "ברכה עמוד 2", value: b2Value });
+
       if (blessingCount === 3) {
         const b3Value = blessing3 === "אחר" ? customBlessing3 : blessing3;
         customAttributes.push({ key: "ברכה עמוד 3", value: b3Value });
@@ -203,13 +194,13 @@ const Product = () => {
       price: selectedVariant.price,
       quantity,
       selectedOptions: selectedVariant.selectedOptions || [],
-      customAttributes: customAttributes.length > 0 ? customAttributes : undefined
+      customAttributes: customAttributes.length > 0 ? customAttributes : undefined,
     };
 
     addItem(cartItem);
     toast.success("נוסף לסל!", {
       description: `${product.title} x${quantity}`,
-      position: "top-center"
+      position: "top-center",
     });
   };
 
@@ -240,7 +231,7 @@ const Product = () => {
                 </div>
               )}
             </div>
-            
+
             {images.length > 1 && (
               <div className="flex gap-2 overflow-x-auto pb-2">
                 {images.map((img, index) => (
@@ -248,7 +239,7 @@ const Product = () => {
                     key={index}
                     onClick={() => setSelectedImage(index)}
                     className={`w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border-2 transition-colors ${
-                      selectedImage === index ? 'border-primary' : 'border-transparent'
+                      selectedImage === index ? "border-primary" : "border-transparent"
                     }`}
                   >
                     <img
@@ -265,19 +256,13 @@ const Product = () => {
           {/* Product Info */}
           <div className="space-y-6">
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
-                {product.title}
-              </h1>
+              <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">{product.title}</h1>
               <p className="text-2xl font-bold text-primary">
                 {selectedVariant && formatPrice(selectedVariant.price.amount, selectedVariant.price.currencyCode)}
               </p>
             </div>
 
-            {product.description && (
-              <p className="text-muted-foreground leading-relaxed">
-                {product.description}
-              </p>
-            )}
+            {product.description && <p className="text-muted-foreground leading-relaxed">{product.description}</p>}
 
             {/* Variants */}
             {product.variants.edges.length > 1 && (
@@ -291,9 +276,9 @@ const Product = () => {
                       disabled={!variant.node.availableForSale}
                       className={`px-4 py-2 rounded-lg border transition-colors ${
                         selectedVariantIndex === index
-                          ? 'border-primary bg-primary/10 text-primary'
-                          : 'border-border hover:border-primary/50'
-                      } ${!variant.node.availableForSale ? 'opacity-50 cursor-not-allowed' : ''}`}
+                          ? "border-primary bg-primary/10 text-primary"
+                          : "border-border hover:border-primary/50"
+                      } ${!variant.node.availableForSale ? "opacity-50 cursor-not-allowed" : ""}`}
                     >
                       {variant.node.title}
                     </button>
@@ -306,7 +291,7 @@ const Product = () => {
             {blessingCount > 0 && (
               <div className="space-y-4 p-4 bg-secondary/30 rounded-xl border border-border">
                 <h3 className="font-semibold text-foreground">בחירת ברכות לעמודים:</h3>
-                
+
                 {/* Page 1 */}
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-foreground">עמוד 1:</label>
@@ -405,27 +390,19 @@ const Product = () => {
             <div className="space-y-3">
               <label className="font-medium text-foreground">כמות:</label>
               <div className="flex items-center gap-3">
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                >
+                <Button variant="outline" size="icon" onClick={() => setQuantity(Math.max(1, quantity - 1))}>
                   <Minus className="w-4 h-4" />
                 </Button>
                 <span className="w-12 text-center font-semibold text-lg">{quantity}</span>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => setQuantity(quantity + 1)}
-                >
+                <Button variant="outline" size="icon" onClick={() => setQuantity(quantity + 1)}>
                   <Plus className="w-4 h-4" />
                 </Button>
               </div>
             </div>
 
             {/* Add to Cart */}
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               className="w-full"
               onClick={handleAddToCart}
               disabled={!selectedVariant?.availableForSale}
@@ -434,9 +411,7 @@ const Product = () => {
               הוסף לסל
             </Button>
 
-            {!selectedVariant?.availableForSale && (
-              <p className="text-destructive text-center">מוצר זה אזל מהמלאי</p>
-            )}
+            {!selectedVariant?.availableForSale && <p className="text-destructive text-center">מוצר זה אזל מהמלאי</p>}
           </div>
         </div>
       </div>
