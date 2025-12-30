@@ -32,9 +32,11 @@ const BLESSING_OPTIONS = [
   { value: "אחר", label: "אחר (טקסט חופשי)" },
 ];
 
-// Check if product is a greeting card (ברכונים)
-const isGreetingCardProduct = (title: string) => {
-  return title.includes("ברכונים") || title.includes("ברכון");
+// Check if product is a greeting card and how many pages
+const getBlessingCardType = (title: string): 'trio' | 'pair' | null => {
+  if (title.includes("שלישיית ברכונים")) return 'trio';
+  if (title.includes("זוג ברכונים")) return 'pair';
+  return null;
 };
 
 interface ProductNode {
@@ -140,7 +142,8 @@ const Product = () => {
   const selectedVariant = product.variants.edges[selectedVariantIndex]?.node;
   const images = product.images.edges;
   const currentImage = images[selectedImage]?.node;
-  const isGreetingCard = isGreetingCardProduct(product.title);
+  const blessingCardType = getBlessingCardType(product.title);
+  const blessingCount = blessingCardType === 'trio' ? 3 : blessingCardType === 'pair' ? 2 : 0;
 
   const handleAddToCart = () => {
     if (!selectedVariant) {
@@ -149,8 +152,8 @@ const Product = () => {
     }
 
     // Validate blessing selections for greeting cards
-    if (isGreetingCard) {
-      if (!blessing1 || !blessing2 || !blessing3) {
+    if (blessingCount > 0) {
+      if (!blessing1 || !blessing2 || (blessingCount === 3 && !blessing3)) {
         toast.error("יש לבחור ברכה לכל עמוד");
         return;
       }
@@ -158,16 +161,19 @@ const Product = () => {
 
     // Build custom attributes for blessings
     const customAttributes: Array<{ key: string; value: string }> = [];
-    if (isGreetingCard) {
+    if (blessingCount > 0) {
       const b1Value = blessing1 === "אחר" ? customBlessing1 : blessing1;
       const b2Value = blessing2 === "אחר" ? customBlessing2 : blessing2;
-      const b3Value = blessing3 === "אחר" ? customBlessing3 : blessing3;
       
       customAttributes.push(
         { key: "ברכה עמוד 1", value: b1Value },
-        { key: "ברכה עמוד 2", value: b2Value },
-        { key: "ברכה עמוד 3", value: b3Value }
+        { key: "ברכה עמוד 2", value: b2Value }
       );
+      
+      if (blessingCount === 3) {
+        const b3Value = blessing3 === "אחר" ? customBlessing3 : blessing3;
+        customAttributes.push({ key: "ברכה עמוד 3", value: b3Value });
+      }
     }
 
     const cartItem: ShopifyCartItem = {
@@ -277,7 +283,7 @@ const Product = () => {
             )}
 
             {/* Blessing Selections for Greeting Cards */}
-            {isGreetingCard && (
+            {blessingCount > 0 && (
               <div className="space-y-4 p-4 bg-secondary/30 rounded-xl border border-border">
                 <h3 className="font-semibold text-foreground">בחירת ברכות לעמודים:</h3>
                 
@@ -331,30 +337,32 @@ const Product = () => {
                   )}
                 </div>
 
-                {/* Page 3 */}
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-foreground">עמוד 3:</label>
-                  <Select value={blessing3} onValueChange={setBlessing3}>
-                    <SelectTrigger className="bg-background">
-                      <SelectValue placeholder="בחר ברכה לעמוד 3" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-background border border-border z-50">
-                      {BLESSING_OPTIONS.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  {blessing3 === "אחר" && (
-                    <Input
-                      value={customBlessing3}
-                      onChange={(e) => setCustomBlessing3(e.target.value)}
-                      placeholder="הקלידו את הברכה שלכם..."
-                      className="mt-2"
-                    />
-                  )}
-                </div>
+                {/* Page 3 - Only for trio */}
+                {blessingCount === 3 && (
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-foreground">עמוד 3:</label>
+                    <Select value={blessing3} onValueChange={setBlessing3}>
+                      <SelectTrigger className="bg-background">
+                        <SelectValue placeholder="בחר ברכה לעמוד 3" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-background border border-border z-50">
+                        {BLESSING_OPTIONS.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {blessing3 === "אחר" && (
+                      <Input
+                        value={customBlessing3}
+                        onChange={(e) => setCustomBlessing3(e.target.value)}
+                        placeholder="הקלידו את הברכה שלכם..."
+                        className="mt-2"
+                      />
+                    )}
+                  </div>
+                )}
               </div>
             )}
 
