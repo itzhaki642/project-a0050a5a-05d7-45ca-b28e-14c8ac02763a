@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { ShopifyProduct, formatPrice } from "@/lib/shopify";
 import { useShopifyCartStore, ShopifyCartItem } from "@/stores/shopifyCartStore";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, Plus, Minus } from "lucide-react";
 import { toast } from "sonner";
 
 interface ShopifyProductCardProps {
@@ -10,14 +10,18 @@ interface ShopifyProductCardProps {
 }
 
 const ShopifyProductCard = ({ product }: ShopifyProductCardProps) => {
-  const addItem = useShopifyCartStore((state) => state.addItem);
+  const { items, addItem, updateQuantity, removeItem } = useShopifyCartStore();
   const { node } = product;
   
   const image = node.images.edges[0]?.node;
   const price = node.priceRange.minVariantPrice;
   const firstVariant = node.variants.edges[0]?.node;
 
-  const handleAddToCart = (e: React.MouseEvent) => {
+  // Find if this product is in cart
+  const cartItem = items.find(item => item.variantId === firstVariant?.id);
+  const quantity = cartItem?.quantity || 0;
+
+  const handleAdd = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     
@@ -26,7 +30,7 @@ const ShopifyProductCard = ({ product }: ShopifyProductCardProps) => {
       return;
     }
 
-    const cartItem: ShopifyCartItem = {
+    const newCartItem: ShopifyCartItem = {
       product,
       variantId: firstVariant.id,
       variantTitle: firstVariant.title,
@@ -35,11 +39,31 @@ const ShopifyProductCard = ({ product }: ShopifyProductCardProps) => {
       selectedOptions: firstVariant.selectedOptions || []
     };
 
-    addItem(cartItem);
+    addItem(newCartItem);
     toast.success("נוסף לסל", {
       description: node.title,
       position: "top-center"
     });
+  };
+
+  const handleIncrease = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (firstVariant) {
+      updateQuantity(firstVariant.id, quantity + 1);
+    }
+  };
+
+  const handleDecrease = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (firstVariant) {
+      if (quantity <= 1) {
+        removeItem(firstVariant.id);
+      } else {
+        updateQuantity(firstVariant.id, quantity - 1);
+      }
+    }
   };
 
   return (
@@ -72,14 +96,39 @@ const ShopifyProductCard = ({ product }: ShopifyProductCardProps) => {
           <span className="text-lg font-bold text-primary">
             {formatPrice(price.amount, price.currencyCode)}
           </span>
-          <Button 
-            size="sm" 
-            onClick={handleAddToCart}
-            disabled={!firstVariant?.availableForSale}
-          >
-            <ShoppingCart className="w-4 h-4 ml-1" />
-            הוסף לסל
-          </Button>
+          
+          {quantity === 0 ? (
+            <Button 
+              size="sm" 
+              variant="secondary"
+              className="gap-2"
+              onClick={handleAdd}
+              disabled={!firstVariant?.availableForSale}
+            >
+              <Plus className="h-4 w-4" />
+              <span>הוסף</span>
+            </Button>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Button
+                size="icon"
+                variant="outline"
+                className="h-8 w-8"
+                onClick={handleDecrease}
+              >
+                <Minus className="h-4 w-4" />
+              </Button>
+              <span className="w-8 text-center font-medium text-foreground">{quantity}</span>
+              <Button
+                size="icon"
+                variant="outline"
+                className="h-8 w-8"
+                onClick={handleIncrease}
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </Link>
