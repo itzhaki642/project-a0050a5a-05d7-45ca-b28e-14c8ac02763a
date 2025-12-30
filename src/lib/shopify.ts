@@ -263,6 +263,10 @@ export async function fetchProductByHandle(handle: string) {
 export interface CartItemForCheckout {
   variantId: string;
   quantity: number;
+  customAttributes?: Array<{
+    key: string;
+    value: string;
+  }>;
 }
 
 export async function createStorefrontCheckout(items: CartItemForCheckout[]): Promise<string> {
@@ -270,6 +274,10 @@ export async function createStorefrontCheckout(items: CartItemForCheckout[]): Pr
     const lines = items.map(item => ({
       quantity: item.quantity,
       merchandiseId: item.variantId,
+      attributes: item.customAttributes?.map(attr => ({
+        key: attr.key,
+        value: attr.value
+      })) || []
     }));
 
     const cartData = await storefrontApiRequest(CART_CREATE_MUTATION, {
