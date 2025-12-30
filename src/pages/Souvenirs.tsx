@@ -12,19 +12,11 @@ const Souvenirs = () => {
     const loadProducts = async () => {
       setIsLoading(true);
       try {
-        // Fetch all products and filter for souvenirs (ברכונים, מזכרות)
+        // Fetch products with "ברכונים" in the title
         const allProducts = await fetchShopifyProducts(50);
-        // Filter products that are souvenirs (not birthday themed)
-        const souvenirProducts = allProducts.filter(product => {
-          const title = product.node.title.toLowerCase();
-          // Include products with ברכונים or מזכרות
-          // Exclude birthday theme products (ספארי, ברווזים, דובי, תותים)
-          const isBirthday = title.includes("ספארי") || 
-                            title.includes("ברווז") || 
-                            title.includes("דובי") || 
-                            title.includes("תותים");
-          return !isBirthday;
-        });
+        const souvenirProducts = allProducts.filter(product => 
+          product.node.title.includes("ברכונים")
+        );
         setProducts(souvenirProducts);
       } catch (error) {
         console.error("Error loading souvenirs:", error);
