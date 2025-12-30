@@ -15,6 +15,7 @@ import Accessibility from "./pages/Accessibility";
 import Contact from "./pages/Contact";
 import Sitemap from "./pages/Sitemap";
 import FAQ from "./pages/FAQ";
+import Product from "./pages/Product";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -38,6 +39,7 @@ const App = () => (
           <Route path="/sitemap" element={<Sitemap />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/product/:handle" element={<Product />} />
           <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
