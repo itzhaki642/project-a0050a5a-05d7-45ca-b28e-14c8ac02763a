@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import { Phone } from "lucide-react";
 import heroImage from "@/assets/cover_pick.jpg";
@@ -31,12 +30,12 @@ const HeroSection = () => {
             </a>
           </Button>
           <Button
-            asChild
             variant="outline"
             size="lg"
             className="rounded-full px-8 text-lg h-14 bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm"
+            onClick={() => document.getElementById('categories')?.scrollIntoView({ behavior: 'smooth' })}
           >
-            <Link to="/birthday">בואו נתחיל</Link>
+            בואו נתחיל
           </Button>
         </div>
       </div>

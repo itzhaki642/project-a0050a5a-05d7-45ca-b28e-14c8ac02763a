@@ -132,7 +132,7 @@ const Index = () => {
       <HowItWorks />
 
       {/* Categories Section */}
-      <section className="py-16 md:py-24" aria-labelledby="categories-heading">
+      <section id="categories" className="py-16 md:py-24" aria-labelledby="categories-heading">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 id="categories-heading" className="text-3xl md:text-4xl font-bold text-foreground mb-4">יום הולדת לילדים ומזכרות לאירועים</h2>
