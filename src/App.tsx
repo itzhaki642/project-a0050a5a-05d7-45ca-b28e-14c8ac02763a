@@ -7,6 +7,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { CartProvider } from "./contexts/CartContext";
 import Index from "./pages/Index";
 import Checkout from "./pages/Checkout";
+import ShopifyCheckout from "./pages/ShopifyCheckout";
 import Birthday from "./pages/Birthday";
 import ConceptProducts from "./pages/ConceptProducts";
 import ShopifyConceptProducts from "./pages/ShopifyConceptProducts";
@@ -43,6 +44,7 @@ const App = () => (
               <Route path="/sitemap" element={<Sitemap />} />
               <Route path="/faq" element={<FAQ />} />
               <Route path="/checkout" element={<Checkout />} />
+              <Route path="/shopify-checkout" element={<ShopifyCheckout />} />
               <Route path="/product/:handle" element={<Product />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
