@@ -18,11 +18,11 @@ const Contact = () => {
           {/* Contact Info */}
           <div className="space-y-8">
             <h2 className="text-2xl font-semibold text-foreground mb-6">פרטי התקשרות</h2>
-            
+
             <div className="space-y-6">
               {/* Phone */}
               <a
-                href="tel:0549255858"
+                href="tel:0549255848"
                 className="flex items-center gap-4 p-4 bg-card border border-border rounded-lg hover:bg-secondary/50 transition-colors group"
               >
                 <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors">
@@ -30,7 +30,9 @@ const Contact = () => {
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">טלפון</p>
-                  <p className="text-lg font-medium text-foreground" dir="ltr">054-925-5858</p>
+                  <p className="text-lg font-medium text-foreground" dir="ltr">
+                    054-925-5858
+                  </p>
                 </div>
               </a>
 
@@ -82,13 +84,11 @@ const Contact = () => {
           {/* CTA Section */}
           <div className="flex flex-col justify-center">
             <div className="bg-card border border-border rounded-lg p-8 text-center">
-              <h2 className="text-2xl font-semibold text-foreground mb-4">
-                רוצים להזמין?
-              </h2>
+              <h2 className="text-2xl font-semibold text-foreground mb-4">רוצים להזמין?</h2>
               <p className="text-muted-foreground mb-6">
                 עיינו במגוון המוצרים שלנו והוסיפו לעגלה, או צרו קשר ישירות בוואטסאפ לייעוץ אישי
               </p>
-              
+
               <div className="space-y-4">
                 <Link
                   to="/birthday"
@@ -103,7 +103,7 @@ const Contact = () => {
                   מזכרות לאירועים
                 </Link>
                 <a
-                  href="https://wa.me/972549255858"
+                  href="https://wa.me/972549255848"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block w-full py-3 px-6 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors"
