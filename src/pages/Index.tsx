@@ -33,14 +33,14 @@ const useInView = (threshold = 0.1) => {
 
 const categories = [
   {
-    title: "ימי הולדת לילדים",
-    description: "קולקציות מעוצבות לימי הולדת מושלמים - מבועות סבון ועד חטיפים ממותגים",
+    title: "יום הולדת לילדים",
+    description: "מוצרים ממותגים ליום הולדת לילדים - ספארי, ברווזים, דובי ועוד קונספטים מדהימים",
     image: categoryBirthday,
     href: "/birthday",
   },
   {
     title: "מזכרות לאירועים",
-    description: "מזכרות יוקרתיות לבר/בת מצווה, חתונות ואירועים מיוחדים",
+    description: "מזכרות וברכונים לאירועים - בר מצווה, בת מצווה, חתונות ואירועים מיוחדים",
     image: categorySouvenirs,
     href: "/souvenirs",
   },
@@ -135,9 +135,9 @@ const Index = () => {
       <section className="py-16 md:py-24" aria-labelledby="categories-heading">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 id="categories-heading" className="text-3xl md:text-4xl font-bold text-foreground mb-4">הקטגוריות שלנו</h2>
+            <h2 id="categories-heading" className="text-3xl md:text-4xl font-bold text-foreground mb-4">יום הולדת לילדים ומזכרות לאירועים</h2>
             <p className="text-muted-foreground max-w-xl mx-auto">
-              בחרו מתוך מגוון קטגוריות ומצאו את המוצרים המושלמים לאירוע שלכם
+              מוצרים ממותגים בעיצוב אישי, ברכונים לאירועים ומזכרות יוקרתיות לכל סוגי האירועים
             </p>
           </div>
 
