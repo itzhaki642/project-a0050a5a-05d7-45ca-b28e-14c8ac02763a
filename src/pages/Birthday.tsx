@@ -3,8 +3,16 @@ import ConceptCard from "@/components/ConceptCard";
 import conceptSafari from "@/assets/concept-safari.jpg";
 import conceptPrincess from "@/assets/concept-princess.jpg";
 import conceptSuperhero from "@/assets/concept-superhero.jpg";
+import conceptDucks from "@/assets/concept-ducks.jpg";
 
 const concepts = [
+  {
+    id: "ducks",
+    title: "יום הולדת ברווזונים",
+    image: conceptDucks,
+    productCount: 14,
+    isShopify: true,
+  },
   {
     id: "safari",
     title: "יום הולדת ספארי",
