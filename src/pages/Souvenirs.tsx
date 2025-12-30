@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Layout from "@/components/Layout";
 import ShopifyProductCard from "@/components/ShopifyProductCard";
-import { fetchShopifyProducts, ShopifyProduct } from "@/lib/shopify";
+import { fetchProductsByCollection, ShopifyProduct } from "@/lib/shopify";
 import { Loader2 } from "lucide-react";
 
 const Souvenirs = () => {
@@ -12,8 +12,8 @@ const Souvenirs = () => {
     const loadProducts = async () => {
       setIsLoading(true);
       try {
-        // Search specifically for ברכונים products using Shopify search
-        const souvenirProducts = await fetchShopifyProducts(50, "ברכונים");
+        // Fetch products from the "מזכרות לאירועים" collection
+        const souvenirProducts = await fetchProductsByCollection("מזכרות-לאירועים");
         setProducts(souvenirProducts);
       } catch (error) {
         console.error("Error loading souvenirs:", error);
