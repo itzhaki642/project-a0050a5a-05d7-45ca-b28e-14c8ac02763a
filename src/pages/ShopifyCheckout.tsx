@@ -45,7 +45,7 @@ const ShopifyCheckout = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const totalPrice = getTotalPrice();
-  const currencyCode = items[0]?.price.currencyCode || 'ILS';
+  const currencyCode = items[0]?.price.currencyCode || "ILS";
 
   const [form, setForm] = useState<CheckoutForm>({
     name: "",
@@ -62,8 +62,8 @@ const ShopifyCheckout = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Check if any item has "הקדשה על כל העמוד" selected
-  const hasDedicationPage = items.some(item => 
-    item.customAttributes?.some(attr => attr.value === "הקדשה על כל העמוד")
+  const hasDedicationPage = items.some((item) =>
+    item.customAttributes?.some((attr) => attr.value === "הקדשה על כל העמוד"),
   );
 
   const handleChange = (field: keyof CheckoutForm, value: string | Date | undefined) => {
@@ -92,13 +92,13 @@ const ShopifyCheckout = () => {
     const itemsList = items
       .map((item) => {
         let itemText = `• ${item.product.node.title} x${item.quantity} - ${formatPrice((parseFloat(item.price.amount) * item.quantity).toString(), item.price.currencyCode)}`;
-        
+
         // Add custom attributes (blessings) if any
         if (item.customAttributes && item.customAttributes.length > 0) {
-          const attrs = item.customAttributes.map(attr => `   ${attr.key}: ${attr.value}`).join("\n");
+          const attrs = item.customAttributes.map((attr) => `   ${attr.key}: ${attr.value}`).join("\n");
           itemText += `\n${attrs}`;
         }
-        
+
         return itemText;
       })
       .join("\n");
@@ -151,7 +151,7 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
     setIsSubmitting(true);
 
     // Open WhatsApp with the order
-    const whatsappNumber = "972549255858";
+    const whatsappNumber = "972549255848";
     const message = generateWhatsAppMessage();
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
 
@@ -261,7 +261,10 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
                           <Trash2 className="h-4 w-4" />
                         </Button>
                         <span className="font-semibold text-foreground">
-                          {formatPrice((parseFloat(item.price.amount) * item.quantity).toString(), item.price.currencyCode)}
+                          {formatPrice(
+                            (parseFloat(item.price.amount) * item.quantity).toString(),
+                            item.price.currencyCode,
+                          )}
                         </span>
                       </div>
                     </div>
@@ -349,7 +352,7 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
                 {/* Event Details Section */}
                 <div className="border-t border-border pt-6 mt-6">
                   <h3 className="text-lg font-semibold text-foreground mb-4">פרטי האירוע</h3>
-                  
+
                   <div className="space-y-4">
                     <div>
                       <Label htmlFor="eventDate">תאריך האירוע</Label>
@@ -360,7 +363,7 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
                             className={cn(
                               "w-full justify-start text-right font-normal",
                               !form.eventDate && "text-muted-foreground",
-                              errors.eventDate && "border-destructive"
+                              errors.eventDate && "border-destructive",
                             )}
                           >
                             <CalendarIcon className="ml-2 h-4 w-4" />
@@ -411,12 +414,7 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
                   {errors.notes && <p className="text-destructive text-sm mt-1">{errors.notes}</p>}
                 </div>
 
-                <Button
-                  className="w-full mt-6"
-                  size="lg"
-                  onClick={handleSubmit}
-                  disabled={isSubmitting}
-                >
+                <Button className="w-full mt-6" size="lg" onClick={handleSubmit} disabled={isSubmitting}>
                   <Send className="ml-2 h-5 w-5" />
                   שליחת הזמנה בוואטסאפ
                 </Button>
