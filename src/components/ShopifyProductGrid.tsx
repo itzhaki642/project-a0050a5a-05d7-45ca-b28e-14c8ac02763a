@@ -7,9 +7,10 @@ interface ShopifyProductGridProps {
   title?: string;
   query?: string;
   limit?: number;
+  filterByTitle?: boolean;
 }
 
-const ShopifyProductGrid = ({ title, query, limit = 20 }: ShopifyProductGridProps) => {
+const ShopifyProductGrid = ({ title, query, limit = 20, filterByTitle = false }: ShopifyProductGridProps) => {
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -19,7 +20,7 @@ const ShopifyProductGrid = ({ title, query, limit = 20 }: ShopifyProductGridProp
       setIsLoading(true);
       setError(null);
       try {
-        const fetchedProducts = await fetchShopifyProducts(limit, query);
+        const fetchedProducts = await fetchShopifyProducts(limit, query, filterByTitle);
         setProducts(fetchedProducts);
       } catch (err) {
         setError("שגיאה בטעינת המוצרים");
@@ -30,7 +31,7 @@ const ShopifyProductGrid = ({ title, query, limit = 20 }: ShopifyProductGridProp
     };
 
     loadProducts();
-  }, [limit, query]);
+  }, [limit, query, filterByTitle]);
 
   if (isLoading) {
     return (

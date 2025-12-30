@@ -17,7 +17,7 @@ const concepts = [
     id: "safari",
     title: "יום הולדת ספארי",
     image: conceptSafari,
-    productCount: 17,
+    productCount: 14,
     isShopify: true,
   },
   {

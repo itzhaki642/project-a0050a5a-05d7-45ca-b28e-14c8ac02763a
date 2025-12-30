@@ -68,7 +68,7 @@ const ShopifyConceptProducts = () => {
       {/* Products Grid */}
       <section className="py-12 md:py-16">
         <div className="container mx-auto px-4">
-          <ShopifyProductGrid query={concept.query} limit={50} />
+          <ShopifyProductGrid query={concept.query} limit={50} filterByTitle={true} />
         </div>
       </section>
     </Layout>
