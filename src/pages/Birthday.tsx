@@ -4,7 +4,7 @@ import conceptSafari from "@/assets/concept-safari-new.jpg";
 import conceptPrincess from "@/assets/concept-princess.jpg";
 import conceptSuperhero from "@/assets/concept-superhero.jpg";
 import conceptDucks from "@/assets/duck_concept_collection.jpg";
-import conceptBears from "@/assets/concept-bears.jpg";
+import conceptBears from "@/assets/bear_concept_collection.jpg";
 import conceptStrawberries from "@/assets/concept-strawberries.jpg";
 
 const concepts = [
