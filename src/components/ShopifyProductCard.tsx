@@ -92,8 +92,8 @@ const ShopifyProductCard = ({ product }: ShopifyProductCardProps) => {
         <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
           {node.description}
         </p>
-        <div className="flex items-center justify-between">
-          <span className="text-lg font-bold text-primary">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
+          <span className="text-lg font-bold text-primary shrink-0">
             {formatPrice(price.amount, price.currencyCode)}
           </span>
           
@@ -101,28 +101,28 @@ const ShopifyProductCard = ({ product }: ShopifyProductCardProps) => {
             <Button 
               size="sm" 
               variant="secondary"
-              className="gap-2"
+              className="gap-2 w-full sm:w-auto shrink-0"
               onClick={handleAdd}
               disabled={!firstVariant?.availableForSale}
             >
-              <Plus className="h-4 w-4" />
-              <span>הוסף</span>
+              <Plus className="h-4 w-4 shrink-0" />
+              <span className="whitespace-nowrap">הוסף</span>
             </Button>
           ) : (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 w-full sm:w-auto justify-end sm:justify-start shrink-0">
               <Button
                 size="icon"
                 variant="outline"
-                className="h-8 w-8"
+                className="h-8 w-8 shrink-0"
                 onClick={handleDecrease}
               >
                 <Minus className="h-4 w-4" />
               </Button>
-              <span className="w-8 text-center font-medium text-foreground">{quantity}</span>
+              <span className="w-8 text-center font-medium text-foreground shrink-0">{quantity}</span>
               <Button
                 size="icon"
                 variant="outline"
-                className="h-8 w-8"
+                className="h-8 w-8 shrink-0"
                 onClick={handleIncrease}
               >
                 <Plus className="h-4 w-4" />
