@@ -104,8 +104,9 @@ const ShopifyProductCard = ({ product }: ShopifyProductCardProps) => {
               className="gap-2 w-full sm:w-auto shrink-0"
               onClick={handleAdd}
               disabled={!firstVariant?.availableForSale}
+              aria-label={`הוסף ${node.title} לעגלה`}
             >
-              <Plus className="h-4 w-4 shrink-0" />
+              <Plus className="h-4 w-4 shrink-0" aria-hidden="true" />
               <span className="whitespace-nowrap">הוסף</span>
             </Button>
           ) : (
@@ -115,17 +116,19 @@ const ShopifyProductCard = ({ product }: ShopifyProductCardProps) => {
                 variant="outline"
                 className="h-8 w-8 shrink-0"
                 onClick={handleDecrease}
+                aria-label="הקטן כמות"
               >
-                <Minus className="h-4 w-4" />
+                <Minus className="h-4 w-4" aria-hidden="true" />
               </Button>
-              <span className="w-8 text-center font-medium text-foreground shrink-0">{quantity}</span>
+              <span className="w-8 text-center font-medium text-foreground shrink-0" aria-label={`כמות: ${quantity}`}>{quantity}</span>
               <Button
                 size="icon"
                 variant="outline"
                 className="h-8 w-8 shrink-0"
                 onClick={handleIncrease}
+                aria-label="הגדל כמות"
               >
-                <Plus className="h-4 w-4" />
+                <Plus className="h-4 w-4" aria-hidden="true" />
               </Button>
             </div>
           )}

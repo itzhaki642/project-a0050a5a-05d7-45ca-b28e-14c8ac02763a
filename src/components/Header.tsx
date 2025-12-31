@@ -30,7 +30,7 @@ const Header = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-2">
+          <nav className="hidden md:flex items-center gap-2" aria-label="ניווט ראשי">
             {navItems.map((item) => (
               <Link key={item.href} to={item.href} className="nav-pill">
                 {item.label}
@@ -42,15 +42,22 @@ const Header = () => {
           <div className="flex items-center gap-4">
             <ShopifyCartDrawer />
 
-            <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-              {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="md:hidden" 
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label={isMenuOpen ? "סגור תפריט" : "פתח תפריט"}
+              aria-expanded={isMenuOpen}
+            >
+              {isMenuOpen ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
             </Button>
           </div>
         </div>
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <nav className="md:hidden py-4 border-t border-border animate-fade-in">
+          <nav className="md:hidden py-4 border-t border-border animate-fade-in" aria-label="ניווט ראשי">
             <div className="flex flex-col gap-2">
               {navItems.map((item) => (
                 <Link

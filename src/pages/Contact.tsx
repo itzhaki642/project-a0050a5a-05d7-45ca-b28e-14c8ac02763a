@@ -24,9 +24,10 @@ const Contact = () => {
               <a
                 href="tel:0549255848"
                 className="flex items-center gap-4 p-4 bg-card border border-border rounded-lg hover:bg-secondary/50 transition-colors group"
+                aria-label="התקשר: 054-925-5848"
               >
-                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                  <Phone className="h-6 w-6 text-primary" />
+                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors" aria-hidden="true">
+                  <Phone className="h-6 w-6 text-primary" aria-hidden="true" />
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">טלפון</p>
@@ -40,9 +41,10 @@ const Contact = () => {
               <a
                 href="mailto:topazlstudio@gmail.com"
                 className="flex items-center gap-4 p-4 bg-card border border-border rounded-lg hover:bg-secondary/50 transition-colors group"
+                aria-label="שלח אימייל: topazlstudio@gmail.com"
               >
-                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                  <Mail className="h-6 w-6 text-primary" />
+                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors" aria-hidden="true">
+                  <Mail className="h-6 w-6 text-primary" aria-hidden="true" />
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">אימייל</p>
@@ -56,9 +58,10 @@ const Contact = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-4 p-4 bg-card border border-border rounded-lg hover:bg-secondary/50 transition-colors group"
+                aria-label="עקוב אחרינו באינסטגרם: @studio_topazl (פתיחה בחלון חדש)"
               >
-                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                  <Instagram className="h-6 w-6 text-primary" />
+                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors" aria-hidden="true">
+                  <Instagram className="h-6 w-6 text-primary" aria-hidden="true" />
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">אינסטגרם</p>
@@ -70,7 +73,7 @@ const Contact = () => {
             {/* Working Hours */}
             <div className="mt-8 p-6 bg-secondary/30 rounded-lg">
               <div className="flex items-center gap-3 mb-4">
-                <Clock className="h-5 w-5 text-primary" />
+                <Clock className="h-5 w-5 text-primary" aria-hidden="true" />
                 <h3 className="text-lg font-semibold text-foreground">שעות פעילות</h3>
               </div>
               <div className="space-y-2 text-muted-foreground">

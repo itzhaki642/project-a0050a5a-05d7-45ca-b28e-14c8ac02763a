@@ -49,8 +49,14 @@ const ProductCard = ({ id, name, price, image, conceptId }: ProductCardProps) =>
           <span className="text-lg font-semibold text-foreground">₪{price}</span>
           
           {quantity === 0 ? (
-            <Button size="sm" variant="secondary" className="gap-2" onClick={handleAdd}>
-              <Plus className="h-4 w-4" />
+            <Button 
+              size="sm" 
+              variant="secondary" 
+              className="gap-2" 
+              onClick={handleAdd}
+              aria-label={`הוסף ${name} לעגלה`}
+            >
+              <Plus className="h-4 w-4" aria-hidden="true" />
               <span>הוסף</span>
             </Button>
           ) : (
@@ -60,17 +66,19 @@ const ProductCard = ({ id, name, price, image, conceptId }: ProductCardProps) =>
                 variant="outline"
                 className="h-8 w-8"
                 onClick={handleDecrease}
+                aria-label="הקטן כמות"
               >
-                <Minus className="h-4 w-4" />
+                <Minus className="h-4 w-4" aria-hidden="true" />
               </Button>
-              <span className="w-8 text-center font-medium text-foreground">{quantity}</span>
+              <span className="w-8 text-center font-medium text-foreground" aria-label={`כמות: ${quantity}`}>{quantity}</span>
               <Button
                 size="icon"
                 variant="outline"
                 className="h-8 w-8"
                 onClick={handleIncrease}
+                aria-label="הגדל כמות"
               >
-                <Plus className="h-4 w-4" />
+                <Plus className="h-4 w-4" aria-hidden="true" />
               </Button>
             </div>
           )}

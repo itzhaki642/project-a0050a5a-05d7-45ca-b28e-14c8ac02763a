@@ -46,9 +46,9 @@ const HowItWorks = () => {
               )}
               
               {/* Step number + icon */}
-              <div className="relative inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary text-primary-foreground mb-4 transition-transform duration-300 group-hover:scale-110">
-                <step.icon className="w-8 h-8" />
-                <span className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-accent text-accent-foreground text-sm font-bold flex items-center justify-center border-2 border-background">
+              <div className="relative inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary text-primary-foreground mb-4 transition-transform duration-300 group-hover:scale-110" aria-hidden="true">
+                <step.icon className="w-8 h-8" aria-hidden="true" />
+                <span className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-accent text-accent-foreground text-sm font-bold flex items-center justify-center border-2 border-background" aria-label={`שלב ${index + 1}`}>
                   {index + 1}
                 </span>
               </div>
