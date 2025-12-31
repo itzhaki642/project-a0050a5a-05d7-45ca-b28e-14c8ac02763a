@@ -25,6 +25,10 @@ const conceptsData: Record<string, ConceptData> = {
     title: "יום הולדת תותים",
     query: "תותים",
   },
+  "custom-design": {
+    title: "יום הולדת בעיצוב אישי",
+    query: "עיצוב אישי",
+  },
 };
 
 const ShopifyConceptProducts = () => {

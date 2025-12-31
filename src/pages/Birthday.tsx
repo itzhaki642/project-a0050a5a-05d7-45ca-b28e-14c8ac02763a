@@ -6,6 +6,7 @@ import conceptSuperhero from "@/assets/concept-superhero.jpg";
 import conceptDucks from "@/assets/duck_concept_collection.jpg";
 import conceptBears from "@/assets/bear_cover.jpg";
 import conceptStrawberries from "@/assets/strawberry_concept.jpg";
+import conceptCustomDesign from "@/assets/concept-custom-design.png";
 
 const concepts = [
   {
@@ -33,6 +34,13 @@ const concepts = [
     id: "strawberries",
     title: "יום הולדת תותים",
     image: conceptStrawberries,
+    productCount: 14,
+    isShopify: true,
+  },
+  {
+    id: "custom-design",
+    title: "יום הולדת בעיצוב אישי",
+    image: conceptCustomDesign,
     productCount: 14,
     isShopify: true,
   },
