@@ -211,6 +211,7 @@ const STOREFRONT_COLLECTION_PRODUCTS_BY_ID_QUERY = `
         id
         handle
         title
+        description
         products(first: $first) {
           edges {
             node {
@@ -260,6 +261,14 @@ const STOREFRONT_COLLECTION_PRODUCTS_BY_ID_QUERY = `
     }
   }
 `;
+
+export interface CollectionWithProducts {
+  id: string;
+  handle: string;
+  title: string;
+  description: string;
+  products: ShopifyProduct[];
+}
 
 const CART_CREATE_MUTATION = `
   mutation cartCreate($input: CartInput!) {
@@ -382,6 +391,25 @@ export async function fetchProductsByCollectionId(collectionId: string, first: n
   } catch (error) {
     console.error("Error fetching collection products by id:", error);
     return [];
+  }
+}
+
+// Fetch Collection with Products by ID (includes collection metadata like description)
+export async function fetchCollectionById(collectionId: string, first: number = 50): Promise<CollectionWithProducts | null> {
+  try {
+    const data = await storefrontApiRequest(STOREFRONT_COLLECTION_PRODUCTS_BY_ID_QUERY, { id: collectionId, first });
+    const collectionNode = data?.data?.node;
+    if (!collectionNode) return null;
+    return {
+      id: collectionNode.id,
+      handle: collectionNode.handle,
+      title: collectionNode.title,
+      description: collectionNode.description || "",
+      products: collectionNode.products.edges.map((edge: { node: ShopifyProduct["node"] }) => ({ node: edge.node })) || [],
+    };
+  } catch (error) {
+    console.error("Error fetching collection by id:", error);
+    return null;
   }
 }
 

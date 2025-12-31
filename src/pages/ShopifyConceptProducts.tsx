@@ -1,10 +1,13 @@
 import { useParams, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import Layout from "@/components/Layout";
 import ShopifyProductGrid from "@/components/ShopifyProductGrid";
 import { ChevronLeft } from "lucide-react";
+import { fetchCollectionById, CollectionWithProducts } from "@/lib/shopify";
 
 interface ConceptData {
   title: string;
+  description?: string;
   query?: string;
   collectionHandle?: string;
   collectionId?: string;
@@ -13,18 +16,22 @@ interface ConceptData {
 const conceptsData: Record<string, ConceptData> = {
   ducks: {
     title: "יום הולדת ברווזונים",
+    description: "כל המוצרים הממותגים בעיצוב ברווזונים",
     query: "ברווזונים",
   },
   safari: {
     title: "יום הולדת ספארי",
+    description: "כל המוצרים הממותגים בעיצוב ספארי",
     query: "ספארי",
   },
   bears: {
     title: "יום הולדת דובי",
+    description: "כל המוצרים הממותגים בעיצוב דובי",
     query: "דובי",
   },
   strawberries: {
     title: "יום הולדת תותים",
+    description: "כל המוצרים הממותגים בעיצוב תותים",
     query: "תותים",
   },
   "custom-design": {
@@ -36,6 +43,13 @@ const conceptsData: Record<string, ConceptData> = {
 const ShopifyConceptProducts = () => {
   const { conceptId } = useParams<{ conceptId: string }>();
   const concept = conceptId ? conceptsData[conceptId] : null;
+  const [collectionData, setCollectionData] = useState<CollectionWithProducts | null>(null);
+
+  useEffect(() => {
+    if (concept?.collectionId) {
+      fetchCollectionById(concept.collectionId).then(setCollectionData);
+    }
+  }, [concept?.collectionId]);
 
   if (!concept) {
     return (
@@ -50,6 +64,10 @@ const ShopifyConceptProducts = () => {
     );
   }
 
+  // Use collection data from Shopify if available, otherwise use static data
+  const displayTitle = collectionData?.title || concept.title;
+  const displayDescription = collectionData?.description || concept.description || `כל המוצרים הממותגים בעיצוב ${concept.title}`;
+
   return (
     <Layout>
       {/* Breadcrumb */}
@@ -63,7 +81,7 @@ const ShopifyConceptProducts = () => {
             ימי הולדת
           </Link>
           <ChevronLeft className="h-4 w-4" />
-          <span className="text-foreground">{concept.title}</span>
+          <span className="text-foreground">{displayTitle}</span>
         </nav>
       </div>
 
@@ -71,10 +89,10 @@ const ShopifyConceptProducts = () => {
       <section className="py-8 md:py-12 bg-secondary/30">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            {concept.title}
+            {displayTitle}
           </h1>
-          <p className="text-muted-foreground">
-            כל המוצרים הממותגים בעיצוב {concept.title}
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            {displayDescription}
           </p>
         </div>
       </section>
