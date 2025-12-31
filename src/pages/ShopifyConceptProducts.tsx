@@ -5,7 +5,8 @@ import { ChevronLeft } from "lucide-react";
 
 interface ConceptData {
   title: string;
-  query: string;
+  query?: string;
+  collectionHandle?: string;
 }
 
 const conceptsData: Record<string, ConceptData> = {
@@ -27,7 +28,7 @@ const conceptsData: Record<string, ConceptData> = {
   },
   "custom-design": {
     title: "יום הולדת בעיצוב אישי",
-    query: "עיצוב אישי",
+    collectionHandle: "יום-הולדת-בעיצוב-אישי",
   },
 };
 
@@ -80,7 +81,12 @@ const ShopifyConceptProducts = () => {
       {/* Products Grid */}
       <section className="py-12 md:py-16">
         <div className="container mx-auto px-4">
-          <ShopifyProductGrid query={concept.query} limit={50} filterByTitle={true} />
+          <ShopifyProductGrid 
+            query={concept.query} 
+            collectionHandle={concept.collectionHandle}
+            limit={50} 
+            filterByTitle={!concept.collectionHandle} 
+          />
         </div>
       </section>
     </Layout>

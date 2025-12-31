@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
-import { fetchShopifyProducts, ShopifyProduct } from "@/lib/shopify";
+import { fetchShopifyProducts, fetchProductsByCollection, ShopifyProduct } from "@/lib/shopify";
 import ShopifyProductCard from "./ShopifyProductCard";
 import { Loader2, Package } from "lucide-react";
 
 interface ShopifyProductGridProps {
   title?: string;
   query?: string;
+  collectionHandle?: string;
   limit?: number;
   filterByTitle?: boolean;
 }
 
-const ShopifyProductGrid = ({ title, query, limit = 20, filterByTitle = false }: ShopifyProductGridProps) => {
+const ShopifyProductGrid = ({ title, query, collectionHandle, limit = 20, filterByTitle = false }: ShopifyProductGridProps) => {
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -20,7 +21,16 @@ const ShopifyProductGrid = ({ title, query, limit = 20, filterByTitle = false }:
       setIsLoading(true);
       setError(null);
       try {
-        const fetchedProducts = await fetchShopifyProducts(limit, query, filterByTitle);
+        let fetchedProducts: ShopifyProduct[];
+        
+        if (collectionHandle) {
+          // Fetch by collection handle
+          fetchedProducts = await fetchProductsByCollection(collectionHandle, limit);
+        } else {
+          // Fetch by query
+          fetchedProducts = await fetchShopifyProducts(limit, query, filterByTitle);
+        }
+        
         setProducts(fetchedProducts);
       } catch (err) {
         setError("שגיאה בטעינת המוצרים");
@@ -31,7 +41,7 @@ const ShopifyProductGrid = ({ title, query, limit = 20, filterByTitle = false }:
     };
 
     loadProducts();
-  }, [limit, query, filterByTitle]);
+  }, [limit, query, collectionHandle, filterByTitle]);
 
   if (isLoading) {
     return (
