@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchShopifyProducts, fetchProductsByCollection, ShopifyProduct } from "@/lib/shopify";
+import { fetchShopifyProducts, fetchProductsByCollection, fetchProductsByCollectionId, ShopifyProduct } from "@/lib/shopify";
 import ShopifyProductCard from "./ShopifyProductCard";
 import { Loader2, Package } from "lucide-react";
 
@@ -7,11 +7,19 @@ interface ShopifyProductGridProps {
   title?: string;
   query?: string;
   collectionHandle?: string;
+  collectionId?: string;
   limit?: number;
   filterByTitle?: boolean;
 }
 
-const ShopifyProductGrid = ({ title, query, collectionHandle, limit = 20, filterByTitle = false }: ShopifyProductGridProps) => {
+const ShopifyProductGrid = ({
+  title,
+  query,
+  collectionHandle,
+  collectionId,
+  limit = 20,
+  filterByTitle = false,
+}: ShopifyProductGridProps) => {
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -22,15 +30,15 @@ const ShopifyProductGrid = ({ title, query, collectionHandle, limit = 20, filter
       setError(null);
       try {
         let fetchedProducts: ShopifyProduct[];
-        
-        if (collectionHandle) {
-          // Fetch by collection handle
+
+        if (collectionId) {
+          fetchedProducts = await fetchProductsByCollectionId(collectionId, limit);
+        } else if (collectionHandle) {
           fetchedProducts = await fetchProductsByCollection(collectionHandle, limit);
         } else {
-          // Fetch by query
           fetchedProducts = await fetchShopifyProducts(limit, query, filterByTitle);
         }
-        
+
         setProducts(fetchedProducts);
       } catch (err) {
         setError("שגיאה בטעינת המוצרים");
@@ -41,7 +49,7 @@ const ShopifyProductGrid = ({ title, query, collectionHandle, limit = 20, filter
     };
 
     loadProducts();
-  }, [limit, query, collectionHandle, filterByTitle]);
+  }, [limit, query, collectionHandle, collectionId, filterByTitle]);
 
   if (isLoading) {
     return (

@@ -204,6 +204,63 @@ const STOREFRONT_COLLECTION_PRODUCTS_QUERY = `
   }
 `;
 
+const STOREFRONT_COLLECTION_PRODUCTS_BY_ID_QUERY = `
+  query GetCollectionProductsById($id: ID!, $first: Int!) {
+    node(id: $id) {
+      ... on Collection {
+        id
+        handle
+        title
+        products(first: $first) {
+          edges {
+            node {
+              id
+              title
+              description
+              handle
+              priceRange {
+                minVariantPrice {
+                  amount
+                  currencyCode
+                }
+              }
+              images(first: 5) {
+                edges {
+                  node {
+                    url
+                    altText
+                  }
+                }
+              }
+              variants(first: 10) {
+                edges {
+                  node {
+                    id
+                    title
+                    price {
+                      amount
+                      currencyCode
+                    }
+                    availableForSale
+                    selectedOptions {
+                      name
+                      value
+                    }
+                  }
+                }
+              }
+              options {
+                name
+                values
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 const CART_CREATE_MUTATION = `
   mutation cartCreate($input: CartInput!) {
     cartCreate(input: $input) {
@@ -308,9 +365,22 @@ export async function fetchProductsByCollection(collectionHandle: string, first:
   try {
     const data = await storefrontApiRequest(STOREFRONT_COLLECTION_PRODUCTS_QUERY, { handle: collectionHandle, first });
     if (!data || !data.data.collectionByHandle) return [];
-    return data.data.collectionByHandle.products.edges.map((edge: { node: ShopifyProduct['node'] }) => ({ node: edge.node })) || [];
+    return data.data.collectionByHandle.products.edges.map((edge: { node: ShopifyProduct["node"] }) => ({ node: edge.node })) || [];
   } catch (error) {
-    console.error('Error fetching collection products:', error);
+    console.error("Error fetching collection products:", error);
+    return [];
+  }
+}
+
+// Fetch Products by Collection ID (gid://shopify/Collection/...)
+export async function fetchProductsByCollectionId(collectionId: string, first: number = 50): Promise<ShopifyProduct[]> {
+  try {
+    const data = await storefrontApiRequest(STOREFRONT_COLLECTION_PRODUCTS_BY_ID_QUERY, { id: collectionId, first });
+    const collectionNode = data?.data?.node;
+    if (!collectionNode || !collectionNode.products) return [];
+    return collectionNode.products.edges.map((edge: { node: ShopifyProduct["node"] }) => ({ node: edge.node })) || [];
+  } catch (error) {
+    console.error("Error fetching collection products by id:", error);
     return [];
   }
 }
