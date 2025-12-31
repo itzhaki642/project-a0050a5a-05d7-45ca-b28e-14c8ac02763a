@@ -27,12 +27,17 @@ const BLESSING_OPTIONS = [
 ];
 
 // Get blessing count from product type
-// Expected product types: "ברכון-3" for 3 pages, "ברכון-2" for 2 pages, "ברכון-1" for 1 page
+// Expected product types: "3" for 3 pages, "2" for 2 pages, "1" for 1 page
 const getBlessingCount = (productType: string): number => {
   if (productType === "3") return 3;
   if (productType === "2") return 2;
   if (productType === "1") return 1;
   return 0;
+};
+
+// Check if product is Birkat Hamazon (type "4")
+const isBirkatHamazon = (productType: string): boolean => {
+  return productType === "4";
 };
 
 // Check if product has a tag (תג)
@@ -102,6 +107,9 @@ const Product = () => {
   // Tag text customization
   const [tagText, setTagText] = useState("");
 
+  // Nusach for Birkat Hamazon (type "4")
+  const [nusach, setNusach] = useState("ספרד");
+
   const addItem = useShopifyCartStore((state) => state.addItem);
 
   useEffect(() => {
@@ -149,6 +157,7 @@ const Product = () => {
   const currentImage = images[selectedImage]?.node;
   const blessingCount = getBlessingCount(product.productType || "");
   const showTagInput = hasTagCustomization(product.title);
+  const showNusachSelector = isBirkatHamazon(product.productType || "");
 
   const handleAddToCart = () => {
     if (!selectedVariant) {
@@ -194,6 +203,11 @@ const Product = () => {
     // Add tag text if applicable
     if (showTagInput && tagText.trim()) {
       customAttributes.push({ key: "טקסט לתג", value: tagText.trim() });
+    }
+
+    // Add nusach for Birkat Hamazon
+    if (showNusachSelector) {
+      customAttributes.push({ key: "נוסח", value: nusach });
     }
 
     const cartItem: ShopifyCartItem = {
@@ -379,6 +393,37 @@ const Product = () => {
                     )}
                   </div>
                 )}
+              </div>
+            )}
+
+            {/* Nusach Selector for Birkat Hamazon */}
+            {showNusachSelector && (
+              <div className="space-y-3 p-4 bg-secondary/30 rounded-xl border border-border">
+                <label className="font-semibold text-foreground">בחירת נוסח:</label>
+                <div className="flex gap-4">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="nusach"
+                      value="ספרד"
+                      checked={nusach === "ספרד"}
+                      onChange={(e) => setNusach(e.target.value)}
+                      className="w-4 h-4 text-primary"
+                    />
+                    <span className="text-foreground">ספרד</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="nusach"
+                      value="אשכנז"
+                      checked={nusach === "אשכנז"}
+                      onChange={(e) => setNusach(e.target.value)}
+                      className="w-4 h-4 text-primary"
+                    />
+                    <span className="text-foreground">אשכנז</span>
+                  </label>
+                </div>
               </div>
             )}
 
