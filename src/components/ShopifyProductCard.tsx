@@ -12,7 +12,7 @@ interface ShopifyProductCardProps {
 const ShopifyProductCard = ({ product }: ShopifyProductCardProps) => {
   const { items, addItem, updateQuantity, removeItem } = useShopifyCartStore();
   const { node } = product;
-  
+
   const image = node.images.edges[0]?.node;
   const price = node.priceRange.minVariantPrice;
   const firstVariant = node.variants.edges[0]?.node;
@@ -24,7 +24,7 @@ const ShopifyProductCard = ({ product }: ShopifyProductCardProps) => {
   const handleAdd = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     if (!firstVariant) {
       toast.error("המוצר לא זמין");
       return;
@@ -67,9 +67,9 @@ const ShopifyProductCard = ({ product }: ShopifyProductCardProps) => {
   };
 
   return (
-    <Link 
+    <Link
       to={`/product/${node.handle}`}
-      className="group bg-card border border-border rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300"
+      className="group flex flex-col h-full bg-card border border-border rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300"
     >
       <div className="aspect-square overflow-hidden bg-secondary/20">
         {image ? (
@@ -84,22 +84,22 @@ const ShopifyProductCard = ({ product }: ShopifyProductCardProps) => {
           </div>
         )}
       </div>
-      
-      <div className="p-4">
+
+      <div className="p-4 flex flex-col flex-1">
         <h3 className="font-semibold text-foreground mb-1 line-clamp-2">
           {node.title}
         </h3>
         <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
           {node.description}
         </p>
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
+        <div className="mt-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
           <span className="text-lg font-bold text-primary shrink-0">
             {formatPrice(price.amount, price.currencyCode)}
           </span>
-          
+
           {quantity === 0 ? (
-            <Button 
-              size="sm" 
+            <Button
+              size="sm"
               variant="secondary"
               className="gap-2 w-full sm:w-auto shrink-0"
               onClick={handleAdd}
