@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import Layout from "@/components/Layout";
 import { fetchProductByHandle, formatPrice } from "@/lib/shopify";
 import { useShopifyCartStore, ShopifyCartItem } from "@/stores/shopifyCartStore";
@@ -229,6 +230,13 @@ const Product = () => {
 
   return (
     <Layout>
+      <Helmet>
+        <title>{product.title} | מוצרים ממותגים לאירועים - סטודיו טופז</title>
+        <meta name="description" content={product.description?.substring(0, 160) || `רכשו את ${product.title} באתר סטודיו טופז - מיתוג ועיצוב אישי לאירועים מושלמים.`} />
+        <meta property="og:title" content={product.title} />
+        <meta property="og:description" content={product.description?.substring(0, 160)} />
+        {currentImage && <meta property="og:image" content={currentImage.url} />}
+      </Helmet>
       <div className="container mx-auto px-4 py-8">
         {/* Breadcrumb */}
         <div className="mb-6">
@@ -261,9 +269,8 @@ const Product = () => {
                   <button
                     key={index}
                     onClick={() => setSelectedImage(index)}
-                    className={`w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border-2 transition-colors ${
-                      selectedImage === index ? "border-primary" : "border-transparent"
-                    }`}
+                    className={`w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border-2 transition-colors ${selectedImage === index ? "border-primary" : "border-transparent"
+                      }`}
                   >
                     <img
                       src={img.node.url}
@@ -297,11 +304,10 @@ const Product = () => {
                       key={variant.node.id}
                       onClick={() => setSelectedVariantIndex(index)}
                       disabled={!variant.node.availableForSale}
-                      className={`px-4 py-2 rounded-lg border transition-colors ${
-                        selectedVariantIndex === index
-                          ? "border-primary bg-primary/10 text-primary"
-                          : "border-border hover:border-primary/50"
-                      } ${!variant.node.availableForSale ? "opacity-50 cursor-not-allowed" : ""}`}
+                      className={`px-4 py-2 rounded-lg border transition-colors ${selectedVariantIndex === index
+                        ? "border-primary bg-primary/10 text-primary"
+                        : "border-border hover:border-primary/50"
+                        } ${!variant.node.availableForSale ? "opacity-50 cursor-not-allowed" : ""}`}
                     >
                       {variant.node.title}
                     </button>
