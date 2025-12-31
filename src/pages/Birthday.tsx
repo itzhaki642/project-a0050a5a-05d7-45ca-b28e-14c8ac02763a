@@ -1,6 +1,6 @@
 import Layout from "@/components/Layout";
 import ConceptCard from "@/components/ConceptCard";
-import conceptSafari from "@/assets/concept-safari-new.jpg";
+import conceptSafari from "@/assets/safari_concept.png";
 import conceptPrincess from "@/assets/concept-princess.jpg";
 import conceptSuperhero from "@/assets/concept-superhero.jpg";
 import conceptDucks from "@/assets/duck_concept_collection.jpg";
