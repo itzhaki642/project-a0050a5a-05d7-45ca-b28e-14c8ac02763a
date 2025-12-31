@@ -5,7 +5,7 @@ import conceptPrincess from "@/assets/concept-princess.jpg";
 import conceptSuperhero from "@/assets/concept-superhero.jpg";
 import conceptDucks from "@/assets/duck_concept_collection.jpg";
 import conceptBears from "@/assets/bear_cover.jpg";
-import conceptStrawberries from "@/assets/concept-strawberries.jpg";
+import conceptStrawberries from "@/assets/strawberry_concept.jpg";
 
 const concepts = [
   {
