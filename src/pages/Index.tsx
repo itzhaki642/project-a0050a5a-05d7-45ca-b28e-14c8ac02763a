@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import Layout from "@/components/Layout";
 import HeroSection from "@/components/HeroSection";
 import HowItWorks from "@/components/HowItWorks";
@@ -52,9 +53,8 @@ const TestimonialCard = ({ children, delay }: { children: React.ReactNode; delay
   return (
     <div
       ref={ref}
-      className={`bg-card border border-border rounded-2xl p-6 shadow-sm transition-all duration-700 ${
-        isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-      }`}
+      className={`bg-card border border-border rounded-2xl p-6 shadow-sm transition-all duration-700 ${isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+        }`}
       style={{ transitionDelay: `${delay}ms` }}
     >
       {children}
@@ -110,6 +110,10 @@ const FeatureIcon = ({ emoji, label }: { emoji: string; label: string }) => (
 const Index = () => {
   return (
     <Layout>
+      <Helmet>
+        <title>סטודיו טופז - יום הולדת לילדים, מזכרות לאירועים ומיתוג אישי</title>
+        <meta name="description" content="הפכו את האירוע שלכם לבלתי נשכח! מיתוג יום הולדת לילדים, מזכרות יוקרתיות לבר/בת מצווה, חתונות ואירועים. עיצוב אישי, איכות מעולה ומשלוח לכל הארץ." />
+      </Helmet>
       <SEOStructuredData reviews={reviews} />
       <HeroSection />
 
