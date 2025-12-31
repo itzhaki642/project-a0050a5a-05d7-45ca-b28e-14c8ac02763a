@@ -14,35 +14,30 @@ const concepts = [
     title: "יום הולדת ברווזונים",
     image: conceptDucks,
     productCount: 14,
-    isShopify: true,
   },
   {
     id: "safari",
     title: "יום הולדת ספארי",
     image: conceptSafari,
     productCount: 14,
-    isShopify: true,
   },
   {
     id: "bears",
     title: "יום הולדת דובי",
     image: conceptBears,
     productCount: 14,
-    isShopify: true,
   },
   {
     id: "strawberries",
     title: "יום הולדת תותים",
     image: conceptStrawberries,
     productCount: 14,
-    isShopify: true,
   },
   {
     id: "custom-design",
     title: "יום הולדת בעיצוב אישי",
     image: conceptCustomDesign,
     productCount: 14,
-    isShopify: true,
   },
 ];
 

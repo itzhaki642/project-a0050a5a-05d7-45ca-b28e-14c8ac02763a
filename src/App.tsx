@@ -36,8 +36,7 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/birthday" element={<Birthday />} />
-              <Route path="/birthday/:conceptId" element={<ConceptProducts />} />
-              <Route path="/birthday/shopify/:conceptId" element={<ShopifyConceptProducts />} />
+            <Route path="/birthday/:conceptId" element={<ShopifyConceptProducts />} />
               <Route path="/souvenirs" element={<Souvenirs />} />
               <Route path="/about" element={<About />} />
               <Route path="/terms" element={<Terms />} />

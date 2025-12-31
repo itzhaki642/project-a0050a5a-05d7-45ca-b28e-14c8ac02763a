@@ -5,15 +5,12 @@ interface ConceptCardProps {
   title: string;
   image: string;
   productCount: number;
-  isShopify?: boolean;
 }
 
-const ConceptCard = ({ id, title, image, productCount, isShopify }: ConceptCardProps) => {
-  const linkPath = isShopify ? `/birthday/shopify/${id}` : `/birthday/${id}`;
-  
+const ConceptCard = ({ id, title, image, productCount }: ConceptCardProps) => {
   return (
     <Link
-      to={linkPath}
+      to={`/birthday/${id}`}
       className="group category-card block"
     >
       <div className="aspect-[4/3] overflow-hidden">
