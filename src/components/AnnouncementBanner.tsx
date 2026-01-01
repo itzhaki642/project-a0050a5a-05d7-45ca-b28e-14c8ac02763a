@@ -19,7 +19,7 @@ const AnnouncementBanner = () => {
   useEffect(() => {
     const slideInterval = setInterval(() => {
       setActiveSlide((prev) => (prev === 0 ? 1 : 0));
-    }, 3000);
+    }, 5000);
     return () => clearInterval(slideInterval);
   }, []);
 
@@ -50,27 +50,33 @@ const AnnouncementBanner = () => {
 
   if (!showBanner || !isVisible) return null;
 
-  const formatTime = (n: number) => n.toString().padStart(2, '0');
+  const formatTime = (n: number) => n.toString().padStart(2, "0");
 
   return (
     <div className="bg-primary text-primary-foreground py-2.5 px-4 text-center relative overflow-hidden transition-all duration-300">
-
       {/* Slide 1: Timer + Promo */}
       <div
-        className={`flex items-center justify-center gap-4 flex-wrap transition-opacity duration-500 absolute w-full left-0 top-1/2 -translate-y-1/2 ${activeSlide === 0 ? 'opacity-100 visible z-10' : 'opacity-0 invisible z-0'
-          }`}
+        className={`flex items-center justify-center gap-4 flex-wrap transition-opacity duration-500 absolute w-full left-0 top-1/2 -translate-y-1/2 ${
+          activeSlide === 0 ? "opacity-100 visible z-10" : "opacity-0 invisible z-0"
+        }`}
       >
         <p className="text-sm font-medium">{message1}</p>
-        <div className="flex items-center gap-1.5 bg-primary-foreground/15 px-3 py-1 rounded-full text-xs font-semibold" aria-label={`נשארו ${timeLeft.hours} שעות, ${timeLeft.minutes} דקות ו-${timeLeft.seconds} שניות`}>
+        <div
+          className="flex items-center gap-1.5 bg-primary-foreground/15 px-3 py-1 rounded-full text-xs font-semibold"
+          aria-label={`נשארו ${timeLeft.hours} שעות, ${timeLeft.minutes} דקות ו-${timeLeft.seconds} שניות`}
+        >
           <Clock className="h-3.5 w-3.5" aria-hidden="true" />
-          <span>{formatTime(timeLeft.hours)}:{formatTime(timeLeft.minutes)}:{formatTime(timeLeft.seconds)}</span>
+          <span>
+            {formatTime(timeLeft.hours)}:{formatTime(timeLeft.minutes)}:{formatTime(timeLeft.seconds)}
+          </span>
         </div>
       </div>
 
       {/* Slide 2: Urgent Help */}
       <div
-        className={`flex items-center justify-center gap-4 flex-wrap transition-opacity duration-500 absolute w-full left-0 top-1/2 -translate-y-1/2 ${activeSlide === 1 ? 'opacity-100 visible z-10' : 'opacity-0 invisible z-0'
-          }`}
+        className={`flex items-center justify-center gap-4 flex-wrap transition-opacity duration-500 absolute w-full left-0 top-1/2 -translate-y-1/2 ${
+          activeSlide === 1 ? "opacity-100 visible z-10" : "opacity-0 invisible z-0"
+        }`}
       >
         <p className="text-sm font-medium">
           {message2}
