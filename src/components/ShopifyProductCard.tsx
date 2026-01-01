@@ -69,9 +69,9 @@ const ShopifyProductCard = ({ product }: ShopifyProductCardProps) => {
   return (
     <Link
       to={`/product/${node.handle}`}
-      className="group flex flex-col h-full bg-card border border-border rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300"
+      className="group flex flex-col h-full bg-card border border-border rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300"
     >
-      <div className="aspect-square overflow-hidden bg-secondary/20">
+      <div className="aspect-square overflow-hidden bg-secondary/20 relative">
         {image ? (
           <img
             src={image.url}
@@ -83,6 +83,8 @@ const ShopifyProductCard = ({ product }: ShopifyProductCardProps) => {
             <ShoppingCart className="w-12 h-12" />
           </div>
         )}
+        {/* Subtle gradient overlay for consistency */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent pointer-events-none" />
       </div>
 
       <div className="p-4 flex flex-col flex-1">
