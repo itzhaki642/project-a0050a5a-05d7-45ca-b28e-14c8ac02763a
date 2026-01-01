@@ -40,11 +40,10 @@ const HowItWorks = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 max-w-5xl mx-auto mb-12">
           {steps.map((step, index) => (
             <div key={index} className="relative text-center group">
-              {/* Connector line - hidden on mobile and last item */}
               {index < steps.length - 1 && (
-                <div className="hidden md:block absolute top-10 right-0 w-full h-0.5 bg-border -z-10 translate-x-1/2" />
+                <div className="hidden md:block absolute top-10 left-0 w-full h-0.5 bg-border -z-10 -translate-x-1/2" />
               )}
-              
+
               {/* Step number + icon */}
               <div className="relative inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary text-primary-foreground mb-4 transition-transform duration-300 group-hover:scale-110" aria-hidden="true">
                 <step.icon className="w-8 h-8" aria-hidden="true" />
@@ -52,7 +51,7 @@ const HowItWorks = () => {
                   {index + 1}
                 </span>
               </div>
-              
+
               <h3 className="text-lg font-semibold text-foreground mb-2">{step.title}</h3>
               <p className="text-muted-foreground text-sm leading-relaxed">{step.description}</p>
             </div>
