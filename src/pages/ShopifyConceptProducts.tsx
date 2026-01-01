@@ -17,26 +17,31 @@ const conceptsData: Record<string, ConceptData> = {
   ducks: {
     title: "יום הולדת ברווזונים",
     description: "כל המוצרים הממותגים בעיצוב ברווזונים",
-    query: "ברווזונים",
+    collectionId: "gid://shopify/Collection/304749969544",
   },
   safari: {
     title: "יום הולדת ספארי",
     description: "כל המוצרים הממותגים בעיצוב ספארי",
-    query: "ספארי",
+    collectionId: "gid://shopify/Collection/304750133384",
   },
   bears: {
     title: "יום הולדת דובי",
     description: "כל המוצרים הממותגים בעיצוב דובי",
-    query: "דובי",
+    collectionId: "gid://shopify/Collection/304750166152",
   },
   strawberries: {
     title: "יום הולדת תותים",
     description: "כל המוצרים הממותגים בעיצוב תותים",
-    query: "תותים",
+    collectionId: "gid://shopify/Collection/304750231688",
   },
   "custom-design": {
     title: "יום הולדת בעיצוב אישי",
     collectionId: "gid://shopify/Collection/304752787592",
+  },
+  "ice-cream": {
+    title: "יום הולדת גלידות",
+    description: "כל המוצרים הממותגים בעיצוב גלידות",
+    collectionId: "gid://shopify/Collection/304766550152",
   },
 };
 

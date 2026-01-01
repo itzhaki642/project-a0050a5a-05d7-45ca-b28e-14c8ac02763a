@@ -7,6 +7,7 @@ import conceptDucks from "@/assets/duck_concept_collection.jpg";
 import conceptBears from "@/assets/bear_cover.jpg";
 import conceptStrawberries from "@/assets/strawberry_concept.jpg";
 import conceptCustomDesign from "@/assets/concept-custom-design.png";
+import conceptIceCream from "@/assets/concept-icecream.jpg";
 
 const concepts = [
   {
@@ -37,6 +38,12 @@ const concepts = [
     id: "custom-design",
     title: "יום הולדת בעיצוב אישי",
     image: conceptCustomDesign,
+    productCount: 14,
+  },
+  {
+    id: "ice-cream",
+    title: "יום הולדת גלידות",
+    image: conceptIceCream,
     productCount: 14,
   },
 ];
