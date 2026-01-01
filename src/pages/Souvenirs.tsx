@@ -30,11 +30,12 @@ const Souvenirs = () => {
       {/* Page Header */}
       <section className="py-12 md:py-16 bg-secondary/30">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            מזכרות לאירועים
-          </h1>
+          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">מזכרות לאירועים</h1>
           <p className="text-muted-foreground max-w-xl mx-auto">
             מזכרות וברכונים יוקרתיים לבר/בת מצווה, חתונות, ברית ואירועים מיוחדים
+          </p>
+          <p className="text-muted-foreground max-w-xl mx-auto">
+            לא מצאתם עיצוב שרציתם?צרו איתנו קשר עוד היום ונעצב לכם את המזכרת המושלמת
           </p>
         </div>
       </section>
@@ -49,9 +50,7 @@ const Souvenirs = () => {
           ) : products.length === 0 ? (
             <div className="text-center py-16">
               <p className="text-muted-foreground text-lg">לא נמצאו מוצרים</p>
-              <p className="text-muted-foreground text-sm mt-2">
-                מוצרים חדשים יתווספו בקרוב
-              </p>
+              <p className="text-muted-foreground text-sm mt-2">מוצרים חדשים יתווספו בקרוב</p>
             </div>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
