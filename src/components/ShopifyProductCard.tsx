@@ -84,7 +84,7 @@ const ShopifyProductCard = ({ product }: ShopifyProductCardProps) => {
           </div>
         )}
         {/* Gradient overlay for consistency */}
-        <div className="absolute inset-0 bg-gradient-to-t from-white/75 via-black/5 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-white/40 via-black/5 to-transparent pointer-events-none" />
       </div>
 
       <div className="p-4 flex flex-col flex-1">
