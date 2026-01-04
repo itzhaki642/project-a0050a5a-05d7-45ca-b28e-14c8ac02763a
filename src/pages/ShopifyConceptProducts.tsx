@@ -17,17 +17,17 @@ const conceptsData: Record<string, ConceptData> = {
   ducks: {
     title: "יום הולדת ברווזונים",
     description: "כל המוצרים הממותגים בעיצוב ברווזונים",
-    collectionId: "gid://shopify/Collection/304749969544",
+    collectionId: "gid://shopify/Collection/304718086280",
   },
   safari: {
     title: "יום הולדת ספארי",
     description: "כל המוצרים הממותגים בעיצוב ספארי",
-    collectionId: "gid://shopify/Collection/304750133384",
+    collectionId: "gid://shopify/Collection/304718381192",
   },
   bears: {
     title: "יום הולדת דובי",
     description: "כל המוצרים הממותגים בעיצוב דובי",
-    collectionId: "gid://shopify/Collection/304750166152",
+    collectionId: "gid://shopify/Collection/304719397000",
   },
   strawberries: {
     title: "יום הולדת תותים",
@@ -71,7 +71,8 @@ const ShopifyConceptProducts = () => {
 
   // Use collection data from Shopify if available, otherwise use static data
   const displayTitle = collectionData?.title || concept.title;
-  const displayDescription = collectionData?.description || concept.description || `כל המוצרים הממותגים בעיצוב ${concept.title}`;
+  const displayDescription =
+    collectionData?.description || concept.description || `כל המוצרים הממותגים בעיצוב ${concept.title}`;
 
   return (
     <Layout>
@@ -93,12 +94,8 @@ const ShopifyConceptProducts = () => {
       {/* Page Header */}
       <section className="py-8 md:py-12 bg-secondary/30">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            {displayTitle}
-          </h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            {displayDescription}
-          </p>
+          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">{displayTitle}</h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto">{displayDescription}</p>
         </div>
       </section>
 
