@@ -9,11 +9,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useCart } from "@/contexts/CartContext";
 import { useToast } from "@/hooks/use-toast";
 import { ChevronLeft, Plus, Minus, Trash2, ShoppingBag, Send, CalendarIcon } from "lucide-react";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
+
+const SHIPPING_COST = 40;
+
+type ShippingMethod = "delivery" | "pickup-afula" | "pickup-krayot";
 
 const baseCheckoutSchema = z.object({
   name: z.string().trim().min(2, "שם חייב להכיל לפחות 2 תווים").max(100, "שם ארוך מדי"),
@@ -39,6 +44,9 @@ const baseCheckoutSchema = z.object({
   dedication: z.string().trim().max(500, "הקדשה ארוכה מדי").optional().or(z.literal("")),
   birthdayDetails: z.string().trim().max(500, "פרטים ארוכים מדי").optional().or(z.literal("")),
   souvenirDetails: z.string().trim().max(500, "פרטים ארוכים מדי").optional().or(z.literal("")),
+  shippingMethod: z.enum(["delivery", "pickup-afula", "pickup-krayot"], {
+    required_error: "יש לבחור שיטת משלוח",
+  }),
 });
 
 type CheckoutForm = z.infer<typeof baseCheckoutSchema>;
@@ -48,7 +56,7 @@ type CartType = "birthday" | "souvenirs" | "mixed";
 const getCartType = (items: { conceptId?: string }[]): CartType => {
   const hasBirthday = items.some((item) => item.conceptId && item.conceptId !== "souvenirs");
   const hasSouvenirs = items.some((item) => item.conceptId === "souvenirs");
-  
+
   if (hasBirthday && hasSouvenirs) return "mixed";
   if (hasSouvenirs) return "souvenirs";
   return "birthday";
@@ -90,6 +98,7 @@ const Checkout = () => {
     dedication: "",
     birthdayDetails: "",
     souvenirDetails: "",
+    shippingMethod: "delivery",
   });
 
   const cartType = getCartType(items);
@@ -103,6 +112,8 @@ const Checkout = () => {
       setErrors((prev) => ({ ...prev, [field]: undefined }));
     }
   };
+
+  const finalTotalPrice = form.shippingMethod === "delivery" ? totalPrice + SHIPPING_COST : totalPrice;
 
   const validateForm = (): boolean => {
     const checkoutSchema = getCheckoutSchema(cartType);
@@ -136,6 +147,12 @@ ${form.birthdayDetails ? `פרטי יום הולדת: ${form.birthdayDetails}` :
 ${form.souvenirDetails ? `הערות למזכרות: ${form.souvenirDetails}` : ""}`
       : "";
 
+    const formattedShippingMethod = form.shippingMethod === "delivery"
+      ? "משלוח עד הבית (3-5 ימי עסקים)"
+      : form.shippingMethod === "pickup-afula"
+        ? "איסוף עצמי - עפולה"
+        : "איסוף עצמי - הקריות";
+
     const message = `🎉 *הזמנה חדשה - מיתוג אירועים*
 
 👤 *פרטי הלקוח:*
@@ -143,12 +160,14 @@ ${form.souvenirDetails ? `הערות למזכרות: ${form.souvenirDetails}` : 
 טלפון: ${form.phone}
 ${form.email ? `אימייל: ${form.email}` : ""}
 כתובת: ${form.address}, ${form.city}
+שיטת משלוח: ${formattedShippingMethod}
 ${eventDetailsSection}
 
 🛒 *פרטי ההזמנה:*
 ${itemsList}
 
-💰 *סה״כ לתשלום: ₪${totalPrice}*
+💰 *סה״כ לתשלום: ₪${finalTotalPrice}*
+${form.shippingMethod === "delivery" ? `(כולל משלוח ₪${SHIPPING_COST})` : ""}
 
 ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
 
@@ -270,10 +289,14 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
                 ))}
               </div>
 
-              <div className="border-t border-border pt-4">
+              <div className="border-t border-border pt-4 space-y-2">
+                <div className="flex justify-between items-center">
+                  <span>שיטת משלוח</span>
+                  <span>{form.shippingMethod === "delivery" ? `₪${SHIPPING_COST}` : "חינם"}</span>
+                </div>
                 <div className="flex justify-between items-center text-xl font-bold">
                   <span>סה״כ לתשלום</span>
-                  <span>₪{totalPrice}</span>
+                  <span>₪{finalTotalPrice}</span>
                 </div>
               </div>
             </div>
@@ -348,6 +371,38 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
                 </div>
 
                 <div>
+                  <Label className="mb-3 block">אפשרויות משלוח</Label>
+                  <RadioGroup
+                    value={form.shippingMethod}
+                    onValueChange={(value) => handleChange("shippingMethod", value as ShippingMethod)}
+                    className="space-y-3"
+                  >
+                    <div className="flex items-center gap-3 border p-3 rounded-md">
+                      <RadioGroupItem value="delivery" id="delivery" />
+                      <Label htmlFor="delivery" className="flex-1 cursor-pointer text-right">
+                        <span className="font-semibold block">משלוח עד הבית (₪40)</span>
+                        <span className="text-sm text-muted-foreground">3-5 ימי עסקים מרגע התחלת ההכנה</span>
+                      </Label>
+                    </div>
+                    <div className="flex items-center gap-3 border p-3 rounded-md">
+                      <RadioGroupItem value="pickup-afula" id="pickup-afula" />
+                      <Label htmlFor="pickup-afula" className="flex-1 cursor-pointer text-right">
+                        <span className="font-semibold block">איסוף עצמי - עפולה (חינם)</span>
+                        <span className="text-sm text-muted-foreground">בתיאום מראש</span>
+                      </Label>
+                    </div>
+                    <div className="flex items-center gap-3 border p-3 rounded-md">
+                      <RadioGroupItem value="pickup-krayot" id="pickup-krayot" />
+                      <Label htmlFor="pickup-krayot" className="flex-1 cursor-pointer text-right">
+                        <span className="font-semibold block">איסוף עצמי - קריות (חינם)</span>
+                        <span className="text-sm text-muted-foreground">בתיאום מראש</span>
+                      </Label>
+                    </div>
+                  </RadioGroup>
+                  {errors.shippingMethod && <p className="text-destructive text-sm mt-1">{errors.shippingMethod}</p>}
+                </div>
+
+                <div>
                   <Label htmlFor="notes">הערות להזמנה</Label>
                   <Textarea
                     id="notes"
@@ -363,7 +418,7 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
                 {/* Event Details Section */}
                 <div className="border-t border-border pt-6 mt-6">
                   <h3 className="text-lg font-semibold text-foreground mb-4">פרטי האירוע</h3>
-                  
+
                   <div className="space-y-4">
                     {/* Mixed cart - free text fields */}
                     {cartType === "mixed" && (
