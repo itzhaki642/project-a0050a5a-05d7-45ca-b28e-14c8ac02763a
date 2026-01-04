@@ -67,8 +67,8 @@ const HeroSection = () => {
   return (
     <section className="relative h-[80vh] min-h-[600px] overflow-hidden">
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-md w-[90%] rounded-2xl p-6">
-          <DialogHeader className="mb-4">
+        <DialogContent className="sm:max-w-md w-[95%] rounded-lg p-6 pt-12 max-h-[85vh] overflow-y-auto gap-6 [&>button]:top-4 [&>button]:right-4">
+          <DialogHeader className="mb-2">
             <DialogTitle className="text-center text-xl font-bold mb-4">
               איזה אירוע חוגגים? 🎉
             </DialogTitle>
