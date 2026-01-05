@@ -86,7 +86,8 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-border mt-8 pt-8 text-center text-muted-foreground text-sm">
+        <div className="border-t border-border mt-8 pt-8 text-center text-muted-foreground text-sm space-y-2">
+          <p className="text-xs text-muted-foreground/70">ייתכנו סטיות קלות בגודל ובצבע המוצרים</p>
           <p>© 2024 מיתוג אירועים. כל הזכויות שמורות.</p>
         </div>
       </div>
