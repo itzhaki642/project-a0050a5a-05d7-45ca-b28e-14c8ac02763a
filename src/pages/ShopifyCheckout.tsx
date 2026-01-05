@@ -6,6 +6,7 @@ import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -44,6 +45,9 @@ const checkoutSchema = z.object({
   shippingMethod: z.enum(["delivery", "pickup-afula", "pickup-krayot"], {
     required_error: "יש לבחור שיטת משלוח",
   }),
+  termsAccepted: z.literal(true, {
+    errorMap: () => ({ message: "יש לאשר את תנאי השימוש" }),
+  }),
 });
 
 type CheckoutForm = z.infer<typeof checkoutSchema>;
@@ -65,6 +69,7 @@ const ShopifyCheckout = () => {
     eventDate: undefined,
     dedication: "",
     shippingMethod: "delivery",
+    termsAccepted: false as unknown as true,
   });
 
   const [errors, setErrors] = useState<Partial<Record<keyof CheckoutForm, string>>>({});
@@ -75,7 +80,7 @@ const ShopifyCheckout = () => {
     item.customAttributes?.some((attr) => attr.value === "הקדשה על כל העמוד"),
   );
 
-  const handleChange = (field: keyof CheckoutForm, value: string | Date | undefined) => {
+  const handleChange = (field: keyof CheckoutForm, value: string | Date | boolean | undefined) => {
     setForm((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: undefined }));
@@ -468,6 +473,23 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
                   />
                   {errors.notes && <p className="text-destructive text-sm mt-1">{errors.notes}</p>}
                 </div>
+
+                {/* Terms Acceptance Checkbox */}
+                <div className="flex items-start gap-3 mt-4">
+                  <Checkbox
+                    id="termsAccepted"
+                    checked={form.termsAccepted}
+                    onCheckedChange={(checked) => handleChange("termsAccepted", checked === true)}
+                    className={errors.termsAccepted ? "border-destructive" : ""}
+                  />
+                  <Label htmlFor="termsAccepted" className="text-sm leading-relaxed cursor-pointer">
+                    קראתי ואני מאשר/ת את{" "}
+                    <Link to="/terms" target="_blank" className="text-primary underline hover:no-underline">
+                      תנאי השימוש והתקנון
+                    </Link>
+                  </Label>
+                </div>
+                {errors.termsAccepted && <p className="text-destructive text-sm">{errors.termsAccepted}</p>}
 
                 <Button className="w-full mt-6" size="lg" onClick={handleSubmit} disabled={isSubmitting}>
                   <Send className="ml-2 h-5 w-5" />
