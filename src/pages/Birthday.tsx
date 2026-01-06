@@ -8,6 +8,7 @@ import conceptBears from "@/assets/bear_cover.jpg";
 import conceptStrawberries from "@/assets/strawberry_concept.jpg";
 import conceptCustomDesign from "@/assets/concept-custom-design.png";
 import conceptIceCream from "@/assets/ice_cream_concep.jpg";
+import conceptFairy from "@/assets/fairy_collection_concept.jpg";
 
 const concepts = [
   {
@@ -44,6 +45,12 @@ const concepts = [
     id: "ice-cream",
     title: "יום הולדת גלידות",
     image: conceptIceCream,
+    productCount: 14,
+  },
+  {
+    id: "fairy",
+    title: "יום הולדת פיות",
+    image: conceptFairy,
     productCount: 14,
   },
 ];

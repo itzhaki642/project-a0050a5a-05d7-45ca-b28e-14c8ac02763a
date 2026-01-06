@@ -43,6 +43,11 @@ const conceptsData: Record<string, ConceptData> = {
     description: "כל המוצרים הממותגים בעיצוב גלידות",
     collectionId: "gid://shopify/Collection/304766550152",
   },
+  fairy: {
+    title: "יום הולדת פיות",
+    description: "כל המוצרים הממותגים בעיצוב פיות",
+    collectionId: "gid://shopify/Collection/304938057864",
+  },
 };
 
 const ShopifyConceptProducts = () => {
