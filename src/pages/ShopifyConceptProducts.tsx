@@ -32,7 +32,7 @@ const conceptsData: Record<string, ConceptData> = {
   strawberries: {
     title: "יום הולדת תותים",
     description: "כל המוצרים הממותגים בעיצוב תותים",
-    collectionId: "gid://shopify/Collection/304750231688",
+    collectionId: "gid://shopify/Collection/304719429768",
   },
   "custom-design": {
     title: "יום הולדת בעיצוב אישי",
