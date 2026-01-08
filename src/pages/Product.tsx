@@ -50,6 +50,7 @@ interface ProductNode {
   id: string;
   title: string;
   description: string;
+  descriptionHtml: string;
   handle: string;
   productType: string;
   priceRange: {
@@ -292,7 +293,12 @@ const Product = () => {
               </p>
             </div>
 
-            {product.description && <p className="text-muted-foreground leading-relaxed">{product.description}</p>}
+            {product.descriptionHtml && (
+              <div 
+                className="text-muted-foreground leading-relaxed prose prose-sm max-w-none"
+                dangerouslySetInnerHTML={{ __html: product.descriptionHtml }} 
+              />
+            )}
 
             {/* Variants */}
             {product.variants.edges.length > 1 && (
