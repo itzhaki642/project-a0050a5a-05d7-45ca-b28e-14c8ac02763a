@@ -34,10 +34,6 @@ const conceptsData: Record<string, ConceptData> = {
     description: "כל המוצרים הממותגים בעיצוב תותים",
     collectionId: "gid://shopify/Collection/304719429768",
   },
-  "custom-design": {
-    title: "יום הולדת בעיצוב אישי",
-    collectionId: "gid://shopify/Collection/304752787592",
-  },
   "ice-cream": {
     title: "יום הולדת גלידות",
     description: "כל המוצרים הממותגים בעיצוב גלידות",
@@ -47,6 +43,10 @@ const conceptsData: Record<string, ConceptData> = {
     title: "יום הולדת פיות",
     description: "כל המוצרים הממותגים בעיצוב פיות",
     collectionId: "gid://shopify/Collection/304938057864",
+  },
+  "custom-design": {
+    title: "יום הולדת בעיצוב אישי",
+    collectionId: "gid://shopify/Collection/304752787592",
   },
 };
 
