@@ -30,16 +30,25 @@ const Souvenirs = () => {
       {/* Page Header */}
       <section className="py-12 md:py-16 bg-secondary/30">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">מזכרות לאירועים</h1>
-          <p className="text-muted-foreground max-w-xl mx-auto">
-            מזכרות שמרגשות את האורחים ברוכים הבאים לקולקציית המזכרות של סטודיו טופז. כאן תמצאו מגוון רחב של מזכרות
-            לאירועים המשלבות עיצוב בוטיק מוקפד עם משמעות עמוקה. החל מברכונים מעוצבים בנייר טקסטורה יוקרתי, דרך צמידי עין
-            הרע ממותגים ועד מארזים אישיים בעבודת יד. כל מזכרת מעוצבת ומיוצרת באהבה כדי להעניק לאורחים שלכם מתנה אישית
-            שתלווה אותם זמן רב אחרי שהחגיגה תסתיים.
-          </p>
-          <p className="text-muted-foreground max-w-xl mx-auto">
-            לא מצאתם עיצוב שרציתם? צרו איתנו קשר עוד היום ונעצב לכם את המזכרת המושלמת
-          </p>
+          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-8">מזכרות לאירועים</h1>
+
+          <div className="text-muted-foreground max-w-2xl mx-auto space-y-4 text-lg">
+            <p className="font-semibold text-foreground">מזכרות שמרגשות את האורחים</p>
+
+            <p>
+              ברוכים הבאים לקולקציית המזכרות של סטודיו טופז. כאן תמצאו מגוון רחב של מזכרות לאירועים המשלבות עיצוב בוטיק
+              מוקפד עם משמעות עמוקה.
+            </p>
+
+            <p>
+              החל מברכונים מעוצבים בנייר טקסטורה יוקרתי, דרך צמידי עין הרע ממותגים ועד מארזים אישיים בעבודת יד. כל מזכרת
+              מעוצבת ומיוצרת באהבה כדי להעניק לאורחים שלכם מתנה אישית שתלווה אותם זמן רב אחרי שהחגיגה תסתיים.
+            </p>
+
+            <p className="pt-4 font-medium text-foreground italic">
+              לא מצאתם עיצוב שרציתם? צרו איתנו קשר עוד היום ונעצב לכם את המזכרת המושלמת.
+            </p>
+          </div>
         </div>
       </section>
 
