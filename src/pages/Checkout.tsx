@@ -136,7 +136,13 @@ const Checkout = () => {
       .map((item) => `• ${item.name} x${item.quantity} - ₪${item.price * item.quantity}`)
       .join("\n");
 
-    const hasEventDetails = form.eventDate || form.celebrantName || form.celebrantAge || form.dedication || form.birthdayDetails || form.souvenirDetails;
+    const hasEventDetails =
+      form.eventDate ||
+      form.celebrantName ||
+      form.celebrantAge ||
+      form.dedication ||
+      form.birthdayDetails ||
+      form.souvenirDetails;
     const eventDetailsSection = hasEventDetails
       ? `\n🎈 *פרטי האירוע:*
 ${form.eventDate ? `תאריך: ${format(form.eventDate, "dd/MM/yyyy")}` : ""}
@@ -147,11 +153,12 @@ ${form.birthdayDetails ? `פרטי יום הולדת: ${form.birthdayDetails}` :
 ${form.souvenirDetails ? `הערות למזכרות: ${form.souvenirDetails}` : ""}`
       : "";
 
-    const formattedShippingMethod = form.shippingMethod === "delivery"
-      ? "משלוח עד הבית (3-5 ימי עסקים)"
-      : form.shippingMethod === "pickup-afula"
-        ? "איסוף עצמי - עפולה"
-        : "איסוף עצמי - הקריות";
+    const formattedShippingMethod =
+      form.shippingMethod === "delivery"
+        ? "משלוח עד הבית (3-5 ימי עסקים)"
+        : form.shippingMethod === "pickup-afula"
+          ? "איסוף עצמי - עפולה"
+          : "איסוף עצמי - הקריות";
 
     const message = `🎉 *הזמנה חדשה - מיתוג אירועים*
 
@@ -381,7 +388,7 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
                       <RadioGroupItem value="delivery" id="delivery" />
                       <Label htmlFor="delivery" className="flex-1 cursor-pointer text-right">
                         <span className="font-semibold block">משלוח עד הבית (₪40)</span>
-                        <span className="text-sm text-muted-foreground">3-5 ימי עסקים מרגע התחלת ההכנה</span>
+                        <span className="text-sm text-muted-foreground">3-5 ימי עסקים מרגע איסוף המשלוח</span>
                       </Label>
                     </div>
                     <div className="flex items-center gap-3 border p-3 rounded-md">
@@ -424,9 +431,7 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
                     {cartType === "mixed" && (
                       <>
                         <div>
-                          <Label htmlFor="birthdayDetails">
-                            פרטי אירוע יום ההולדת (שם החוגג, גיל ותאריך)
-                          </Label>
+                          <Label htmlFor="birthdayDetails">פרטי אירוע יום ההולדת (שם החוגג, גיל ותאריך)</Label>
                           <Textarea
                             id="birthdayDetails"
                             value={form.birthdayDetails}
@@ -435,13 +440,13 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
                             rows={2}
                             className={errors.birthdayDetails ? "border-destructive" : ""}
                           />
-                          {errors.birthdayDetails && <p className="text-destructive text-sm mt-1">{errors.birthdayDetails}</p>}
+                          {errors.birthdayDetails && (
+                            <p className="text-destructive text-sm mt-1">{errors.birthdayDetails}</p>
+                          )}
                         </div>
 
                         <div>
-                          <Label htmlFor="souvenirDetails">
-                            הערות למזכרות (תאריך האירוע, סוג האירוע והקדשה)
-                          </Label>
+                          <Label htmlFor="souvenirDetails">הערות למזכרות (תאריך האירוע, סוג האירוע והקדשה)</Label>
                           <Textarea
                             id="souvenirDetails"
                             value={form.souvenirDetails}
@@ -450,7 +455,9 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
                             rows={2}
                             className={errors.souvenirDetails ? "border-destructive" : ""}
                           />
-                          {errors.souvenirDetails && <p className="text-destructive text-sm mt-1">{errors.souvenirDetails}</p>}
+                          {errors.souvenirDetails && (
+                            <p className="text-destructive text-sm mt-1">{errors.souvenirDetails}</p>
+                          )}
                         </div>
                       </>
                     )}
@@ -467,7 +474,7 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
                                 className={cn(
                                   "w-full justify-start text-right font-normal",
                                   !form.eventDate && "text-muted-foreground",
-                                  errors.eventDate && "border-destructive"
+                                  errors.eventDate && "border-destructive",
                                 )}
                               >
                                 <CalendarIcon className="ml-2 h-4 w-4" />
@@ -496,7 +503,9 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
                             placeholder="לדוגמה: יוסי"
                             className={errors.celebrantName ? "border-destructive" : ""}
                           />
-                          {errors.celebrantName && <p className="text-destructive text-sm mt-1">{errors.celebrantName}</p>}
+                          {errors.celebrantName && (
+                            <p className="text-destructive text-sm mt-1">{errors.celebrantName}</p>
+                          )}
                         </div>
 
                         <div>
@@ -508,7 +517,9 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
                             placeholder="לדוגמה: 5"
                             className={errors.celebrantAge ? "border-destructive" : ""}
                           />
-                          {errors.celebrantAge && <p className="text-destructive text-sm mt-1">{errors.celebrantAge}</p>}
+                          {errors.celebrantAge && (
+                            <p className="text-destructive text-sm mt-1">{errors.celebrantAge}</p>
+                          )}
                         </div>
                       </>
                     )}
@@ -525,7 +536,7 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
                                 className={cn(
                                   "w-full justify-start text-right font-normal",
                                   !form.eventDate && "text-muted-foreground",
-                                  errors.eventDate && "border-destructive"
+                                  errors.eventDate && "border-destructive",
                                 )}
                               >
                                 <CalendarIcon className="ml-2 h-4 w-4" />

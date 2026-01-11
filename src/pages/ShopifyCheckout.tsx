@@ -126,11 +126,12 @@ ${form.eventDate ? `תאריך: ${format(form.eventDate, "dd/MM/yyyy")}` : ""}
 ${form.dedication ? `הקדשה: ${form.dedication}` : ""}`
       : "";
 
-    const formattedShippingMethod = form.shippingMethod === "delivery"
-      ? "משלוח עד הבית (3-5 ימי עסקים)"
-      : form.shippingMethod === "pickup-afula"
-        ? "איסוף עצמי - עפולה"
-        : "איסוף עצמי - הקריות";
+    const formattedShippingMethod =
+      form.shippingMethod === "delivery"
+        ? "משלוח עד הבית (3-5 ימי עסקים)"
+        : form.shippingMethod === "pickup-afula"
+          ? "איסוף עצמי - עפולה"
+          : "איסוף עצמי - הקריות";
 
     const message = `🎉 *הזמנה חדשה - מיתוג אירועים*
 
@@ -299,7 +300,9 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
               <div className="border-t border-border pt-4 space-y-2">
                 <div className="flex justify-between items-center">
                   <span>שיטת משלוח</span>
-                  <span>{form.shippingMethod === "delivery" ? formatPrice(SHIPPING_COST.toString(), currencyCode) : "חינם"}</span>
+                  <span>
+                    {form.shippingMethod === "delivery" ? formatPrice(SHIPPING_COST.toString(), currencyCode) : "חינם"}
+                  </span>
                 </div>
                 <div className="flex justify-between items-center text-xl font-bold">
                   <span>סה״כ לתשלום</span>
@@ -387,8 +390,10 @@ ${form.notes ? `📝 *הערות:*\n${form.notes}` : ""}`;
                     <div className="flex items-center gap-3 border p-3 rounded-md">
                       <RadioGroupItem value="delivery" id="delivery" />
                       <Label htmlFor="delivery" className="flex-1 cursor-pointer text-right">
-                        <span className="font-semibold block">משלוח עד הבית ({formatPrice(SHIPPING_COST.toString(), currencyCode)})</span>
-                        <span className="text-sm text-muted-foreground">3-5 ימי עסקים מרגע התחלת ההכנה</span>
+                        <span className="font-semibold block">
+                          משלוח עד הבית ({formatPrice(SHIPPING_COST.toString(), currencyCode)})
+                        </span>
+                        <span className="text-sm text-muted-foreground">3-5 ימי עסקים מרגע איסוף המשלוח</span>
                       </Label>
                     </div>
                     <div className="flex items-center gap-3 border p-3 rounded-md">
