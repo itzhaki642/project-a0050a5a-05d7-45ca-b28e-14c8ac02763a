@@ -12,6 +12,7 @@ const Header = () => {
     { label: "דף הבית", href: "/" },
     { label: "ימי הולדת לילדים", href: "/birthday" },
     { label: "מזכרות לאירועים", href: "/souvenirs" },
+    { label: "בלוג", href: "/blog" },
     { label: "אודות", href: "/about" },
     { label: "צור קשר", href: "/contact" },
   ];
