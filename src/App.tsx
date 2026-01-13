@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { CartProvider } from "./contexts/CartContext";
+import { AuthProvider } from "./hooks/useAuth";
 import ScrollToTop from "./components/ScrollToTop";
 import Index from "./pages/Index";
 import Checkout from "./pages/Checkout";
@@ -21,37 +22,50 @@ import Sitemap from "./pages/Sitemap";
 import FAQ from "./pages/FAQ";
 import Product from "./pages/Product";
 import NotFound from "./pages/NotFound";
+import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
+import Auth from "./pages/Auth";
+import AdminBlog from "./pages/AdminBlog";
+import AdminBlogEditor from "./pages/AdminBlogEditor";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <HelmetProvider>
     <QueryClientProvider client={queryClient}>
-      <CartProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <ScrollToTop />
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/birthday" element={<Birthday />} />
-            <Route path="/birthday/:conceptId" element={<ShopifyConceptProducts />} />
-              <Route path="/souvenirs" element={<Souvenirs />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/terms" element={<Terms />} />
-              <Route path="/accessibility" element={<Accessibility />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/sitemap" element={<Sitemap />} />
-              <Route path="/faq" element={<FAQ />} />
-              <Route path="/checkout" element={<Checkout />} />
-              <Route path="/shopify-checkout" element={<ShopifyCheckout />} />
-              <Route path="/product/:handle" element={<Product />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
-      </CartProvider>
+      <AuthProvider>
+        <CartProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <ScrollToTop />
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/birthday" element={<Birthday />} />
+                <Route path="/birthday/:conceptId" element={<ShopifyConceptProducts />} />
+                <Route path="/souvenirs" element={<Souvenirs />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/terms" element={<Terms />} />
+                <Route path="/accessibility" element={<Accessibility />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/sitemap" element={<Sitemap />} />
+                <Route path="/faq" element={<FAQ />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/shopify-checkout" element={<ShopifyCheckout />} />
+                <Route path="/product/:handle" element={<Product />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/blog/:slug" element={<BlogPost />} />
+                <Route path="/auth" element={<Auth />} />
+                <Route path="/admin/blog" element={<AdminBlog />} />
+                <Route path="/admin/blog/new" element={<AdminBlogEditor />} />
+                <Route path="/admin/blog/edit/:id" element={<AdminBlogEditor />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </TooltipProvider>
+        </CartProvider>
+      </AuthProvider>
     </QueryClientProvider>
   </HelmetProvider>
 );
