@@ -14,6 +14,7 @@ import { toast } from "sonner";
 const BLESSING_OPTIONS = [
   { value: "הקדשה על כל העמוד", label: "הקדשה על כל העמוד (פרטי ההקדשה ימולאו בצ׳ק אאוט)" },
   { value: "מזמור לתודה", label: "מזמור לתודה" },
+  { value: "סדר הפרשת חלה", label: "סדר הפרשת חלה" },
   { value: "סדר הדלקת נרות שבת", label: "סדר הדלקת נרות שבת" },
   { value: "סדר הבדלה", label: "סדר הבדלה" },
   { value: "אשת חיל", label: "אשת חיל" },
@@ -233,7 +234,13 @@ const Product = () => {
     <Layout>
       <Helmet>
         <title>{product.title} | מוצרים ממותגים לאירועים - סטודיו טופז</title>
-        <meta name="description" content={product.description?.substring(0, 160) || `רכשו את ${product.title} באתר סטודיו טופז - מיתוג ועיצוב אישי לאירועים מושלמים.`} />
+        <meta
+          name="description"
+          content={
+            product.description?.substring(0, 160) ||
+            `רכשו את ${product.title} באתר סטודיו טופז - מיתוג ועיצוב אישי לאירועים מושלמים.`
+          }
+        />
         <meta property="og:title" content={product.title} />
         <meta property="og:description" content={product.description?.substring(0, 160)} />
         {currentImage && <meta property="og:image" content={currentImage.url} />}
@@ -270,8 +277,9 @@ const Product = () => {
                   <button
                     key={index}
                     onClick={() => setSelectedImage(index)}
-                    className={`w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border-2 transition-colors ${selectedImage === index ? "border-primary" : "border-transparent"
-                      }`}
+                    className={`w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border-2 transition-colors ${
+                      selectedImage === index ? "border-primary" : "border-transparent"
+                    }`}
                   >
                     <img
                       src={img.node.url}
@@ -294,9 +302,9 @@ const Product = () => {
             </div>
 
             {product.descriptionHtml && (
-              <div 
+              <div
                 className="text-muted-foreground leading-relaxed prose prose-sm max-w-none"
-                dangerouslySetInnerHTML={{ __html: product.descriptionHtml }} 
+                dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
               />
             )}
 
@@ -310,10 +318,11 @@ const Product = () => {
                       key={variant.node.id}
                       onClick={() => setSelectedVariantIndex(index)}
                       disabled={!variant.node.availableForSale}
-                      className={`px-4 py-2 rounded-lg border transition-colors ${selectedVariantIndex === index
-                        ? "border-primary bg-primary/10 text-primary"
-                        : "border-border hover:border-primary/50"
-                        } ${!variant.node.availableForSale ? "opacity-50 cursor-not-allowed" : ""}`}
+                      className={`px-4 py-2 rounded-lg border transition-colors ${
+                        selectedVariantIndex === index
+                          ? "border-primary bg-primary/10 text-primary"
+                          : "border-border hover:border-primary/50"
+                      } ${!variant.node.availableForSale ? "opacity-50 cursor-not-allowed" : ""}`}
                     >
                       {variant.node.title}
                     </button>
