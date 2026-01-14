@@ -1,13 +1,13 @@
 import Layout from "@/components/Layout";
 import { Link } from "react-router-dom";
-import { Home, Gift, Heart, Sparkles, Info, Phone, FileText, Accessibility, Map, HelpCircle } from "lucide-react";
+import { Home, Gift, Heart, Sparkles, Info, Phone, FileText, Accessibility, Map, HelpCircle, BookOpen } from "lucide-react";
 
 const Sitemap = () => {
   const pages = [
     { name: "דף הבית", path: "/", icon: Home, description: "עמוד הבית הראשי של האתר" },
-    { name: "מוצרי יום הולדת", path: "/birthday", icon: Gift, description: "כל המוצרים לימי הולדת" },
+    { name: "ימי הולדת לילדים", path: "/birthday", icon: Gift, description: "כל המוצרים והקונספטים לימי הולדת" },
     { name: "מזכרות לאירועים", path: "/souvenirs", icon: Heart, description: "מזכרות מיוחדות לאירועים" },
-    { name: "קונספטים", path: "/", icon: Sparkles, description: "קונספטים מיוחדים לעיצוב", isSection: true },
+    { name: "בלוג", path: "/blog", icon: BookOpen, description: "מאמרים וטיפים לאירועים" },
     { name: "אודות", path: "/about", icon: Info, description: "קצת עלינו והסיפור שלנו" },
     { name: "צור קשר", path: "/contact", icon: Phone, description: "פרטי התקשרות ושעות פעילות" },
     { name: "תקנון האתר", path: "/terms", icon: FileText, description: "תנאי השימוש באתר" },
@@ -16,9 +16,15 @@ const Sitemap = () => {
   ];
 
   const concepts = [
-    { name: "נסיכות", path: "/concept/princess" },
-    { name: "גיבורי על", path: "/concept/superhero" },
-    { name: "ספארי", path: "/concept/safari" },
+    { name: "נסיכות", path: "/birthday/princess" },
+    { name: "גיבורי על", path: "/birthday/superhero" },
+    { name: "ספארי", path: "/birthday/safari" },
+    { name: "ברווזים", path: "/birthday/ducks" },
+    { name: "דובונים", path: "/birthday/bears" },
+    { name: "תות", path: "/birthday/strawberries" },
+    { name: "גלידה", path: "/birthday/ice-cream" },
+    { name: "פיות", path: "/birthday/fairy" },
+    { name: "עיצוב אישי", path: "/birthday/custom-design" },
   ];
 
   return (
