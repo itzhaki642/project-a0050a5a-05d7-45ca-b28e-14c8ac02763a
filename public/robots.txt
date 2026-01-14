@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
 
-# Dynamic sitemap generated from Shopify collections
-Sitemap: https://rcxzyvfymsnkpicqvcda.supabase.co/functions/v1/generate-sitemap
+Sitemap: https://www.studio-topaz.co.il/sitemap.xml
