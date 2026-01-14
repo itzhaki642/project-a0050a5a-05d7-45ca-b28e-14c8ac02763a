@@ -1,0 +1,2 @@
+# Rewrite sitemap.xml to edge function (200 = proxy/rewrite, not redirect)
+/sitemap.xml https://rcxzyvfymsnkpicqvcda.supabase.co/functions/v1/generate-sitemap 200
