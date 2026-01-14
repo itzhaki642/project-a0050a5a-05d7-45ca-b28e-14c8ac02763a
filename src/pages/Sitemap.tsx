@@ -16,15 +16,13 @@ const Sitemap = () => {
   ];
 
   const concepts = [
-    { name: "נסיכות", path: "/birthday/princess" },
-    { name: "גיבורי על", path: "/birthday/superhero" },
+    { name: "ברווזונים", path: "/birthday/ducks" },
     { name: "ספארי", path: "/birthday/safari" },
-    { name: "ברווזים", path: "/birthday/ducks" },
-    { name: "דובונים", path: "/birthday/bears" },
-    { name: "תות", path: "/birthday/strawberries" },
-    { name: "גלידה", path: "/birthday/ice-cream" },
-    { name: "פיות", path: "/birthday/fairy" },
+    { name: "דובי", path: "/birthday/bears" },
+    { name: "תותים", path: "/birthday/strawberries" },
     { name: "עיצוב אישי", path: "/birthday/custom-design" },
+    { name: "גלידות", path: "/birthday/ice-cream" },
+    { name: "פיות", path: "/birthday/fairy" },
   ];
 
   return (
