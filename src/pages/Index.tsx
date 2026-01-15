@@ -5,7 +5,7 @@ import HeroSection from "@/components/HeroSection";
 import HowItWorks from "@/components/HowItWorks";
 import CategoryCard from "@/components/CategoryCard";
 import SEOStructuredData from "@/components/SEOStructuredData";
-import categoryBirthday from "@/assets/category-birthday.jpg";
+import categoryBirthday from "@/assets/safari_concept.jpg";
 import categorySouvenirs from "@/assets/category-souvenirs.jpg";
 
 const useInView = (threshold = 0.1) => {
@@ -53,8 +53,9 @@ const TestimonialCard = ({ children, delay }: { children: React.ReactNode; delay
   return (
     <div
       ref={ref}
-      className={`bg-card border border-border rounded-2xl p-6 shadow-sm transition-all duration-700 ${isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-        }`}
+      className={`bg-card border border-border rounded-2xl p-6 shadow-sm transition-all duration-700 ${
+        isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+      }`}
       style={{ transitionDelay: `${delay}ms` }}
     >
       {children}
@@ -72,38 +73,47 @@ const stats = [
 const reviews = [
   {
     author: "מיכל כ.",
-    reviewBody: "הזמנתי חבילת יום הולדת לבת שלי והתוצאה הייתה מדהימה! כל הפריטים היו מעוצבים בצורה מושלמת והילדים התלהבו.",
+    reviewBody:
+      "הזמנתי חבילת יום הולדת לבת שלי והתוצאה הייתה מדהימה! כל הפריטים היו מעוצבים בצורה מושלמת והילדים התלהבו.",
     ratingValue: 5,
     eventType: "יום הולדת",
-    date: "ינואר 2024"
+    date: "ינואר 2024",
   },
   {
     author: "רונית ש.",
     reviewBody: "שירות מקצועי ואדיב, המזכרות לבר המצווה היו יפהפיות. ממליצה בחום!",
     ratingValue: 5,
     eventType: "בר מצווה",
-    date: "דצמבר 2023"
+    date: "דצמבר 2023",
   },
   {
     author: "יעל מ.",
     reviewBody: "איכות מעולה ועיצוב מדויק לפי הבקשה שלנו. משלוח מהיר ושירות לקוחות מצוין.",
     ratingValue: 5,
     eventType: "יום הולדת",
-    date: "פברואר 2024"
+    date: "פברואר 2024",
   },
 ];
 
 const StarRating = ({ rating }: { rating: number }) => (
   <div className="flex items-center gap-1 mb-4" role="img" aria-label={`דירוג ${rating} מתוך 5 כוכבים`}>
     {[...Array(5)].map((_, i) => (
-      <span key={i} className="text-yellow-500" aria-hidden="true">★</span>
+      <span key={i} className="text-yellow-500" aria-hidden="true">
+        ★
+      </span>
     ))}
   </div>
 );
 
 const FeatureIcon = ({ emoji, label }: { emoji: string; label: string }) => (
-  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-accent flex items-center justify-center" role="img" aria-label={label}>
-    <span className="text-2xl" aria-hidden="true">{emoji}</span>
+  <div
+    className="w-16 h-16 mx-auto mb-4 rounded-full bg-accent flex items-center justify-center"
+    role="img"
+    aria-label={label}
+  >
+    <span className="text-2xl" aria-hidden="true">
+      {emoji}
+    </span>
   </div>
 );
 
@@ -112,14 +122,19 @@ const Index = () => {
     <Layout>
       <Helmet>
         <title>סטודיו טופז - יום הולדת לילדים, מזכרות לאירועים ומיתוג אישי</title>
-        <meta name="description" content="הפכו את האירוע שלכם לבלתי נשכח! מיתוג יום הולדת לילדים, מזכרות יוקרתיות לבר/בת מצווה, חתונות ואירועים. עיצוב אישי, איכות מעולה ומשלוח לכל הארץ." />
+        <meta
+          name="description"
+          content="הפכו את האירוע שלכם לבלתי נשכח! מיתוג יום הולדת לילדים, מזכרות יוקרתיות לבר/בת מצווה, חתונות ואירועים. עיצוב אישי, איכות מעולה ומשלוח לכל הארץ."
+        />
       </Helmet>
       <SEOStructuredData reviews={reviews} />
       <HeroSection />
 
       {/* Stats Section */}
       <section className="py-12 bg-primary" aria-labelledby="stats-heading">
-        <h2 id="stats-heading" className="sr-only">הנתונים שלנו</h2>
+        <h2 id="stats-heading" className="sr-only">
+          הנתונים שלנו
+        </h2>
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {stats.map((stat, index) => (
@@ -139,7 +154,9 @@ const Index = () => {
       <section id="categories" className="py-16 md:py-24" aria-labelledby="categories-heading">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 id="categories-heading" className="text-3xl md:text-4xl font-bold text-foreground mb-4">יום הולדת לילדים ומזכרות לאירועים</h2>
+            <h2 id="categories-heading" className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              יום הולדת לילדים ומזכרות לאירועים
+            </h2>
             <p className="text-muted-foreground max-w-xl mx-auto">
               מוצרים ממותגים בעיצוב אישי, ברכונים לאירועים ומזכרות יוקרתיות לכל סוגי האירועים
             </p>
@@ -155,7 +172,9 @@ const Index = () => {
 
       {/* Features Section */}
       <section className="py-16 bg-secondary/30" aria-labelledby="features-heading">
-        <h2 id="features-heading" className="sr-only">למה לבחור בנו</h2>
+        <h2 id="features-heading" className="sr-only">
+          למה לבחור בנו
+        </h2>
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div className="p-6">
@@ -181,7 +200,9 @@ const Index = () => {
       <section className="py-16 md:py-24" aria-labelledby="testimonials-heading">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 id="testimonials-heading" className="text-3xl md:text-4xl font-bold text-foreground mb-4">ממליצים עלינו</h2>
+            <h2 id="testimonials-heading" className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              ממליצים עלינו
+            </h2>
             <p className="text-muted-foreground max-w-xl mx-auto">לקוחות מרוצים משתפים את החוויה שלהם</p>
           </div>
 
@@ -192,7 +213,9 @@ const Index = () => {
                 <p className="text-muted-foreground mb-4">"{review.reviewBody}"</p>
                 <div className="flex justify-between items-center">
                   <p className="font-semibold text-foreground">{review.author}</p>
-                  <span className="text-xs text-muted-foreground">{review.eventType} • {review.date}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {review.eventType} • {review.date}
+                  </span>
                 </div>
               </TestimonialCard>
             ))}
