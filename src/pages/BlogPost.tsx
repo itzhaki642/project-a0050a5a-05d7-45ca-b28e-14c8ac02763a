@@ -3,14 +3,19 @@ import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { format } from 'date-fns';
 import { he } from 'date-fns/locale';
-import { ArrowRight, Calendar, Clock, Share2 } from 'lucide-react';
+import { ArrowRight, Calendar, Clock, Share2, Download } from 'lucide-react';
 import Layout from '@/components/Layout';
 import { supabase } from '@/integrations/supabase/client';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { useRef, useState } from 'react';
+import html2pdf from 'html2pdf.js';
+
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
+  const pdfContentRef = useRef<HTMLDivElement>(null);
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
 
   const { data: post, isLoading, error } = useQuery({
     queryKey: ['blog-post', slug],
@@ -61,6 +66,79 @@ const BlogPost = () => {
     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(textToShare)}`;
     window.open(whatsappUrl, '_blank');
     toast.success('נפתח WhatsApp לשיתוף');
+  };
+
+  const handleDownloadPdf = async () => {
+    if (!post) return;
+    
+    setIsGeneratingPdf(true);
+    toast.info('מכין את ה-PDF...');
+
+    // Create a styled container for PDF
+    const pdfContainer = document.createElement('div');
+    pdfContainer.innerHTML = `
+      <div style="font-family: 'Heebo', 'Arial', sans-serif; direction: rtl; padding: 40px; max-width: 700px; margin: 0 auto; background: #FFFBF5;">
+        <!-- Header -->
+        <div style="text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #E8D5C4;">
+          <p style="color: #B5838D; font-size: 12px; margin-bottom: 8px;">Studio Topaz • Event Branding Studio</p>
+          <h1 style="color: #1A1A1A; font-size: 28px; font-weight: 700; margin: 0; line-height: 1.4;">${post.title}</h1>
+          ${post.published_at ? `<p style="color: #888; font-size: 12px; margin-top: 12px;">${format(new Date(post.published_at), 'dd בMMMM yyyy', { locale: he })}</p>` : ''}
+        </div>
+        
+        <!-- Content -->
+        <div style="font-size: 14px; line-height: 1.8; color: #333;">
+          ${post.content
+            .replace(/class="[^"]*"/g, '')
+            .replace(/bg-accent\/30/g, '')
+            .replace(/bg-secondary\/50/g, '')
+            .replace(/bg-accent\/20/g, '')
+            .replace(/bg-primary\/5/g, '')
+            .replace(/<div([^>]*)>/g, '<div style="margin-bottom: 20px;"$1>')
+            .replace(/<h2([^>]*)>/g, '<h2 style="color: #B5838D; font-size: 20px; font-weight: 700; margin-top: 30px; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #E8D5C4;"$1>')
+            .replace(/<h3([^>]*)>/g, '<h3 style="color: #B5838D; font-size: 16px; font-weight: 700; margin-top: 20px; margin-bottom: 10px;"$1>')
+            .replace(/<p([^>]*)>/g, '<p style="margin-bottom: 12px; line-height: 1.8;"$1>')
+            .replace(/<ul([^>]*)>/g, '<ul style="padding-right: 20px; margin-bottom: 15px;"$1>')
+            .replace(/<ol([^>]*)>/g, '<ol style="padding-right: 20px; margin-bottom: 15px;"$1>')
+            .replace(/<li([^>]*)>/g, '<li style="margin-bottom: 8px;"$1>')
+            .replace(/<strong([^>]*)>/g, '<strong style="color: #B5838D; font-weight: 600;"$1>')
+            .replace(/<a[^>]*href="[^"]*"[^>]*>([^<]*)<\/a>/g, '$1')
+          }
+        </div>
+        
+        <!-- Footer -->
+        <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #E8D5C4; text-align: center;">
+          <p style="color: #B5838D; font-size: 14px; font-weight: 500;">בעיצוב ובאהבה – Studio Topaz</p>
+          <p style="color: #888; font-size: 11px; margin-top: 8px;">www.studio-topaz.co.il</p>
+        </div>
+      </div>
+    `;
+
+    try {
+      const opt = {
+        margin: [10, 10, 10, 10],
+        filename: `${post.title.replace(/[^\u0590-\u05FF\s]/g, '').trim() || 'article'}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { 
+          scale: 2,
+          useCORS: true,
+          letterRendering: true,
+        },
+        jsPDF: { 
+          unit: 'mm', 
+          format: 'a4', 
+          orientation: 'portrait'
+        },
+        pagebreak: { mode: 'avoid-all' }
+      };
+
+      await html2pdf().set(opt).from(pdfContainer).save();
+      toast.success('ה-PDF הורד בהצלחה!');
+    } catch (error) {
+      console.error('PDF generation error:', error);
+      toast.error('שגיאה ביצירת ה-PDF');
+    } finally {
+      setIsGeneratingPdf(false);
+    }
   };
 
   if (isLoading) {
@@ -146,15 +224,27 @@ const BlogPost = () => {
               <span>{readingTime} דקות קריאה</span>
             </div>
             
-            {/* WhatsApp Share Button */}
-            <button
-              onClick={handleShareWhatsApp}
-              className="flex items-center gap-2 px-4 py-2 bg-[#25D366] text-white rounded-full text-sm font-medium hover:bg-[#128C7E] transition-colors"
-              aria-label="שתף בוואטסאפ"
-            >
-              <Share2 className="w-4 h-4" />
-              <span>שתף את הטקסט בוואטסאפ</span>
-            </button>
+            {/* Share & Download Buttons */}
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={handleShareWhatsApp}
+                className="flex items-center gap-2 px-4 py-2 bg-[#25D366] text-white rounded-full text-sm font-medium hover:bg-[#128C7E] transition-colors"
+                aria-label="שתף בוואטסאפ"
+              >
+                <Share2 className="w-4 h-4" />
+                <span className="hidden sm:inline">שתף בוואטסאפ</span>
+              </button>
+              
+              <button
+                onClick={handleDownloadPdf}
+                disabled={isGeneratingPdf}
+                className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-full text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+                aria-label="הורד כ-PDF"
+              >
+                <Download className="w-4 h-4" />
+                <span className="hidden sm:inline">{isGeneratingPdf ? 'מכין...' : 'הורד PDF'}</span>
+              </button>
+            </div>
           </div>
 
           {/* Featured Image */}
