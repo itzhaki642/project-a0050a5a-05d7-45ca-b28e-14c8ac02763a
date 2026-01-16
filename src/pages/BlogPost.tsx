@@ -3,12 +3,12 @@ import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { format } from 'date-fns';
 import { he } from 'date-fns/locale';
-import { ArrowRight, Calendar, Clock } from 'lucide-react';
+import { ArrowRight, Calendar, Clock, Share2 } from 'lucide-react';
 import Layout from '@/components/Layout';
 import { supabase } from '@/integrations/supabase/client';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-
+import { toast } from 'sonner';
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
 
@@ -34,6 +34,33 @@ const BlogPost = () => {
     const words = content.replace(/<[^>]*>/g, '').split(/\s+/).length;
     const minutes = Math.ceil(words / wordsPerMinute);
     return minutes;
+  };
+
+  // Extract plain text from HTML content for WhatsApp sharing
+  const getPlainTextForSharing = (content: string, title: string) => {
+    // Remove HTML tags and get clean text
+    const plainText = content
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<\/p>/gi, '\n\n')
+      .replace(/<\/li>/gi, '\n')
+      .replace(/<\/h[1-6]>/gi, '\n\n')
+      .replace(/<[^>]*>/g, '')
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&quot;/g, '"')
+      .replace(/&amp;/g, '&')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim();
+    
+    return `*${title}*\n\n${plainText}\n\n---\nמתוך הבלוג של סטודיו טופז 🌸`;
+  };
+
+  const handleShareWhatsApp = () => {
+    if (!post) return;
+    
+    const textToShare = getPlainTextForSharing(post.content, post.title);
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(textToShare)}`;
+    window.open(whatsappUrl, '_blank');
+    toast.success('נפתח WhatsApp לשיתוף');
   };
 
   if (isLoading) {
@@ -118,6 +145,16 @@ const BlogPost = () => {
               <Clock className="w-4 h-4" />
               <span>{readingTime} דקות קריאה</span>
             </div>
+            
+            {/* WhatsApp Share Button */}
+            <button
+              onClick={handleShareWhatsApp}
+              className="flex items-center gap-2 px-4 py-2 bg-[#25D366] text-white rounded-full text-sm font-medium hover:bg-[#128C7E] transition-colors"
+              aria-label="שתף בוואטסאפ"
+            >
+              <Share2 className="w-4 h-4" />
+              <span>שתף את הטקסט בוואטסאפ</span>
+            </button>
           </div>
 
           {/* Featured Image */}
