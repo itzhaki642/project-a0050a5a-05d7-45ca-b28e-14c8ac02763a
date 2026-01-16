@@ -9,12 +9,10 @@ import { supabase } from '@/integrations/supabase/client';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { useRef, useState } from 'react';
-import html2pdf from 'html2pdf.js';
+import { useState } from 'react';
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
-  const pdfContentRef = useRef<HTMLDivElement>(null);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
 
   const { data: post, isLoading, error } = useQuery({
@@ -43,7 +41,6 @@ const BlogPost = () => {
 
   // Extract plain text from HTML content for WhatsApp sharing
   const getPlainTextForSharing = (content: string, title: string) => {
-    // Remove HTML tags and get clean text
     const plainText = content
       .replace(/<br\s*\/?>/gi, '\n')
       .replace(/<\/p>/gi, '\n\n')
@@ -68,77 +65,130 @@ const BlogPost = () => {
     toast.success('נפתח WhatsApp לשיתוף');
   };
 
-  const handleDownloadPdf = async () => {
+  const handleDownloadPdf = () => {
     if (!post) return;
     
     setIsGeneratingPdf(true);
-    toast.info('מכין את ה-PDF...');
+    toast.info('פותח חלון הדפסה - בחרי "שמור כ-PDF"');
 
-    // Create a styled container for PDF
-    const pdfContainer = document.createElement('div');
-    pdfContainer.innerHTML = `
-      <div style="font-family: 'Heebo', 'Arial', sans-serif; direction: rtl; padding: 40px; max-width: 700px; margin: 0 auto; background: #FFFBF5;">
-        <!-- Header -->
-        <div style="text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #E8D5C4;">
-          <p style="color: #B5838D; font-size: 12px; margin-bottom: 8px;">Studio Topaz • Event Branding Studio</p>
-          <h1 style="color: #1A1A1A; font-size: 28px; font-weight: 700; margin: 0; line-height: 1.4;">${post.title}</h1>
-          ${post.published_at ? `<p style="color: #888; font-size: 12px; margin-top: 12px;">${format(new Date(post.published_at), 'dd בMMMM yyyy', { locale: he })}</p>` : ''}
+    // Create a print-friendly version in a new window
+    const printContent = `
+      <!DOCTYPE html>
+      <html dir="rtl" lang="he">
+      <head>
+        <meta charset="UTF-8">
+        <title>${post.title} | סטודיו טופז</title>
+        <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <style>
+          * { box-sizing: border-box; margin: 0; padding: 0; }
+          body {
+            font-family: 'Heebo', 'Arial', sans-serif;
+            direction: rtl;
+            padding: 40px;
+            max-width: 700px;
+            margin: 0 auto;
+            background: #FFFBF5;
+            color: #333;
+            line-height: 1.8;
+            font-size: 14px;
+          }
+          .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #E8D5C4;
+          }
+          .header .studio { color: #B5838D; font-size: 12px; margin-bottom: 8px; }
+          .header h1 { color: #1A1A1A; font-size: 26px; font-weight: 700; line-height: 1.4; margin: 0; }
+          .header .date { color: #888; font-size: 12px; margin-top: 12px; }
+          h2 {
+            color: #B5838D;
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 28px;
+            margin-bottom: 12px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #E8D5C4;
+          }
+          h3 { color: #B5838D; font-size: 15px; font-weight: 700; margin-top: 18px; margin-bottom: 8px; }
+          p { margin-bottom: 12px; }
+          ul, ol { padding-right: 24px; margin-bottom: 12px; }
+          li { margin-bottom: 6px; }
+          strong { color: #B5838D; font-weight: 600; }
+          .card {
+            background: #FDF8F3;
+            border: 1px solid #E8D5C4;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 16px 0;
+          }
+          .blessing-card {
+            background: #FDF8F3;
+            border: 1px solid #E8D5C4;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            margin: 20px 0;
+          }
+          .blessing-text { font-size: 18px; font-weight: 500; line-height: 2; }
+          .ingredient-card {
+            background: #FDF8F3;
+            padding: 12px 16px;
+            border-right: 4px solid #B5838D;
+            border-radius: 8px;
+            margin-bottom: 10px;
+          }
+          .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #E8D5C4;
+            text-align: center;
+          }
+          .footer .brand { color: #B5838D; font-size: 14px; font-weight: 500; }
+          .footer .url { color: #888; font-size: 11px; margin-top: 8px; }
+          @media print {
+            body { padding: 20px; }
+            @page { margin: 15mm; }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <p class="studio">Studio Topaz • Event Branding Studio</p>
+          <h1>${post.title}</h1>
+          ${post.published_at ? `<p class="date">${format(new Date(post.published_at), 'dd בMMMM yyyy', { locale: he })}</p>` : ''}
         </div>
         
-        <!-- Content -->
-        <div style="font-size: 14px; line-height: 1.8; color: #333;">
+        <div class="content">
           ${post.content
             .replace(/class="[^"]*"/g, '')
-            .replace(/bg-accent\/30/g, '')
-            .replace(/bg-secondary\/50/g, '')
-            .replace(/bg-accent\/20/g, '')
-            .replace(/bg-primary\/5/g, '')
-            .replace(/<div([^>]*)>/g, '<div style="margin-bottom: 20px;"$1>')
-            .replace(/<h2([^>]*)>/g, '<h2 style="color: #B5838D; font-size: 20px; font-weight: 700; margin-top: 30px; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #E8D5C4;"$1>')
-            .replace(/<h3([^>]*)>/g, '<h3 style="color: #B5838D; font-size: 16px; font-weight: 700; margin-top: 20px; margin-bottom: 10px;"$1>')
-            .replace(/<p([^>]*)>/g, '<p style="margin-bottom: 12px; line-height: 1.8;"$1>')
-            .replace(/<ul([^>]*)>/g, '<ul style="padding-right: 20px; margin-bottom: 15px;"$1>')
-            .replace(/<ol([^>]*)>/g, '<ol style="padding-right: 20px; margin-bottom: 15px;"$1>')
-            .replace(/<li([^>]*)>/g, '<li style="margin-bottom: 8px;"$1>')
-            .replace(/<strong([^>]*)>/g, '<strong style="color: #B5838D; font-weight: 600;"$1>')
             .replace(/<a[^>]*href="[^"]*"[^>]*>([^<]*)<\/a>/g, '$1')
           }
         </div>
         
-        <!-- Footer -->
-        <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #E8D5C4; text-align: center;">
-          <p style="color: #B5838D; font-size: 14px; font-weight: 500;">בעיצוב ובאהבה – Studio Topaz</p>
-          <p style="color: #888; font-size: 11px; margin-top: 8px;">www.studio-topaz.co.il</p>
+        <div class="footer">
+          <p class="brand">בעיצוב ובאהבה – Studio Topaz</p>
+          <p class="url">www.studio-topaz.co.il</p>
         </div>
-      </div>
+        
+        <script>
+          window.onload = function() {
+            setTimeout(function() {
+              window.print();
+            }, 500);
+          };
+        </script>
+      </body>
+      </html>
     `;
 
-    try {
-      const opt = {
-        margin: [10, 10, 10, 10],
-        filename: `${post.title.replace(/[^\u0590-\u05FF\s]/g, '').trim() || 'article'}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { 
-          scale: 2,
-          useCORS: true,
-          letterRendering: true,
-        },
-        jsPDF: { 
-          unit: 'mm', 
-          format: 'a4', 
-          orientation: 'portrait'
-        },
-        pagebreak: { mode: 'avoid-all' }
-      };
-
-      await html2pdf().set(opt).from(pdfContainer).save();
-      toast.success('ה-PDF הורד בהצלחה!');
-    } catch (error) {
-      console.error('PDF generation error:', error);
-      toast.error('שגיאה ביצירת ה-PDF');
-    } finally {
-      setIsGeneratingPdf(false);
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      printWindow.document.write(printContent);
+      printWindow.document.close();
     }
+    
+    setIsGeneratingPdf(false);
   };
 
   if (isLoading) {
