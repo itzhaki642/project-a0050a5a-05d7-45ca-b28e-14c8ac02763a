@@ -153,21 +153,33 @@
     background: linear-gradient(to bottom, hsl(var(--background) / 0.3), hsl(var(--background) / 0.7));
   }
 
-  /* Blog CTA Box */
-  .cta-box {
-    @apply bg-secondary/50 p-6 md:p-8 rounded-2xl border border-border text-center mt-8;
+  /* Blog CTA Section */
+  .cta-section {
+    @apply relative bg-gradient-to-br from-secondary via-accent/30 to-secondary p-8 md:p-10 rounded-3xl border border-accent text-center mt-12 mb-4 overflow-hidden;
+    box-shadow: 0 8px 32px -8px hsl(var(--primary) / 0.12);
   }
 
-  .cta-box p:first-child {
-    @apply text-lg md:text-xl text-foreground mb-2;
+  .cta-section::before {
+    content: '';
+    @apply absolute inset-0 opacity-5;
+    background-image: radial-gradient(circle at 20% 80%, hsl(var(--primary)) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 20%, hsl(var(--primary)) 0%, transparent 50%);
   }
 
-  .cta-box p:nth-child(2) {
-    @apply text-muted-foreground mb-4;
+  .cta-section .cta-icon {
+    @apply text-4xl mb-4;
   }
 
-  .cta-box a {
-    @apply inline-block px-6 py-3 bg-primary text-primary-foreground rounded-full font-medium hover:opacity-90 transition-opacity no-underline;
+  .cta-section h3 {
+    @apply text-xl md:text-2xl font-bold text-foreground mb-3;
+  }
+
+  .cta-section > p {
+    @apply text-muted-foreground mb-6 max-w-md mx-auto;
+  }
+
+  .cta-button {
+    @apply inline-block px-8 py-4 bg-primary text-primary-foreground rounded-full font-semibold text-lg hover:opacity-90 transition-all hover:scale-105 no-underline shadow-lg;
   }
 }
 
