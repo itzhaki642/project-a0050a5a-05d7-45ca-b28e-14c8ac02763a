@@ -39,36 +39,37 @@ const BlogPost = () => {
     return minutes;
   };
 
-  // Extract plain text from HTML content for WhatsApp sharing
-  const getPlainTextForSharing = (content: string, title: string) => {
-    const plainText = content
-      .replace(/<br\s*\/?>/gi, '\n')
-      .replace(/<\/p>/gi, '\n\n')
-      .replace(/<\/li>/gi, '\n')
-      .replace(/<\/h[1-6]>/gi, '\n\n')
-      .replace(/<[^>]*>/g, '')
-      .replace(/&nbsp;/g, ' ')
-      .replace(/&quot;/g, '"')
-      .replace(/&amp;/g, '&')
-      .replace(/\n{3,}/g, '\n\n')
-      .trim();
-    
-    return `*${title}*\n\n${plainText}\n\n---\nמתוך הבלוג של סטודיו טופז 🌸`;
-  };
-
   const handleShareWhatsApp = () => {
     if (!post) return;
     
-    const textToShare = getPlainTextForSharing(post.content, post.title);
+    const articleUrl = window.location.href;
+    const textToShare = `${post.title}\n\nקראו את המאמר המלא:\n${articleUrl}\n\n🌸 מתוך הבלוג של סטודיו טופז`;
     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(textToShare)}`;
     window.open(whatsappUrl, '_blank');
     toast.success('נפתח WhatsApp לשיתוף');
   };
 
-  const handleDownloadPdf = () => {
+  const handleDownloadPdf = async () => {
     if (!post) return;
     
     setIsGeneratingPdf(true);
+
+    // For iOS/mobile: use Web Share API if available for better UX
+    if (navigator.share && /iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+      try {
+        await navigator.share({
+          title: post.title,
+          text: `${post.title} - מאמר מבלוג סטודיו טופז`,
+          url: window.location.href,
+        });
+        toast.success('תודה על השיתוף!');
+        setIsGeneratingPdf(false);
+        return;
+      } catch (err) {
+        // User cancelled or share failed, fall back to print
+      }
+    }
+
     toast.info('פותח חלון הדפסה - בחרי "שמור כ-PDF"');
 
     // Create a print-friendly version in a new window
