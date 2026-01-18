@@ -152,6 +152,23 @@
   .hero-overlay {
     background: linear-gradient(to bottom, hsl(var(--background) / 0.3), hsl(var(--background) / 0.7));
   }
+
+  /* Blog CTA Box */
+  .cta-box {
+    @apply bg-secondary/50 p-6 md:p-8 rounded-2xl border border-border text-center mt-8;
+  }
+
+  .cta-box p:first-child {
+    @apply text-lg md:text-xl text-foreground mb-2;
+  }
+
+  .cta-box p:nth-child(2) {
+    @apply text-muted-foreground mb-4;
+  }
+
+  .cta-box a {
+    @apply inline-block px-6 py-3 bg-primary text-primary-foreground rounded-full font-medium hover:opacity-90 transition-opacity no-underline;
+  }
 }
 
 /* Accessibility Styles */
