@@ -315,16 +315,16 @@ const BlogPost = () => {
       {/* Article Content */}
       <article className="container mx-auto px-4 py-12 max-w-3xl">
         <div 
-          className="prose prose-lg max-w-none
-            prose-headings:font-bold prose-headings:text-foreground
-            prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4
-            prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3
-            prose-p:text-foreground/90 prose-p:leading-relaxed prose-p:mb-6
-            prose-a:text-primary prose-a:font-medium prose-a:underline-offset-4 hover:prose-a:text-primary/80
+          className="prose prose-lg max-w-none rtl
+            prose-headings:font-bold prose-headings:text-foreground prose-headings:font-heebo
+            prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:pb-3 prose-h2:border-b-2 prose-h2:border-accent
+            prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3 prose-h3:text-primary
+            prose-p:text-foreground/90 prose-p:leading-relaxed prose-p:mb-6 prose-p:font-heebo
+            prose-a:text-primary prose-a:font-medium prose-a:underline-offset-4 hover:prose-a:opacity-80
             prose-strong:text-foreground prose-strong:font-semibold
-            prose-ul:my-6 prose-ul:pr-6
-            prose-ol:my-6 prose-ol:pr-6
-            prose-li:text-foreground/90 prose-li:my-2
+            prose-ul:my-6 prose-ul:pr-6 prose-ul:list-disc prose-ul:marker:text-primary
+            prose-ol:my-6 prose-ol:pr-6 prose-ol:list-decimal prose-ol:marker:text-primary
+            prose-li:text-foreground/90 prose-li:my-3 prose-li:leading-relaxed
             prose-blockquote:border-r-4 prose-blockquote:border-primary prose-blockquote:bg-secondary/30 
             prose-blockquote:pr-6 prose-blockquote:py-4 prose-blockquote:pl-4 prose-blockquote:rounded-lg
             prose-blockquote:not-italic prose-blockquote:text-foreground/80
