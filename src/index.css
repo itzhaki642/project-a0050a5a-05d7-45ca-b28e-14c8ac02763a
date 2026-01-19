@@ -179,7 +179,9 @@
   }
 
   .cta-button {
-    @apply inline-block px-8 py-4 bg-primary text-primary-foreground rounded-full font-semibold text-lg hover:opacity-90 transition-all hover:scale-105 no-underline shadow-lg;
+    @apply inline-block px-8 py-4 bg-primary rounded-full font-semibold text-lg hover:opacity-90 transition-all hover:scale-105 no-underline shadow-lg;
+    color: hsl(var(--primary-foreground)) !important;
+    text-decoration: none !important;
   }
 }
 
