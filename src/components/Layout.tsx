@@ -4,6 +4,7 @@ import Footer from "./Footer";
 import WhatsAppButton from "./WhatsAppButton";
 import AccessibilityWidget from "./AccessibilityWidget";
 import AnnouncementBanner from "./AnnouncementBanner";
+import CookieConsent from "./CookieConsent";
 
 interface LayoutProps {
   children: ReactNode;
@@ -27,6 +28,7 @@ const Layout = ({ children }: LayoutProps) => {
       <Footer />
       <WhatsAppButton />
       <AccessibilityWidget />
+      <CookieConsent />
     </div>
   );
 };
