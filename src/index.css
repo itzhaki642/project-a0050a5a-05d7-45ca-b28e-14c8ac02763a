@@ -183,6 +183,12 @@
     color: hsl(var(--primary-foreground)) !important;
     text-decoration: none !important;
   }
+
+  /* Fix: button-like links inside blog prose get their text color overridden by `prose-a:*` */
+  .prose a.bg-primary {
+    color: hsl(var(--primary-foreground)) !important;
+    text-decoration: none !important;
+  }
 }
 
 /* Accessibility Styles */
