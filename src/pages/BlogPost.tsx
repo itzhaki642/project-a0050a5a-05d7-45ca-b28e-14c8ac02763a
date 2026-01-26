@@ -9,7 +9,65 @@ import { supabase } from '@/integrations/supabase/client';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+
+// Separate component for article content to handle Instagram embeds
+const ArticleContent = ({ content }: { content: string }) => {
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Check if content contains Instagram embeds
+    if (content.includes('instagram.com') || content.includes('blockquote class="instagram-media"')) {
+      // Load Instagram embed script
+      const existingScript = document.querySelector('script[src*="instagram.com/embed.js"]');
+      
+      if (!existingScript) {
+        const script = document.createElement('script');
+        script.src = '//www.instagram.com/embed.js';
+        script.async = true;
+        document.body.appendChild(script);
+        
+        script.onload = () => {
+          // Process Instagram embeds after script loads
+          if ((window as any).instgrm) {
+            (window as any).instgrm.Embeds.process();
+          }
+        };
+      } else {
+        // Script already exists, just process embeds
+        setTimeout(() => {
+          if ((window as any).instgrm) {
+            (window as any).instgrm.Embeds.process();
+          }
+        }, 100);
+      }
+    }
+  }, [content]);
+
+  return (
+    <article className="container mx-auto px-4 py-12 max-w-3xl">
+      <div 
+        ref={contentRef}
+        className="prose prose-lg max-w-none rtl
+          prose-headings:font-bold prose-headings:text-foreground prose-headings:font-heebo
+          prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:pb-3 prose-h2:border-b-2 prose-h2:border-accent
+          prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3 prose-h3:text-primary
+          prose-p:text-foreground/90 prose-p:leading-relaxed prose-p:mb-6 prose-p:font-heebo
+          prose-a:text-primary prose-a:font-medium prose-a:underline-offset-4 hover:prose-a:opacity-80
+          prose-strong:text-foreground prose-strong:font-semibold
+          prose-ul:my-6 prose-ul:pr-6 prose-ul:list-disc prose-ul:marker:text-primary
+          prose-ol:my-6 prose-ol:pr-6 prose-ol:list-decimal prose-ol:marker:text-primary
+          prose-li:text-foreground/90 prose-li:my-3 prose-li:leading-relaxed
+          prose-blockquote:border-r-4 prose-blockquote:border-primary prose-blockquote:bg-secondary/30 
+          prose-blockquote:pr-6 prose-blockquote:py-4 prose-blockquote:pl-4 prose-blockquote:rounded-lg
+          prose-blockquote:not-italic prose-blockquote:text-foreground/80
+          prose-img:rounded-xl prose-img:shadow-md
+          [&_.instagram-media]:mx-auto [&_.instagram-media]:my-8"
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
+    </article>
+  );
+};
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -313,26 +371,10 @@ const BlogPost = () => {
       </div>
 
       {/* Article Content */}
-      <article className="container mx-auto px-4 py-12 max-w-3xl">
-        <div 
-          className="prose prose-lg max-w-none rtl
-            prose-headings:font-bold prose-headings:text-foreground prose-headings:font-heebo
-            prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:pb-3 prose-h2:border-b-2 prose-h2:border-accent
-            prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3 prose-h3:text-primary
-            prose-p:text-foreground/90 prose-p:leading-relaxed prose-p:mb-6 prose-p:font-heebo
-            prose-a:text-primary prose-a:font-medium prose-a:underline-offset-4 hover:prose-a:opacity-80
-            prose-strong:text-foreground prose-strong:font-semibold
-            prose-ul:my-6 prose-ul:pr-6 prose-ul:list-disc prose-ul:marker:text-primary
-            prose-ol:my-6 prose-ol:pr-6 prose-ol:list-decimal prose-ol:marker:text-primary
-            prose-li:text-foreground/90 prose-li:my-3 prose-li:leading-relaxed
-            prose-blockquote:border-r-4 prose-blockquote:border-primary prose-blockquote:bg-secondary/30 
-            prose-blockquote:pr-6 prose-blockquote:py-4 prose-blockquote:pl-4 prose-blockquote:rounded-lg
-            prose-blockquote:not-italic prose-blockquote:text-foreground/80
-            prose-img:rounded-xl prose-img:shadow-md"
-          dangerouslySetInnerHTML={{ __html: post.content }}
-        />
+      <ArticleContent content={post.content} />
 
-        {/* Bottom CTA */}
+      {/* Bottom CTA */}
+      <div className="container mx-auto px-4 max-w-3xl">
         <div className="mt-16 pt-8 border-t border-border">
           <div className="bg-secondary/30 rounded-2xl p-8 text-center">
             <h3 className="text-xl font-semibold mb-3">נהנית מהמאמר?</h3>
@@ -344,7 +386,7 @@ const BlogPost = () => {
             </Link>
           </div>
         </div>
-      </article>
+      </div>
     </Layout>
   );
 };
