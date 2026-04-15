@@ -7,6 +7,7 @@ import CategoryCard from "@/components/CategoryCard";
 import SEOStructuredData from "@/components/SEOStructuredData";
 import categoryBirthday from "@/assets/safari_concept.jpg";
 import categorySouvenirs from "@/assets/category-souvenirs.jpg";
+import categoryBrandedKits from "@/assets/category-branded-kits.png";
 
 const useInView = (threshold = 0.1) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -44,6 +45,12 @@ const categories = [
     description: "מזכרות וברכונים לאירועים - בר מצווה, בת מצווה, חתונות ואירועים מיוחדים",
     image: categorySouvenirs,
     href: "/souvenirs",
+  },
+  {
+    title: "ערכות ממותגות לאירועים",
+    description: "ערכות ממותגות בעיצוב אישי למסיבת רווקות, בר מצווה, בת מצווה ואירועים מיוחדים",
+    image: categoryBrandedKits,
+    href: "/branded-kits",
   },
 ];
 
@@ -162,7 +169,7 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {categories.map((category) => (
               <CategoryCard key={category.href} {...category} />
             ))}
