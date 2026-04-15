@@ -64,6 +64,7 @@ const STOREFRONT_PRODUCTS_QUERY = `
           description
           descriptionHtml
           handle
+          productType
           priceRange {
             minVariantPrice {
               amount
@@ -166,6 +167,7 @@ const STOREFRONT_COLLECTION_PRODUCTS_QUERY = `
             description
             descriptionHtml
             handle
+            productType
             priceRange {
               minVariantPrice {
                 amount
@@ -224,6 +226,7 @@ const STOREFRONT_COLLECTION_PRODUCTS_BY_ID_QUERY = `
               description
               descriptionHtml
               handle
+              productType
               priceRange {
                 minVariantPrice {
                   amount
