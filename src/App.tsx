@@ -14,6 +14,7 @@ import Birthday from "./pages/Birthday";
 import ConceptProducts from "./pages/ConceptProducts";
 import ShopifyConceptProducts from "./pages/ShopifyConceptProducts";
 import Souvenirs from "./pages/Souvenirs";
+import BrandedKits from "./pages/BrandedKits";
 import About from "./pages/About";
 import Terms from "./pages/Terms";
 import Accessibility from "./pages/Accessibility";
@@ -45,6 +46,7 @@ const App = () => (
                 <Route path="/birthday" element={<Birthday />} />
                 <Route path="/birthday/:conceptId" element={<ShopifyConceptProducts />} />
                 <Route path="/souvenirs" element={<Souvenirs />} />
+                <Route path="/branded-kits" element={<BrandedKits />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/terms" element={<Terms />} />
                 <Route path="/accessibility" element={<Accessibility />} />
